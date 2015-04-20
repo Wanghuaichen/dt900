@@ -3,7 +3,7 @@
   * @file    user_diskio.h
   * @author  MCD Tools Team
   * @version V1.0.0
-  * @date    20/04/2015 14:56:52
+  * @date    20/04/2015 15:10:12
   * @brief   This file contains the common defines and functions prototypes for  
   *          the user_diskio driver.
   ******************************************************************************

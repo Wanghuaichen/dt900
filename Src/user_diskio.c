@@ -3,7 +3,7 @@
   * @file    user_diskio.c
   * @author  MCD Tools Team
   * @version V1.0.0
-  * @date    20/04/2015 14:56:52
+  * @date    20/04/2015 15:10:11
   * @brief   This file includes a diskio driver skeleton to be completed by the user.
   ******************************************************************************
   *
