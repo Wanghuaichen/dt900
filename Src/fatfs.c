@@ -38,7 +38,7 @@ uint8_t retUSER;    /* Return value for USER */
 char USER_Path[4];  /* USER logical drive path */
 
 /* USER CODE BEGIN Variables */
-
+FATFS FLASHFS;
 /* USER CODE END Variables */    
 
 void MX_FATFS_Init(void) 
@@ -47,7 +47,8 @@ void MX_FATFS_Init(void)
   retUSER = FATFS_LinkDriver(&USER_Driver, USER_Path);
 
   /* USER CODE BEGIN Init */
-  /* additional user code for init */     
+  /* additional user code for init */  
+	f_mount(&FLASHFS, (TCHAR const*)USER_Path, 0);
   /* USER CODE END Init */
 }
 

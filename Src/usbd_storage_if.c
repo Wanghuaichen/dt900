@@ -35,7 +35,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usbd_storage_if.h"
-
+#include "spiflash.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -51,8 +51,8 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 /* Private functions ---------------------------------------------------------*/
 
 #define STORAGE_LUN_NBR                  1  
-#define STORAGE_BLK_NBR                  0x10000  
-#define STORAGE_BLK_SIZ                  0x200
+#define STORAGE_BLK_NBR                  2048  
+#define STORAGE_BLK_SIZ                  4096
 
 static int8_t STORAGE_Init_FS (uint8_t lun);
 static int8_t STORAGE_GetCapacity_FS (uint8_t lun, 
@@ -83,10 +83,10 @@ const int8_t  STORAGE_Inquirydata_FS[] = {//36
   0x00,
   0x00,	
   0x00,
-  'S', 'T', 'M', ' ', ' ', ' ', ' ', ' ', /* Manufacturer : 8 bytes */
-  'P', 'r', 'o', 'd', 'u', 'c', 't', ' ', /* Product      : 16 Bytes */
-  ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-  '0', '.', '0' ,'1',                     /* Version      : 4 Bytes */
+  'D', 'T', 'C', 'C', ' ', ' ', ' ', ' ', /* Manufacturer : 8 bytes */
+  'S', 'o', 'l', 'o', 'C', 'h', 'e', 'c', /* Product      : 16 Bytes */
+  'k', 'e', 'r', ' ', ' ', ' ', ' ', ' ',
+  '1', '.', '0' ,'0',                     /* Version      : 4 Bytes */
 }; 
 /* USER CODE END 0 */ 
 
@@ -172,7 +172,8 @@ int8_t STORAGE_Read_FS (uint8_t lun,
                         uint32_t blk_addr,                       
                         uint16_t blk_len)
 {
-  /* USER CODE BEGIN 6 */ 
+  /* USER CODE BEGIN 6 */
+	SPI_Flash_Read(buf,blk_addr,blk_len);	
   return (USBD_OK);
   /* USER CODE END 6 */ 
 }
@@ -190,6 +191,7 @@ int8_t STORAGE_Write_FS (uint8_t lun,
                          uint16_t blk_len)
 {
   /* USER CODE BEGIN 7 */ 
+	SPI_Flash_Write(buf,blk_addr,blk_len);
   return (USBD_OK);
   /* USER CODE END 7 */ 
 }

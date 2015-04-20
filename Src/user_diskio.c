@@ -39,7 +39,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <string.h>
 #include "ff_gen_drv.h"
-
+#include "spiflash.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
@@ -112,7 +112,7 @@ DSTATUS USER_status(void)
 DRESULT USER_read(BYTE *buff, DWORD sector, UINT count)
 {
   /* USER CODE HERE */
-  
+  SPI_Flash_Read(buff,sector <<12,4096);
   return RES_OK;
 }
 
@@ -127,7 +127,7 @@ DRESULT USER_read(BYTE *buff, DWORD sector, UINT count)
 DRESULT USER_write(const BYTE *buff, DWORD sector, UINT count)
 { 
   /* USER CODE HERE */
-
+	SPI_Flash_Write((uint8_t *)buff,sector <<12,4096);
   return RES_OK;
 }
 #endif /* _USE_WRITE == 1 */
