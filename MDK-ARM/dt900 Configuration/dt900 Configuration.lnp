@@ -25,6 +25,7 @@
 "dt900 configuration\stm32f4xx_hal_pcd_ex.o"
 "dt900 configuration\stm32f4xx_hal_pcd.o"
 "dt900 configuration\stm32f4xx_ll_usb.o"
+"dt900 configuration\stm32f4xx_hal_crc.o"
 "dt900 configuration\fatfs.o"
 "dt900 configuration\freertos.o"
 "dt900 configuration\stm32f4xx_hal_msp.o"
@@ -58,11 +59,13 @@
 "dt900 configuration\usbd_core.o"
 "dt900 configuration\usbd_msc_scsi.o"
 "dt900 configuration\usbd_msc_data.o"
-"dt900 configuration\int.o"
 "dt900 configuration\pwr.o"
 "dt900 configuration\spiflash.o"
 "dt900 configuration\adc.o"
 "dt900 configuration\beep.o"
+"dt900 configuration\sdram.o"
+"dt900 configuration\lcd.o"
+"dt900 configuration\init.o"
 --library_type=microlib --strict --scatter "dt900 Configuration\dt900 Configuration.sct"
 
 --diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols

@@ -43,3 +43,4 @@ dt900 configuration\int.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd
 dt900 configuration\int.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\int.o: ..\Drivers\BSP\adc.h
 dt900 configuration\int.o: ..\Drivers\BSP\beep.h
+dt900 configuration\int.o: ..\Drivers\BSP\sdram.h

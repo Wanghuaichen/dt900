@@ -345,7 +345,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -535,6 +535,11 @@
               <FileName>stm32f4xx_ll_usb.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_crc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -737,11 +742,6 @@
           <GroupName>Drivers/BSP</GroupName>
           <Files>
             <File>
-              <FileName>int.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\BSP\int.c</FilePath>
-            </File>
-            <File>
               <FileName>pwr.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\pwr.c</FilePath>
@@ -760,6 +760,21 @@
               <FileName>beep.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\beep.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\sdram.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\init.c</FilePath>
             </File>
           </Files>
         </Group>

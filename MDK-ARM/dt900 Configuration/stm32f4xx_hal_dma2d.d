@@ -22,6 +22,7 @@ dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\s
 dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_cortex.h
 dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc.h
 dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc_ex.h
+dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_crc.h
 dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dma2d.h
 dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash.h
 dt900 configuration\stm32f4xx_hal_dma2d.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ex.h
