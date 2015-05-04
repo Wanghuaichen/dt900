@@ -242,3 +242,12 @@ void SPI_Flash_WAKEUP(void)
 	SPI_FLASH_CS(1);                            //取消片选     	      
 	HAL_Delay(1);                               //等待TRES1
 } 
+
+uint8_t SPI_Flash_SelfTest(void)
+{
+	uint8_t Tx=0x11;
+	uint8_t Rx=0x0;
+	SPI_Flash_Write(&Tx,0,1);
+	SPI_Flash_Read(&Rx,0,1);
+	return Rx;
+}

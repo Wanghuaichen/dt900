@@ -56,10 +56,10 @@
 /** @defgroup USBD_DESC_Private_Defines
   * @{
   */ 
-#define USBD_VID     0
+#define USBD_VID     0	
 #define USBD_LANGID_STRING     1033
 #define USBD_MANUFACTURER_STRING     "DTCC"
-#define USBD_PID_FS     0
+#define USBD_PID_FS     0x5720
 #define USBD_PRODUCT_STRING_FS     "DT900"
 #define USBD_SERIALNUMBER_STRING_FS     "001"
 #define USBD_CONFIGURATION_STRING_FS     "DTCC"

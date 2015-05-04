@@ -12,47 +12,47 @@ uint32_t uwIndex = 0;
 
 void Sdram_Init()
 {
-//	/* Read/Write Buffers */
-uint32_t aTxBuffer[BUFFER_SIZE];
-uint32_t aRxBuffer[BUFFER_SIZE];
-	
+////	/* Read/Write Buffers */
+//uint32_t aTxBuffer[BUFFER_SIZE];
+//uint32_t aRxBuffer[BUFFER_SIZE];
+//	
 	SDRAM_Initialization_Sequence(&hsdram1, &command);
 	
-	/*##-2- SDRAM memory read/write access #####################################*/  
-  
-  /* Fill the buffer to write */
-  Fill_Buffer(aTxBuffer, BUFFER_SIZE, 0xA244250F);   
-  
-  /* Write data to the SDRAM memory */
-	for(uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++)
-  {
-    *(__IO uint32_t*) (SDRAM_BANK_ADDR + WRITE_READ_ADDR + 4*uwIndex) = aTxBuffer[uwIndex];
-  }    
-  
-  /* Read back data from the SDRAM memory */
-  for (uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++)
-  {
-    aRxBuffer[uwIndex] = *(__IO uint32_t*) (SDRAM_BANK_ADDR + WRITE_READ_ADDR + 4*uwIndex);
-   } 
+//	/*##-2- SDRAM memory read/write access #####################################*/  
+//  
+//  /* Fill the buffer to write */
+//  Fill_Buffer(aTxBuffer, BUFFER_SIZE, 0xA244250F);   
+//  
+//  /* Write data to the SDRAM memory */
+//	for(uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++)
+//  {
+//    *(__IO uint32_t*) (SDRAM_BANK_ADDR + WRITE_READ_ADDR + 4*uwIndex) = aTxBuffer[uwIndex];
+//  }    
+//  
+//  /* Read back data from the SDRAM memory */
+//  for (uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++)
+//  {
+//    aRxBuffer[uwIndex] = *(__IO uint32_t*) (SDRAM_BANK_ADDR + WRITE_READ_ADDR + 4*uwIndex);
+//   } 
 
-  /*##-3- Checking data integrity ############################################*/    
+//  /*##-3- Checking data integrity ############################################*/    
 
-  for (uwIndex = 0; (uwIndex < BUFFER_SIZE) && (uwWriteReadStatus == 0); uwIndex++)
-  {
-    if (aRxBuffer[uwIndex] != aTxBuffer[uwIndex])
-    {
-      uwWriteReadStatus++;
-    }
-  }	
+//  for (uwIndex = 0; (uwIndex < BUFFER_SIZE) && (uwWriteReadStatus == 0); uwIndex++)
+//  {
+//    if (aRxBuffer[uwIndex] != aTxBuffer[uwIndex])
+//    {
+//      uwWriteReadStatus++;
+//    }
+//  }	
 
-  if (uwWriteReadStatus)
-  {
-    beep(100);   
-  }
-  else
-  { 
-    beep(1000);
-  }
+//  if (uwWriteReadStatus)
+//  {
+//    beep(100);   
+//  }
+//  else
+//  { 
+//    beep(1000);
+//  }
  
 }
 
@@ -110,13 +110,13 @@ static void SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM
   HAL_SDRAM_ProgramRefreshRate(hsdram, REFRESH_COUNT); 
 }
 
-static void Fill_Buffer(uint32_t *pBuffer, uint32_t uwBufferLenght, uint32_t uwOffset)
-{
-  uint32_t tmpIndex = 0;
+//static void Fill_Buffer(uint32_t *pBuffer, uint32_t uwBufferLenght, uint32_t uwOffset)
+//{
+//  uint32_t tmpIndex = 0;
 
-  /* Put in global buffer different values */
-  for (tmpIndex = 0; tmpIndex < uwBufferLenght; tmpIndex++ )
-  {
-    pBuffer[tmpIndex] = tmpIndex + uwOffset;
-  }
-}   
+//  /* Put in global buffer different values */
+//  for (tmpIndex = 0; tmpIndex < uwBufferLenght; tmpIndex++ )
+//  {
+//    pBuffer[tmpIndex] = tmpIndex + uwOffset;
+//  }
+//}   

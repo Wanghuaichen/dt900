@@ -173,7 +173,7 @@ int8_t STORAGE_Read_FS (uint8_t lun,
                         uint16_t blk_len)
 {
   /* USER CODE BEGIN 6 */
-	SPI_Flash_Read(buf,blk_addr,blk_len);	
+	SPI_Flash_Read(buf,blk_addr*4096,blk_len*4096);	
   return (USBD_OK);
   /* USER CODE END 6 */ 
 }
@@ -191,7 +191,7 @@ int8_t STORAGE_Write_FS (uint8_t lun,
                          uint16_t blk_len)
 {
   /* USER CODE BEGIN 7 */ 
-	SPI_Flash_Write(buf,blk_addr,blk_len);
+	SPI_Flash_Write(buf,blk_addr*4096,blk_len*4096);
   return (USBD_OK);
   /* USER CODE END 7 */ 
 }

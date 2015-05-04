@@ -21,11 +21,10 @@ void Board_Init()
 	{
 		beep(500);
 		DP_EN(1);
-		HAL_Delay(1000);
-		Sdram_Init();
-		LCD_PWR(1);
-		LCD_LayerCfg();
-		memset((char*)0xD0000000,0,0x800000);
-		memset((char*)(0xD0000000+800*3*240),0xff,800*3*40);
+//		Sdram_Init();
+//		LCD_PWR(1);
+//		LCD_LayerCfg();
+//		memset((char*)0xD0000000,0,0x800000);
+//		memset((char*)(0xD0000000+800*3*240),0xff,800*3*40);
 	}
 }

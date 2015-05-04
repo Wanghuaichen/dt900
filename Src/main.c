@@ -86,7 +86,8 @@ void StartDefaultTask(void const * argument);
 
 int main(void)
 {
-
+	uint8_t Tx=0x33;
+	uint8_t Rx=0x0;
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -113,10 +114,14 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM5_Init();
 
-  /* USER CODE BEGIN 2 */
-	SPI_FLASH_CS(1);   
+  /* USER CODE BEGIN 2 */ 
 	Board_Init();
-	//dbg0 = SPI_Flash_ReadID();
+	SPI_FLASH_CS(1);
+	SPI_Flash_Read(&Rx,0,1);
+	SPI_Flash_Write(&Tx,0,1);
+	SPI_Flash_Read(&Rx,0,1);
+	dbg0=Rx;
+//	dbg0 = SPI_Flash_ReadID();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -185,7 +190,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLQ = 7;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-		RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1
+		RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_PCLK1
 																|RCC_CLOCKTYPE_PCLK2;
 		RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 		RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
@@ -533,7 +538,7 @@ void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
   /* init code for FATFS */
-  MX_FATFS_Init();
+  //MX_FATFS_Init();
 
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
