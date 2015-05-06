@@ -44,6 +44,7 @@
 /* External variables --------------------------------------------------------*/
 extern void xPortSysTickHandler(void);
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
+extern LTDC_HandleTypeDef hltdc;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -79,6 +80,11 @@ void OTG_FS_IRQHandler(void)
   /* USER CODE END OTG_FS_IRQn 1 */
 }
 
+
+void LTDC_IRQHandler(void)
+{
+  HAL_LTDC_IRQHandler(&hltdc);
+}
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

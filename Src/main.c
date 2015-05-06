@@ -41,6 +41,7 @@
 /* USER CODE BEGIN Includes */
 #include "init.h"
 #include "spiflash.h"
+#include "GUI.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -200,8 +201,8 @@ void SystemClock_Config(void)
 
 
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 200;
-  PeriphClkInitStruct.PLLSAI.PLLSAIR = 3;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 240;
+  PeriphClkInitStruct.PLLSAI.PLLSAIR = 5;
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
 
@@ -286,6 +287,10 @@ void MX_LTDC_Init(void)
   hltdc.Init.Backcolor.Green = 0;
   hltdc.Init.Backcolor.Red = 0xff;
   HAL_LTDC_Init(&hltdc);
+	/* Set LTDC Interrupt to the lowest priority */
+  HAL_NVIC_SetPriority(LTDC_IRQn, 0xF, 0);
+  /* Enable LTDC Interrupt */
+  HAL_NVIC_EnableIRQ(LTDC_IRQn);
 }
 
 /* SPI3 init function */
@@ -353,7 +358,7 @@ void MX_TIM2_Init(void)
   TIM_OC_InitTypeDef sConfigOC;
 
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 4199;
+  htim2.Init.Prescaler = 8399;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 10;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -390,8 +395,7 @@ void MX_TIM5_Init(void)
   HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 20
-	;
+  sConfigOC.Pulse = 20;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
@@ -418,9 +422,9 @@ void MX_FMC_Init(void)
   hsdram1.Init.ReadPipeDelay = FMC_SDRAM_RPIPE_DELAY_1;
   /* SdramTiming */
   SdramTiming.LoadToActiveDelay = 2;
-  SdramTiming.ExitSelfRefreshDelay = 7;
+  SdramTiming.ExitSelfRefreshDelay = 6;
   SdramTiming.SelfRefreshTime = 4;
-  SdramTiming.RowCycleDelay = 7;
+  SdramTiming.RowCycleDelay = 6;
   SdramTiming.WriteRecoveryTime = 2;
   SdramTiming.RPDelay = 2;
   SdramTiming.RCDDelay = 2;
@@ -537,17 +541,32 @@ void MX_GPIO_Init(void)
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
+	int i=0;
   /* init code for FATFS */
   //MX_FATFS_Init();
 
   /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
-
+  //MX_USB_DEVICE_Init();
+	
+	
+	
+	
+//	LCD_PWR(1);
+//	LCD_LayerCfg();
+//	memset((char *)(0xD0000000),0,0x800000);
+		GUI_Init();
+		GUI_SetFont(GUI_FONT_COMIC24B_ASCII);
+		GUI_SetBkColor(GUI_WHITE);
+		GUI_Clear();
+		GUI_SetColor(GUI_LIGHTBLUE);
+		GUI_DispStringHCenterAt("Hello world!",240,300);
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
   {
-		osDelay(1);
+    GUI_DispDecAt( i++, 200,400,4);
+		if(i==9999) i=0;
+		//osDelay(100);
   }
   /* USER CODE END 5 */ 
 }

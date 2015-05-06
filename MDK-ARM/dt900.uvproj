@@ -363,7 +363,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy;..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\Middlewares\Third_Party\FatFs\src;..\Middlewares\Third_Party\FreeRTOS\Source\include;..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS;..\Drivers\CMSIS\Include;..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc;..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Inc;..\Drivers\BSP</IncludePath>
+              <IncludePath>..\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy;..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\Middlewares\Third_Party\FatFs\src;..\Middlewares\Third_Party\FreeRTOS\Source\include;..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS;..\Drivers\CMSIS\Include;..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc;..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Inc;..\Drivers\BSP;..\Middlewares\ST\STemWin\inc;..\Middlewares\ST\STemWin\Config</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -735,6 +735,31 @@
               <FileName>usbd_msc_data.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Src\usbd_msc_data.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/STemWin</GroupName>
+          <Files>
+            <File>
+              <FileName>GUIConf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\ST\STemWin\Config\GUIConf.c</FilePath>
+            </File>
+            <File>
+              <FileName>LCDConf_Lin_Template.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\ST\STemWin\Config\LCDConf_Lin_Template.c</FilePath>
+            </File>
+            <File>
+              <FileName>GUI_X_OS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\ST\STemWin\OS\GUI_X_OS.c</FilePath>
+            </File>
+            <File>
+              <FileName>STemWin526_CM4_OS_Keil.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Middlewares\ST\STemWin\Lib\STemWin526_CM4_OS_Keil.lib</FilePath>
             </File>
           </Files>
         </Group>

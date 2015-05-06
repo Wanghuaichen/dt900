@@ -45,3 +45,4 @@ dt900 configuration\init.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\init.o: ..\Drivers\BSP\adc.h
 dt900 configuration\init.o: ..\Drivers\BSP\beep.h
 dt900 configuration\init.o: ..\Drivers\BSP\sdram.h
+dt900 configuration\init.o: ..\Drivers\BSP\lcd.h

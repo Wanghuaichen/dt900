@@ -5,6 +5,8 @@ extern TIM_HandleTypeDef htim5;
 LTDC_LayerCfgTypeDef pLayerCfg1;
 LTDC_LayerCfgTypeDef pLayerCfg2;
 	
+uint32_t FB_ADDR[2] = {0xD0000000,0xD0200000};
+
 void LCD_PWR(int val)//1-on  0-off
 {
 	if(val)
@@ -43,7 +45,7 @@ void LCD_LayerCfg()
   pLayerCfg1.WindowY0 = 0;
   pLayerCfg1.WindowY1 = 480;
   pLayerCfg1.PixelFormat = LTDC_PIXEL_FORMAT_RGB888;
-  pLayerCfg1.FBStartAdress = FB_LAYER1;
+  pLayerCfg1.FBStartAdress = FB_ADDR[0];
   pLayerCfg1.Alpha = 0xff;
   pLayerCfg1.Alpha0 = 0;
   pLayerCfg1.Backcolor.Blue = 0;
@@ -55,21 +57,21 @@ void LCD_LayerCfg()
   pLayerCfg1.ImageHeight = 480; 
 	HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg1, 0);
 	
-//	pLayerCfg2.WindowX0 = 0;
-//  pLayerCfg2.WindowX1 = 800;
-//  pLayerCfg2.WindowY0 = 0;
-//  pLayerCfg2.WindowY1 = 440;
-//  pLayerCfg2.PixelFormat = LTDC_PIXEL_FORMAT_RGB888;
-//  pLayerCfg2.FBStartAdress = FB_LAYER2;
-//  pLayerCfg2.Alpha = 0xff;
-//  pLayerCfg2.Alpha0 = 0;
-//  pLayerCfg2.Backcolor.Blue = 0;
-//  pLayerCfg2.Backcolor.Green = 0xff;
-//  pLayerCfg2.Backcolor.Red = 0;
-//  pLayerCfg2.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
-//  pLayerCfg2.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
-//  pLayerCfg2.ImageWidth = 800;
-//  pLayerCfg2.ImageHeight = 480;
-//	HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg2, 1);
+	pLayerCfg2.WindowX0 = 0;
+  pLayerCfg2.WindowX1 = 800;
+  pLayerCfg2.WindowY0 = 0;
+  pLayerCfg2.WindowY1 = 480;
+  pLayerCfg2.PixelFormat = LTDC_PIXEL_FORMAT_RGB888;
+  pLayerCfg2.FBStartAdress = FB_ADDR[1];
+  pLayerCfg2.Alpha = 0xff;
+  pLayerCfg2.Alpha0 = 0;
+  pLayerCfg2.Backcolor.Blue = 0;
+  pLayerCfg2.Backcolor.Green = 0;
+  pLayerCfg2.Backcolor.Red = 0;
+  pLayerCfg2.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
+  pLayerCfg2.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
+  pLayerCfg2.ImageWidth = 800;
+  pLayerCfg2.ImageHeight = 480;
+	//HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg2, 1);
 }
-	
+

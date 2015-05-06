@@ -1,5 +1,5 @@
-#ifndef __INIT_H
-#define __INIT_H
+#ifndef __SDRAM_H
+#define __SDRAM_H
 
 #include "stm32f4xx_hal.h"
 
@@ -30,7 +30,7 @@
 #define WRITE_READ_ADDR     ((uint32_t)0x0800)
 #define REFRESH_COUNT       ((uint32_t)1386)//((uint32_t)0x0569)
 
-void Sdram_Init();
+void Sdram_Init(void);
 static void SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM_CommandTypeDef *Command);
 static void Fill_Buffer(uint32_t *pBuffer, uint32_t uwBufferLenght, uint32_t uwOffset);
 
