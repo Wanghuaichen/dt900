@@ -46,3 +46,11 @@ dt900 configuration\init.o: ..\Drivers\BSP\adc.h
 dt900 configuration\init.o: ..\Drivers\BSP\beep.h
 dt900 configuration\init.o: ..\Drivers\BSP\sdram.h
 dt900 configuration\init.o: ..\Drivers\BSP\lcd.h
+dt900 configuration\init.o: ..\Drivers\BSP\spiflash.h
+dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI.h
+dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_ConfDefaults.h
+dt900 configuration\init.o: ..\Middlewares\ST\STemWin\Config\GUIConf.h
+dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_Type.h
+dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\LCD.h
+dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\Global.h
+dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h

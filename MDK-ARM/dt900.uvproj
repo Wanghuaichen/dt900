@@ -596,6 +596,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\usbd_conf.c</FilePath>
             </File>
+            <File>
+              <FileName>geotest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\geotest.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -800,6 +805,16 @@
               <FileName>init.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\init.c</FilePath>
+            </File>
+            <File>
+              <FileName>dac8831.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\dac8831.c</FilePath>
+            </File>
+            <File>
+              <FileName>ad7190.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\ad7190.c</FilePath>
             </File>
           </Files>
         </Group>

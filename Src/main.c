@@ -40,7 +40,6 @@
 
 /* USER CODE BEGIN Includes */
 #include "init.h"
-#include "spiflash.h"
 #include "GUI.h"
 /* USER CODE END Includes */
 
@@ -59,8 +58,8 @@ SPI_HandleTypeDef hspi3;
 SPI_HandleTypeDef hspi5;
 SPI_HandleTypeDef hspi6;
 
-TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim3;
 
 SDRAM_HandleTypeDef hsdram1;
 osThreadId defaultTaskHandle;
@@ -81,8 +80,8 @@ static void MX_LTDC_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_SPI5_Init(void);
 static void MX_SPI6_Init(void);
-static void MX_TIM2_Init(void);
 static void MX_TIM5_Init(void);
+static void MX_TIM3_Init(void);
 void StartDefaultTask(void const * argument);
 
 int main(void)
@@ -112,16 +111,14 @@ int main(void)
   MX_SPI3_Init();
   MX_SPI5_Init();
   MX_SPI6_Init();
-  MX_TIM2_Init();
   MX_TIM5_Init();
+  MX_TIM3_Init();
 
   /* USER CODE BEGIN 2 */ 
-	Board_Init();
-	SPI_FLASH_CS(1);
-	SPI_Flash_Read(&Rx,0,1);
-	SPI_Flash_Write(&Tx,0,1);
-	SPI_Flash_Read(&Rx,0,1);
-	dbg0=Rx;
+//	SPI_Flash_Read(&Rx,0,1);
+//	SPI_Flash_Write(&Tx,0,1);
+//	SPI_Flash_Read(&Rx,0,1);
+//	dbg0=Rx;
 //	dbg0 = SPI_Flash_ReadID();
   /* USER CODE END 2 */
 
@@ -301,8 +298,8 @@ void MX_SPI3_Init(void)
   hspi3.Init.Mode = SPI_MODE_MASTER;
   hspi3.Init.Direction = SPI_DIRECTION_2LINES;
   hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi3.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  hspi3.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
   hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
@@ -339,45 +336,18 @@ void MX_SPI6_Init(void)
   hspi6.Init.Mode = SPI_MODE_MASTER;
   hspi6.Init.Direction = SPI_DIRECTION_2LINES;
   hspi6.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi6.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi6.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi6.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  hspi6.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi6.Init.NSS = SPI_NSS_SOFT;
   hspi6.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi6.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi6.Init.TIMode = SPI_TIMODE_DISABLED;
   hspi6.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
   HAL_SPI_Init(&hspi6);
-
-}
-
-/* TIM2 init function */
-void MX_TIM2_Init(void)
-{
-
-  TIM_MasterConfigTypeDef sMasterConfig;
-  TIM_OC_InitTypeDef sConfigOC;
-
-  htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 8399;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 10;
-  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  HAL_TIM_PWM_Init(&htim2);
-
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
-
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 5;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1);
-
 }
 
 /* TIM5 init function */
-void MX_TIM5_Init(void)
+void MX_TIM5_Init(void)//84MHz
 {
 
   TIM_MasterConfigTypeDef sMasterConfig;
@@ -386,7 +356,7 @@ void MX_TIM5_Init(void)
   htim5.Instance = TIM5;
   htim5.Init.Prescaler = 4199;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim5.Init.Period = 100;
+  htim5.Init.Period = 99;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   HAL_TIM_PWM_Init(&htim5);
 
@@ -401,6 +371,32 @@ void MX_TIM5_Init(void)
   HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
 
 }
+
+void MX_TIM3_Init(void)
+{
+
+  TIM_MasterConfigTypeDef sMasterConfig;
+  TIM_OC_InitTypeDef sConfigOC;
+
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 2099;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 9;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  HAL_TIM_PWM_Init(&htim3);
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig);
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 5;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2);
+
+}
+
 /* FMC initialization function */
 void MX_FMC_Init(void)
 {
@@ -487,7 +483,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PA0 PA1 PA2 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2;
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -531,6 +527,11 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+//	GPIO_InitStruct.Pin = GPIO_PIN_2;
+//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 }
 
@@ -542,31 +543,13 @@ void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
 	int i=0;
-  /* init code for FATFS */
-  //MX_FATFS_Init();
-
-  /* init code for USB_DEVICE */
-  //MX_USB_DEVICE_Init();
 	
-	
-	
-	
-//	LCD_PWR(1);
-//	LCD_LayerCfg();
-//	memset((char *)(0xD0000000),0,0x800000);
-		GUI_Init();
-		GUI_SetFont(GUI_FONT_COMIC24B_ASCII);
-		GUI_SetBkColor(GUI_WHITE);
-		GUI_Clear();
-		GUI_SetColor(GUI_LIGHTBLUE);
-		GUI_DispStringHCenterAt("Hello world!",240,300);
-  /* USER CODE BEGIN 5 */
+	Board_Init();
+	geotest();
   /* Infinite loop */
   for(;;)
   {
-    GUI_DispDecAt( i++, 200,400,4);
-		if(i==9999) i=0;
-		//osDelay(100);
+		osDelay(100);
   }
   /* USER CODE END 5 */ 
 }

@@ -36,6 +36,7 @@
 "dt900 configuration\usbd_storage_if.o"
 "dt900 configuration\usb_device.o"
 "dt900 configuration\usbd_conf.o"
+"dt900 configuration\geotest.o"
 "dt900 configuration\startup_stm32f429xx.o"
 "dt900 configuration\system_stm32f4xx.o"
 "dt900 configuration\heap_4.o"
@@ -70,6 +71,8 @@
 "dt900 configuration\sdram.o"
 "dt900 configuration\lcd.o"
 "dt900 configuration\init.o"
+"dt900 configuration\dac8831.o"
+"dt900 configuration\ad7190.o"
 --library_type=microlib --strict --scatter "dt900 Configuration\dt900 Configuration.sct"
 
 --diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols

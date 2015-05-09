@@ -22,14 +22,30 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 Z:\GitHub\dt900\MDK-ARM\dt900.uvproj
-Project File Date:  05/04/2015
+Project File Date:  05/07/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling main.c...
+compiling geotest.c...
+..\Inc\geotest.h(9): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Drivers\BSP\dac8831.h(5): warning:  #47-D: incompatible redefinition of macro "MIDV" (declared at line 6 of "..\Inc\geotest.h")
+  #define MIDV 0x7fff
+..\Drivers\BSP\ad7190.h(15): warning:  #1295-D: Deprecated declaration AD7190_Setup - give arg types
+  void AD7190_Setup();
+..\Drivers\BSP\ad7190.h(21): warning:  #1295-D: Deprecated declaration AD7190_PowerDown - give arg types
+  void AD7190_PowerDown();
+..\Src\geotest.c(19): warning:  #223-D: function "osDelay" declared implicitly
+        osDelay(100);
+..\Src\geotest.c: 5 warnings, 0 errors
+compiling GUIConf.c...
+compiling LCDConf_Lin_Template.c...
+..\Middlewares\ST\STemWin\Config\LCDConf_Lin_Template.c(130): warning:  #177-D: function "BSP_LCD_DrawBitmap8bpp" was declared but never referenced
+  static void BSP_LCD_DrawBitmap8bpp(int32_t LayerIndex, int32_t x, int32_t y, U8 const * p, int32_t xSize, int32_t ySize, int32_t BytesPerLine);
+..\Middlewares\ST\STemWin\Config\LCDConf_Lin_Template.c: 1 warning, 0 errors
 linking...
-Program Size: Code=43264 RO-data=15496 RW-data=508 ZI-data=164452  
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 0 Warning(s).
+Program Size: Code=45588 RO-data=15456 RW-data=508 ZI-data=177596  
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 6 Warning(s).
 </pre>
 </body>
 </html>

@@ -45,6 +45,7 @@
 extern void xPortSysTickHandler(void);
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern LTDC_HandleTypeDef hltdc;
+extern TIM_HandleTypeDef htim2;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -85,6 +86,12 @@ void LTDC_IRQHandler(void)
 {
   HAL_LTDC_IRQHandler(&hltdc);
 }
+
+void TIM2_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htim2);
+}
+
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
