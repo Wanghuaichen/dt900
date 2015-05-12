@@ -1,0 +1,1 @@
+int aasprintf(char *out, const char *format, ...);

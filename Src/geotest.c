@@ -3,14 +3,17 @@
 #include "dac8831.h"
 #include "ad7190.h"
 #include "GUI.h"
+#include <stdio.h>
+#include "bg2.c"
 
 static float Inbuff[4096];
 
 void geotest()
 {
 	int i;
-	char string[20];
-	uint32_t color=GUI_LIGHTBLUE;
+	uint32_t color=0;
+	char string[24];
+	
 	AP_EN(1);
 	AMP_EN(1);
 	MUX(0);
@@ -21,32 +24,23 @@ void geotest()
 	AD7190_Calibration();
 	AD7190_Setup();
 	//osDelay(200);
-	
+	//GUI_JPEG_Draw(_acbg2, sizeof(_acbg2), 0, 0);
 	while(1)
 	{
-//	DAC_SET(0x7fff);
-//	HAL_Delay(3000);
-//	DAC_SET(0x7fff+0xffff/5);
-//	HAL_Delay(3000);
-		if(color == GUI_LIGHTBLUE)
-			color = GUI_RED;
+		if(color == 0)
+			color = 0x001e29ce;
 		else
-			color = GUI_LIGHTBLUE;
+			color = 0;
 		GUI_SetColor(color);
-		for(i=0;i<20;i++)
-			Inbuff[i] = AD7190Read();
-		//sprintf(string," %06x ",AD7190Read());
-		for(i=0;i<20;i++)
+		for(i=0;i<30;i++)
 		{
-			sprintf(string," 0x%04x ",(uint16_t)Inbuff[i]);
-			GUI_DispStringAt(string,240,0+i*20);
+			//sprintf(string," %04x ",AD7190Read());
+			//GUI_DispStringAt(string,200,i*32);
+			GUI_DispHexAt(AD7190Read(),0,i*48,4);
+			//GUI_DispCEOL();
 		}
-		//GUI_DispStringHCenterAt("0x000000",240,300);
-		//GUI_DispHexAt(0,50,200,8);
-		//GUI_DispHexAt(AD7190Read(),50,200,8);
-		osDelay(1);
+		osDelay(1000);
 	}
+
 //	DAC_SWEEP(10,1,0);
 }
-
-		//GUI_DispStringHCenterAt("Hello world!",240,300);

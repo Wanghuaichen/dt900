@@ -41,6 +41,8 @@
 /* USER CODE BEGIN Includes */
 #include "init.h"
 #include "GUI.h"
+#include "UI/ui.h"
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -86,8 +88,8 @@ void StartDefaultTask(void const * argument);
 
 int main(void)
 {
-	uint8_t Tx=0x33;
-	uint8_t Rx=0x0;
+//	uint8_t Tx=0x33;
+//	uint8_t Rx=0x0;
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -136,7 +138,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 4096);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -198,7 +200,7 @@ void SystemClock_Config(void)
 
 
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 240;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 200;
   PeriphClkInitStruct.PLLSAI.PLLSAIR = 5;
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
@@ -280,9 +282,9 @@ void MX_LTDC_Init(void)
   hltdc.Init.AccumulatedActiveH = 502;
   hltdc.Init.TotalWidth = 1055;
   hltdc.Init.TotalHeigh = 524;
-  hltdc.Init.Backcolor.Blue = 0;
-  hltdc.Init.Backcolor.Green = 0;
-  hltdc.Init.Backcolor.Red = 0xff;
+  hltdc.Init.Backcolor.Blue = 0xf4;
+  hltdc.Init.Backcolor.Green = 0xef;
+  hltdc.Init.Backcolor.Red = 0xef;
   HAL_LTDC_Init(&hltdc);
 	/* Set LTDC Interrupt to the lowest priority */
   HAL_NVIC_SetPriority(LTDC_IRQn, 0xF, 0);
@@ -542,14 +544,13 @@ void MX_GPIO_Init(void)
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
-	int i=0;
-	
 	Board_Init();
-	geotest();
+	UI_Init();
+	//geotest();
   /* Infinite loop */
   for(;;)
   {
-		osDelay(100);
+		osDelay(1);
   }
   /* USER CODE END 5 */ 
 }
