@@ -1,11 +1,11 @@
 #include "ui.h"
 
-static struct Item item[4] = 
+static struct Item pMainItem[4] = 
 {
-	{0,"name1",0,240,200},
-	{0,"name2",0,240,300},
-	{0,"name3",0,240,400},
-	{0,"name4",0,240,500},
+	{0,"Do a test",0,240,150},
+	{0,"Data files",0,240,250},
+	{0,"System settings",0,240,350},
+	{0,"About",0,240,450},
 };
 
 struct PageInfo pMain = 
@@ -13,7 +13,7 @@ struct PageInfo pMain =
 	"Main",		//Title
 	4,				//TotalItem
 	0,				//ItemIndex
-	item,
+	pMainItem,
 	UIControl,
 	UIDraw,
 };

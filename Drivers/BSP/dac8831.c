@@ -15,14 +15,14 @@ void DAC_SWEEP(uint32_t frequency,float mag,float offset)
 	uint32_t period;
 	
 	HAL_TIM_Base_Stop_IT(&htim2);
-	DAC_SET(MIDV);
+	DAC_SET(DACMID);
 	if(frequency>0)
 	{
 		index = 0;
 		period = 84000000.0/POINTS/frequency;
 		TIM2_Init(period);
 		for(i=0;i<POINTS;i++)
-				DataBuf[i] = (uint16_t)(MIDV+offset*0xffff/5+mag/5*0xffff*sin(2*PI*i/POINTS));
+				DataBuf[i] = (uint16_t)(DACMID+offset*0xffff/5+mag/5*0xffff*sin(2*PI*i/POINTS));
 		HAL_TIM_Base_Start_IT(&htim2);
 	}
 }
@@ -62,6 +62,6 @@ void TIM2_Init(uint32_t period)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-//  DAC_SET(DataBuf[index++]);
-//	if(index==POINTS) index=0;
+  DAC_SET(DataBuf[index++]);
+	if(index==POINTS) index=0;
 }

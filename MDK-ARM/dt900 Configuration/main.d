@@ -75,3 +75,5 @@ dt900 configuration\main.o: ..\Middlewares\ST\STemWin\inc\GUI_Type.h
 dt900 configuration\main.o: ..\Middlewares\ST\STemWin\inc\LCD.h
 dt900 configuration\main.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\main.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
+dt900 configuration\main.o: ..\Src\UI/ui.h
+dt900 configuration\main.o: ..\Drivers\BSP\pwr.h

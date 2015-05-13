@@ -2,7 +2,7 @@
 #define __DAC8831_H
 #include "stm32f4xx_hal.h"
 
-#define MIDV 0x7fff
+#define DACMID 0x7fff
 #define POINTS 400
 #define PI 3.1415926
 

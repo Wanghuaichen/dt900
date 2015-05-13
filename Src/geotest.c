@@ -3,10 +3,12 @@
 #include "dac8831.h"
 #include "ad7190.h"
 #include "GUI.h"
-#include <stdio.h>
+#include "flash.h"
 #include "bg2.c"
+#include "math.h"
 
 static float Inbuff[4096];
+uint32_t test0,test1;
 
 void geotest()
 {
@@ -43,4 +45,72 @@ void geotest()
 	}
 
 //	DAC_SWEEP(10,1,0);
+}
+
+void geotest2()
+{
+	test1 = 0x11220044;
+	test0 = *(uint32_t *)PARAMADDR;
+	GUI_DispHexAt(test0,0,700,8);
+	FlashProgram((uint32_t *)PARAMADDR,&test1,1);
+	test0 = *(uint32_t *)PARAMADDR;
+	GUI_DispHexAt(test0,240,700,8);
+}
+
+void geotest3()
+{
+	AD7190_PowerDown();
+	AP_EN(1);
+	AMP_EN(1);
+	MUX(0);
+	osDelay(100);
+	AD7190_Calibration();
+	AD7190_Setup();
+	step0();
+	step1();
+}
+
+
+void step0()
+{
+	int i;
+	double val=0;
+	float noise;
+	char string[20];
+	MUX(0);
+	DAC_SET(DACMID);	
+	osDelay(T_DELAY);
+	for(i=0;i<2048;i++)
+		val += abs(AD7190Read()-ADCMID);
+	noise = 4*val/2048*5000/0xffff;
+	sprintf(string,"Noise:%f",noise);
+	GUI_DispStringAt(string,0,600);
+}
+
+void step1()
+{
+	double val=0;
+	int i;
+	unsigned short offset;
+//	struct geoparameter *param = &geoset.geoparam[geoset.paramnum];
+//	float volt = param->R*param->X*param->M*4*PI*PI*param->F*param->F/param->S;
+	float volt = 1;
+	int resi;
+	char string[20];
+//	volt = volt>2 ? 2 : volt;
+//	volt = volt*R_ref/param->R;
+//	volt = volt>2 ? 2 : volt;
+
+	offset =(unsigned short)(volt/5*0xffff);
+	MUX(1);
+	DAC_SET(DACMID+offset);
+	osDelay(T_DELAY);
+	for(i=0;i<64;i++)
+		val+=AD7190Read();	
+	val /= 64;
+	resi = R_ref*4*abs(val-ADCMID)/(volt/5*0xffff);
+//	geophone.resi = R_ref*abs(val-MIDV)/(volt/5*0xffff);
+//	geophone.resi /= 1+0.004*(geophone.temp-param->T);
+sprintf(string,"Resistence:%d",resi);
+	GUI_DispStringAt(string,0,700);
 }

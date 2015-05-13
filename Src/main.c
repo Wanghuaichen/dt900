@@ -42,7 +42,7 @@
 #include "init.h"
 #include "GUI.h"
 #include "UI/ui.h"
-
+#include "pwr.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -64,8 +64,9 @@ TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim3;
 
 SDRAM_HandleTypeDef hsdram1;
-osThreadId defaultTaskHandle;
 
+osThreadId defaultTaskHandle;
+osThreadId keyTaskHandle;
 /* USER CODE BEGIN PV */
 uint32_t dbg0,dbg1;
 /* USER CODE END PV */
@@ -85,6 +86,7 @@ static void MX_SPI6_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM3_Init(void);
 void StartDefaultTask(void const * argument);
+void KeyTask(void const * argument);
 
 int main(void)
 {
@@ -116,6 +118,9 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM3_Init();
 
+	Board_Init();
+	UI_Init();
+	HAL_Delay(1000);
   /* USER CODE BEGIN 2 */ 
 //	SPI_Flash_Read(&Rx,0,1);
 //	SPI_Flash_Write(&Tx,0,1);
@@ -139,8 +144,9 @@ int main(void)
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 4096);
+	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 4096);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
+  keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -356,7 +362,8 @@ void MX_TIM5_Init(void)//84MHz
   TIM_OC_InitTypeDef sConfigOC;
 
   htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 4199;
+  //htim5.Init.Prescaler = 4199;
+	htim5.Init.Prescaler = 1000;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 99;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -367,7 +374,7 @@ void MX_TIM5_Init(void)//84MHz
   HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 20;
+  sConfigOC.Pulse = 10;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
@@ -487,7 +494,7 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pins : PA0 PA1 PA2 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC8 */
@@ -544,15 +551,23 @@ void MX_GPIO_Init(void)
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
-	Board_Init();
-	UI_Init();
-	//geotest();
   /* Infinite loop */
-  for(;;)
+	for(;;)
   {
-		osDelay(1);
+		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_1))
+			DP_EN(0);
+		vTaskDelay(100);
   }
   /* USER CODE END 5 */ 
+}
+
+void KeyTask(void const * argument)
+{
+  for(;;)
+  {
+		geotest3();
+		vTaskDelay(5000);
+  }
 }
 
 #ifdef USE_FULL_ASSERT

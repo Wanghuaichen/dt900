@@ -22,20 +22,44 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 Z:\GitHub\dt900\MDK-ARM\dt900.uvproj
-Project File Date:  05/11/2015
+Project File Date:  05/13/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling ui.c...
-..\Src\UI\ui.h(31): warning:  #1295-D: Deprecated declaration UIcontrol - give arg types
-  void UIcontrol();
-..\Src\UI\ui.h(32): warning:  #1295-D: Deprecated declaration UIdraw - give arg types
-  void UIdraw();
-..\Src\UI\ui.c: 2 warnings, 0 errors
+compiling geotest.c...
+..\Inc\geotest.h(10): warning:  #1295-D: Deprecated declaration step0 - give arg types
+  void step0();
+..\Inc\geotest.h(11): warning:  #1295-D: Deprecated declaration step1 - give arg types
+  void step1();
+..\Inc\geotest.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Drivers\BSP\ad7190.h(15): warning:  #1295-D: Deprecated declaration AD7190_Setup - give arg types
+  void AD7190_Setup();
+..\Drivers\BSP\ad7190.h(21): warning:  #1295-D: Deprecated declaration AD7190_PowerDown - give arg types
+  void AD7190_PowerDown();
+..\Src\geotest.c(24): warning:  #223-D: function "osDelay" declared implicitly
+        osDelay(100);
+..\Src\geotest.c(17): warning:  #177-D: variable "string" was declared but never referenced
+        char string[24];
+..\Src\geotest.c(66): warning:  #223-D: function "osDelay" declared implicitly
+        osDelay(100);
+..\Src\geotest.c(82): warning:  #223-D: function "osDelay" declared implicitly
+        osDelay(T_DELAY);
+..\Src\geotest.c(84): warning:  #223-D: function "abs" declared implicitly
+                val += abs(AD7190Read()-ADCMID);
+..\Src\geotest.c(107): warning:  #223-D: function "osDelay" declared implicitly
+        osDelay(T_DELAY);
+..\Src\geotest.c(111): warning:  #223-D: function "abs" declared implicitly
+        resi = R_ref*4*abs(val-ADCMID)/(volt/5*0xffff);
+..\Src\geotest.c(116): warning:  #1-D: last line of file ends without a newline
+  }
+..\Src\geotest.c(10): warning:  #177-D: variable "Inbuff" was declared but never referenced
+  static float Inbuff[4096];
+..\Src\geotest.c: 14 warnings, 0 errors
 linking...
-Program Size: Code=42922 RO-data=59898 RW-data=540 ZI-data=161884  
+Program Size: Code=54238 RO-data=83598 RW-data=728 ZI-data=161896  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 2 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 14 Warning(s).
 </pre>
 </body>
 </html>

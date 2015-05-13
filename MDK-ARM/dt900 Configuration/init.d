@@ -54,4 +54,3 @@ dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_Type.h
 dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\LCD.h
 dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
-dt900 configuration\init.o: ..\Drivers\BSP\../../Src/bg2.c

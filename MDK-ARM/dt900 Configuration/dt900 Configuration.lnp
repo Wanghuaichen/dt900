@@ -65,6 +65,7 @@
 "dt900 configuration\init.o"
 "dt900 configuration\dac8831.o"
 "dt900 configuration\ad7190.o"
+"dt900 configuration\flash.o"
 "dt900 configuration\fatfs.o"
 "dt900 configuration\freertos.o"
 "dt900 configuration\stm32f4xx_hal_msp.o"

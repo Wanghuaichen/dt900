@@ -52,4 +52,6 @@ dt900 configuration\geotest.o: ..\Middlewares\ST\STemWin\inc\GUI_Type.h
 dt900 configuration\geotest.o: ..\Middlewares\ST\STemWin\inc\LCD.h
 dt900 configuration\geotest.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\geotest.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
+dt900 configuration\geotest.o: ..\Drivers\BSP\flash.h
 dt900 configuration\geotest.o: ..\Src\bg2.c
+dt900 configuration\geotest.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
