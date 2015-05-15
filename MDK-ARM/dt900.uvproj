@@ -836,16 +836,6 @@
               <FileType>1</FileType>
               <FilePath>..\Src\geotest.c</FilePath>
             </File>
-            <File>
-              <FileName>bg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\bg.c</FilePath>
-            </File>
-            <File>
-              <FileName>bg2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\bg2.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

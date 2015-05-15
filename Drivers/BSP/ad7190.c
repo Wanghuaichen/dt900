@@ -4,23 +4,24 @@ extern SPI_HandleTypeDef hspi3;
 
 void AD7190_SPI_Write(uint8_t* data,uint8_t bytesNumber)
 {
-	HAL_SPI_Transmit(&hspi3,data,bytesNumber,1000);
+	HAL_SPI_Transmit(&hspi3,data,bytesNumber,1);
 }
 
 void AD7190_SPI_Read(uint8_t* data,uint8_t bytesNumber)
 {
-	HAL_SPI_Receive (&hspi3,data,bytesNumber,1000);
+	HAL_SPI_Receive (&hspi3,data,bytesNumber,1);
 } 
 
 void AD7190_Reset(void)
 {
 	uint8_t dataToSend[5] = {0xff, 0xff, 0xff, 0xff, 0xff};   
 	AD7190_SPI_Write(dataToSend,5);
+	HAL_Delay(1);
 }
 
 void AD7190_Setup()
 {
-	uint8_t mode[4] = {0x08,0x00,0x00,0x01};
+	uint8_t mode[4] = {0x08,0x04,0x00,0x01};
 	uint8_t conf[4] = {0x10,0x00,0x02,0x00};
 	AD7190_SPI_Write(conf,4);
 	AD7190_SPI_Write(mode,4);

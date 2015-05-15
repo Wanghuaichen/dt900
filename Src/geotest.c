@@ -4,8 +4,7 @@
 #include "ad7190.h"
 #include "GUI.h"
 #include "flash.h"
-#include "bg2.c"
-#include "math.h"
+#include <stdlib.h>
 
 static float Inbuff[4096];
 uint32_t test0,test1;
@@ -59,15 +58,28 @@ void geotest2()
 
 void geotest3()
 {
-	AD7190_PowerDown();
 	AP_EN(1);
 	AMP_EN(1);
+	osDelay(1000);
 	MUX(0);
-	osDelay(100);
+	//GUI_DispStringAt("key1",240,600);
+	AD7190_Reset();
 	AD7190_Calibration();
 	AD7190_Setup();
-	step0();
+	//GUI_DispStringAt("key2",240,600);
+	
+while(1)
+{
+//	step0();
 	step1();
+	osDelay(3000);
+}
+	
+	
+	
+//	AD7190_PowerDown();
+//	AP_EN(0);
+//	AMP_EN(0);
 }
 
 
@@ -80,8 +92,13 @@ void step0()
 	MUX(0);
 	DAC_SET(DACMID);	
 	osDelay(T_DELAY);
+	GUI_DispStringAt("A           ",0,600);
 	for(i=0;i<2048;i++)
 		val += abs(AD7190Read()-ADCMID);
+//	for(i=0;i<30;i++)
+//	{
+//		GUI_DispHexAt(AD7190Read(),240,i*48,4);
+//	}
 	noise = 4*val/2048*5000/0xffff;
 	sprintf(string,"Noise:%f",noise);
 	GUI_DispStringAt(string,0,600);
@@ -96,7 +113,7 @@ void step1()
 //	float volt = param->R*param->X*param->M*4*PI*PI*param->F*param->F/param->S;
 	float volt = 1;
 	int resi;
-	char string[20];
+	char string[40];
 //	volt = volt>2 ? 2 : volt;
 //	volt = volt*R_ref/param->R;
 //	volt = volt>2 ? 2 : volt;
@@ -108,7 +125,8 @@ void step1()
 	for(i=0;i<64;i++)
 		val+=AD7190Read();	
 	val /= 64;
-	resi = R_ref*4*abs(val-ADCMID)/(volt/5*0xffff);
+	GUI_DispDecAt((int)abs(val-ADCMID),0,600,6);
+	resi = (int)(R_ref*4*abs(val-ADCMID)/(volt/5*0xffff));
 //	geophone.resi = R_ref*abs(val-MIDV)/(volt/5*0xffff);
 //	geophone.resi /= 1+0.004*(geophone.temp-param->T);
 sprintf(string,"Resistence:%d",resi);

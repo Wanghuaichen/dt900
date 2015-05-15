@@ -1,7 +1,7 @@
 #ifndef __GEOTEST_H
 #define __GEOTEST_H
 
-#define R_ref 1000.5
+#define R_ref 1000
 #define PI 3.1415926
 #define ADCMID 0x8000
 #define DACMID 0x7fff
@@ -9,4 +9,8 @@
 
 void step0();
 void step1();
+void geotest();
+void geotest2();
+void geotest3();
 #endif
+

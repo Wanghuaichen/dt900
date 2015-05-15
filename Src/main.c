@@ -43,6 +43,7 @@
 #include "GUI.h"
 #include "UI/ui.h"
 #include "pwr.h"
+#include "geotest.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -119,8 +120,6 @@ int main(void)
   MX_TIM3_Init();
 
 	Board_Init();
-	UI_Init();
-	HAL_Delay(1000);
   /* USER CODE BEGIN 2 */ 
 //	SPI_Flash_Read(&Rx,0,1);
 //	SPI_Flash_Write(&Tx,0,1);
@@ -143,10 +142,19 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 4096);
-	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 4096);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 1024);
+	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 1024);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
   keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
+
+//	HAL_Delay(1000);
+//	AP_EN(1);
+//	AMP_EN(1);
+//	HAL_Delay(1000);
+	//AD7190_Reset();
+	//AD7190_Calibration();
+	//AD7190_Setup();
+	UI_Init();
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -309,7 +317,7 @@ void MX_SPI3_Init(void)
   hspi3.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi3.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLED;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
@@ -347,7 +355,7 @@ void MX_SPI6_Init(void)
   hspi6.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi6.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi6.Init.NSS = SPI_NSS_SOFT;
-  hspi6.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi6.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi6.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi6.Init.TIMode = SPI_TIMODE_DISABLED;
   hspi6.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
@@ -551,22 +559,29 @@ void MX_GPIO_Init(void)
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
+	//static uint32_t i = 0;
   /* Infinite loop */
+	//GUI_DispStringAt("default",240,700);
 	for(;;)
   {
 		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_1))
 			DP_EN(0);
-		vTaskDelay(100);
+		//GUI_DispDecAt(i++,0,600,4);
+		osDelay(1000);
   }
   /* USER CODE END 5 */ 
 }
 
 void KeyTask(void const * argument)
 {
+	//static uint32_t i = 0;
+	//GUI_DispStringAt("key",240,600);
+	geotest3();
   for(;;)
   {
-		geotest3();
-		vTaskDelay(5000);
+		//GUI_DispDecAt(i++,0,700,4);
+		//geotest3();
+		osDelay(5000);
   }
 }
 

@@ -77,8 +77,6 @@
 "dt900 configuration\usb_device.o"
 "dt900 configuration\usbd_conf.o"
 "dt900 configuration\geotest.o"
-"dt900 configuration\bg.o"
-"dt900 configuration\bg2.o"
 "dt900 configuration\ui.o"
 "dt900 configuration\pmain.o"
 --strict --scatter "dt900 Configuration\dt900 Configuration.sct"

@@ -24,6 +24,7 @@ void Board_Init()
 	{
 		beep(500);
 		DP_EN(1);
+		HAL_Delay(2000);
 		Sdram_Init();
 		SPI_FLASH_CS(1);
 		HAL_GPIO_WritePin (GPIOG,GPIO_PIN_10,GPIO_PIN_SET);//spi6-dac
