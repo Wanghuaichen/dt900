@@ -132,3 +132,4 @@ void step1()
 sprintf(string,"Resistence:%d",resi);
 	GUI_DispStringAt(string,0,700);
 }
+
