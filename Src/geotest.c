@@ -5,6 +5,7 @@
 #include "GUI.h"
 #include "flash.h"
 #include <stdlib.h>
+#include <math.h>
 
 static float Inbuff[4096];
 uint32_t test0,test1;
@@ -126,7 +127,7 @@ void step1()
 		val+=AD7190Read();	
 	val /= 64;
 	GUI_DispDecAt((int)abs(val-ADCMID),0,600,6);
-	resi = (int)(R_ref*4*abs(val-ADCMID)/(volt/5*0xffff));
+	resi = round(R_ref*4*abs(val-ADCMID)/(volt/5*0xffff));
 //	geophone.resi = R_ref*abs(val-MIDV)/(volt/5*0xffff);
 //	geophone.resi /= 1+0.004*(geophone.temp-param->T);
 sprintf(string,"Resistence:%d",resi);
