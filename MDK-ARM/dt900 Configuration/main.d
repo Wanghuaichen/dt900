@@ -34,6 +34,8 @@ dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_ltdc.h
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
+dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rtc.h
+dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rtc_ex.h
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
@@ -78,3 +80,4 @@ dt900 configuration\main.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
 dt900 configuration\main.o: ..\Src\UI/ui.h
 dt900 configuration\main.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\main.o: ..\Inc\geotest.h
+dt900 configuration\main.o: ..\Drivers\BSP\rtc.h

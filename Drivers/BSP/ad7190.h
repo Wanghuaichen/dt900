@@ -16,7 +16,7 @@ void AD7190_Setup();
 	
 void AD7190_Calibration(void);
 
-uint16_t AD7190Read(void);
+uint32_t AD7190Read(void);
 
 void AD7190_PowerDown();
 

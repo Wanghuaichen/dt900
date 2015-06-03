@@ -44,6 +44,7 @@
 #include "UI/ui.h"
 #include "pwr.h"
 #include "geotest.h"
+#include "rtc.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -56,6 +57,8 @@ DMA2D_HandleTypeDef hdma2d;
 I2C_HandleTypeDef hi2c3;
 
 LTDC_HandleTypeDef hltdc;
+
+RTC_HandleTypeDef hrtc;
 
 SPI_HandleTypeDef hspi3;
 SPI_HandleTypeDef hspi5;
@@ -86,6 +89,7 @@ static void MX_SPI5_Init(void);
 static void MX_SPI6_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM3_Init(void);
+static void RTC_Init(void);
 void StartDefaultTask(void const * argument);
 void KeyTask(void const * argument);
 
@@ -118,7 +122,7 @@ int main(void)
   MX_SPI6_Init();
   MX_TIM5_Init();
   MX_TIM3_Init();
-
+	RTC_Init();
 	Board_Init();
   /* USER CODE BEGIN 2 */ 
 //	SPI_Flash_Read(&Rx,0,1);
@@ -142,8 +146,8 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 1024);
-	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 1024);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 2048);
+	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 2048);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
   keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
 
@@ -262,6 +266,19 @@ void MX_DMA2D_Init(void)
   HAL_DMA2D_Init(&hdma2d);
 
 }
+
+void RTC_Init(void)
+{
+	hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 0x7F;
+  hrtc.Init.SynchPrediv = 0xFF;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  HAL_RTC_Init(&hrtc);
+}
+
 
 /* I2C3 init function */
 void MX_I2C3_Init(void)
@@ -559,14 +576,19 @@ void MX_GPIO_Init(void)
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
-	//static uint32_t i = 0;
+	char str[100];
   /* Infinite loop */
-	//GUI_DispStringAt("default",240,700);
 	for(;;)
   {
+		//GUI_DispDecAt(i++,240,700,4);
 		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_1))
+		{
 			DP_EN(0);
-		//GUI_DispDecAt(i++,0,600,4);
+		}
+		
+		RTC_Get(str);
+		GUI_DispStringAt(str,0,0);
+		
 		osDelay(1000);
   }
   /* USER CODE END 5 */ 
@@ -574,13 +596,10 @@ void StartDefaultTask(void const * argument)
 
 void KeyTask(void const * argument)
 {
-	//static uint32_t i = 0;
-	//GUI_DispStringAt("key",240,600);
-	geotest3();
+	static uint32_t i = 0;
   for(;;)
   {
-		//GUI_DispDecAt(i++,0,700,4);
-		//geotest3();
+		geotest();
 		osDelay(5000);
   }
 }

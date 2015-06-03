@@ -34,6 +34,8 @@ dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm3
 dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_ltdc.h
 dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
+dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rtc.h
+dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rtc_ex.h
 dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\system_stm32f4xx.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h

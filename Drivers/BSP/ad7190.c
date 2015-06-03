@@ -25,6 +25,7 @@ void AD7190_Setup()
 	uint8_t conf[4] = {0x10,0x00,0x02,0x00};
 	AD7190_SPI_Write(conf,4);
 	AD7190_SPI_Write(mode,4);
+	HAL_Delay(200);
 }
 
 void AD7190_Calibration(void)
@@ -42,10 +43,10 @@ void AD7190_Calibration(void)
 	while(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_11));
 }
 
-uint16_t AD7190Read(void)
+uint32_t AD7190Read(void)
 {
 	uint8_t code = 0x58;
-	uint16_t val = 0;
+	uint32_t val = 0;
 	uint8_t data[3];
 	
 	while(!HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_11));
@@ -54,6 +55,7 @@ uint16_t AD7190Read(void)
 	AD7190_SPI_Read(data,3);
 	val += data[0];
 	val = (val<<8)+data[1];
+	val = (val<<8)+data[2];
 	return val;
 }
 

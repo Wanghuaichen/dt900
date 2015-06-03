@@ -1,10 +1,5 @@
 dt900 configuration\geotest.o: ..\Src\geotest.c
 dt900 configuration\geotest.o: ..\Inc\geotest.h
-dt900 configuration\geotest.o: ..\Drivers\BSP\pwr.h
-dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-dt900 configuration\geotest.o: ..\Inc\stm32f4xx_hal_conf.h
-dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h
-dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h
 dt900 configuration\geotest.o: ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 dt900 configuration\geotest.o: ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f429xx.h
 dt900 configuration\geotest.o: ..\Drivers\CMSIS\Include\core_cm4.h
@@ -14,6 +9,10 @@ dt900 configuration\geotest.o: ..\Drivers\CMSIS\Include\core_cmFunc.h
 dt900 configuration\geotest.o: ..\Drivers\CMSIS\Include\core_cmSimd.h
 dt900 configuration\geotest.o: ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
+dt900 configuration\geotest.o: ..\Inc\stm32f4xx_hal_conf.h
+dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h
+dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h
+dt900 configuration\geotest.o: ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy/stm32_hal_legacy.h
 dt900 configuration\geotest.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
@@ -36,12 +35,15 @@ dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_ltdc.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
+dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rtc.h
+dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rtc_ex.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h
 dt900 configuration\geotest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h
+dt900 configuration\geotest.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\geotest.o: ..\Drivers\BSP\dac8831.h
 dt900 configuration\geotest.o: ..\Drivers\BSP\ad7190.h
 dt900 configuration\geotest.o: ..\Drivers\BSP\ad7190.h
