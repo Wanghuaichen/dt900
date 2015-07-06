@@ -39,9 +39,6 @@ dt900 configuration\stm32f4xx_it.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4x
 dt900 configuration\stm32f4xx_it.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\stm32f4xx_it.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\stm32f4xx_it.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
-dt900 configuration\stm32f4xx_it.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h
-dt900 configuration\stm32f4xx_it.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h
-dt900 configuration\stm32f4xx_it.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h
 dt900 configuration\stm32f4xx_it.o: ..\Inc\stm32f4xx_it.h
 dt900 configuration\stm32f4xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h
 dt900 configuration\stm32f4xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h

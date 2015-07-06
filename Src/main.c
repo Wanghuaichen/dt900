@@ -36,7 +36,7 @@
 #include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
 #include "fatfs.h"
-#include "usb_device.h"
+//#include "usb_device.h"
 
 /* USER CODE BEGIN Includes */
 #include "init.h"
@@ -46,6 +46,10 @@
 #include "geotest.h"
 #include "rtc.h"
 /* USER CODE END Includes */
+
+#include "usb_bsp.h"
+extern USB_OTG_CORE_HANDLE     USB_OTG_dev;
+
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
@@ -124,12 +128,10 @@ int main(void)
   MX_TIM3_Init();
 	RTC_Init();
 	Board_Init();
+	//usbd_OpenMassStorage();
+	
+	
   /* USER CODE BEGIN 2 */ 
-//	SPI_Flash_Read(&Rx,0,1);
-//	SPI_Flash_Write(&Tx,0,1);
-//	SPI_Flash_Read(&Rx,0,1);
-//	dbg0=Rx;
-//	dbg0 = SPI_Flash_ReadID();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -146,18 +148,11 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 2048);
-	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 2048);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 1024);
+	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 1024);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
   keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
 
-//	HAL_Delay(1000);
-//	AP_EN(1);
-//	AMP_EN(1);
-//	HAL_Delay(1000);
-	//AD7190_Reset();
-	//AD7190_Calibration();
-	//AD7190_Setup();
 	UI_Init();
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -218,7 +213,7 @@ void SystemClock_Config(void)
 
 
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 200;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 250;
   PeriphClkInitStruct.PLLSAI.PLLSAIR = 5;
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
@@ -305,20 +300,20 @@ void MX_LTDC_Init(void)
   hltdc.Init.VSPolarity = LTDC_VSPOLARITY_AL;
   hltdc.Init.DEPolarity = LTDC_DEPOLARITY_AL;
   hltdc.Init.PCPolarity = LTDC_PCPOLARITY_IPC;
-  hltdc.Init.HorizontalSync = 19;
-  hltdc.Init.VerticalSync = 9;
-  hltdc.Init.AccumulatedHBP = 45;
-  hltdc.Init.AccumulatedVBP = 22;
-  hltdc.Init.AccumulatedActiveW = 845;
-  hltdc.Init.AccumulatedActiveH = 502;
-  hltdc.Init.TotalWidth = 1055;
-  hltdc.Init.TotalHeigh = 524;
-  hltdc.Init.Backcolor.Blue = 0xf4;
-  hltdc.Init.Backcolor.Green = 0xef;
-  hltdc.Init.Backcolor.Red = 0xef;
+  hltdc.Init.HorizontalSync = 0;
+  hltdc.Init.VerticalSync = 0;
+  hltdc.Init.AccumulatedHBP = 46;
+  hltdc.Init.AccumulatedVBP = 23;
+  hltdc.Init.AccumulatedActiveW = 846;
+  hltdc.Init.AccumulatedActiveH = 503;
+  hltdc.Init.TotalWidth = 862;
+  hltdc.Init.TotalHeigh = 510;
+  hltdc.Init.Backcolor.Blue = 0x0;
+  hltdc.Init.Backcolor.Green = 0x0;
+  hltdc.Init.Backcolor.Red = 0x0;
   HAL_LTDC_Init(&hltdc);
 	/* Set LTDC Interrupt to the lowest priority */
-  HAL_NVIC_SetPriority(LTDC_IRQn, 0xF, 0);
+  HAL_NVIC_SetPriority(LTDC_IRQn, 0x0, 0);
   /* Enable LTDC Interrupt */
   HAL_NVIC_EnableIRQ(LTDC_IRQn);
 }
@@ -388,7 +383,7 @@ void MX_TIM5_Init(void)//84MHz
 
   htim5.Instance = TIM5;
   //htim5.Init.Prescaler = 4199;
-	htim5.Init.Prescaler = 1000;
+	htim5.Init.Prescaler = 20;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 99;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -399,7 +394,7 @@ void MX_TIM5_Init(void)//84MHz
   HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 10;
+  sConfigOC.Pulse = 20;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
@@ -527,9 +522,9 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PH15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_15;
+	
+  /*Configure GPIO pin : PH13  PH15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
@@ -586,10 +581,13 @@ void StartDefaultTask(void const * argument)
 			DP_EN(0);
 		}
 		
-		RTC_Get(str);
-		GUI_DispStringAt(str,0,0);
+//		RTC_Get();
+//		sprintf(str,"%02d:%02d:%02d %02d-%02d-%02d",
+//								rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
+//								rtcDate.Month, rtcDate.Date,rtcDate.Year);
+//		GUI_DispStringAt(str,0,0);
 		
-		osDelay(1000);
+		osDelay(10);
   }
   /* USER CODE END 5 */ 
 }
@@ -599,10 +597,35 @@ void KeyTask(void const * argument)
 	static uint32_t i = 0;
   for(;;)
   {
-		geotest();
+		//geotest();
+		//LCD_BLADJ();
 		osDelay(5000);
   }
 }
+
+
+void USB_MspInit()
+{
+  GPIO_InitTypeDef GPIO_InitStruct;
+    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    HAL_NVIC_SetPriority(OTG_FS_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
+}
+
+void USB_MspDeInit()
+{
+    __USB_OTG_FS_CLK_DISABLE();
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11|GPIO_PIN_12);
+    HAL_NVIC_DisableIRQ(OTG_FS_IRQn);
+
+}
+
 
 #ifdef USE_FULL_ASSERT
 

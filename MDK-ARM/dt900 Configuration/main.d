@@ -39,9 +39,6 @@ dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rt
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
-dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h
-dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h
-dt900 configuration\main.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h
 dt900 configuration\main.o: ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h
 dt900 configuration\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 dt900 configuration\main.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
@@ -64,11 +61,6 @@ dt900 configuration\main.o: ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTO
 dt900 configuration\main.o: ..\Middlewares\Third_Party\FatFs\src\ff_gen_drv.h
 dt900 configuration\main.o: ..\Middlewares\Third_Party\FatFs\src\diskio.h
 dt900 configuration\main.o: ..\Inc\user_diskio.h
-dt900 configuration\main.o: ..\Inc\usb_device.h
-dt900 configuration\main.o: ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h
-dt900 configuration\main.o: ..\Inc\usbd_conf.h
-dt900 configuration\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-dt900 configuration\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 dt900 configuration\main.o: ..\Drivers\BSP\init.h
 dt900 configuration\main.o: ..\Middlewares\ST\STemWin\inc\GUI.h
 dt900 configuration\main.o: ..\Middlewares\ST\STemWin\inc\GUI_ConfDefaults.h
@@ -81,3 +73,8 @@ dt900 configuration\main.o: ..\Src\UI/ui.h
 dt900 configuration\main.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\main.o: ..\Inc\geotest.h
 dt900 configuration\main.o: ..\Drivers\BSP\rtc.h
+dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_bsp.h
+dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_core.h
+dt900 configuration\main.o: ..\Src\usbd_mass_storage\usb_conf.h
+dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_regs.h
+dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_defines.h

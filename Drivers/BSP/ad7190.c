@@ -22,7 +22,7 @@ void AD7190_Reset(void)
 void AD7190_Setup()
 {
 	uint8_t mode[4] = {0x08,0x04,0x00,0x01};
-	uint8_t conf[4] = {0x10,0x00,0x02,0x00};
+	uint8_t conf[4] = {0x10,0x00,0x40,0x00};
 	AD7190_SPI_Write(conf,4);
 	AD7190_SPI_Write(mode,4);
 	HAL_Delay(200);
@@ -30,9 +30,12 @@ void AD7190_Setup()
 
 void AD7190_Calibration(void)
 															//conf 3rd bytes
-{                             //0x10  1-com    
+{                             //0x10  1-com   
+															//0x20  2-com
+															//0x40	3-com
+															//0x80	4-com
 															//0x02  3-4
-	uint8_t conf[4] = {0x10,0x00,0x02,0x00};
+	uint8_t conf[4] = {0x10,0x00,0x40,0x00};
 	uint8_t mode[4] = {0x08,0xa4,0x02,0x80};
 	uint8_t mode2[4] = {0x08,0x84,0x02,0x80};
 

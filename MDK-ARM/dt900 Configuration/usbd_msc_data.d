@@ -1,9 +1,7 @@
-dt900 configuration\usbd_msc_data.o: ..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Src\usbd_msc_data.c
-dt900 configuration\usbd_msc_data.o: ..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Inc\usbd_msc_data.h
-dt900 configuration\usbd_msc_data.o: ..\Inc\usbd_conf.h
-dt900 configuration\usbd_msc_data.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-dt900 configuration\usbd_msc_data.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-dt900 configuration\usbd_msc_data.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+dt900 configuration\usbd_msc_data.o: ..\Middlewares\STM32_USB_Device_Library\Class\msc\src\usbd_msc_data.c
+dt900 configuration\usbd_msc_data.o: ..\Middlewares\STM32_USB_Device_Library\Class\msc\inc\usbd_msc_data.h
+dt900 configuration\usbd_msc_data.o: ..\Src\usbd_mass_storage\usbd_conf.h
+dt900 configuration\usbd_msc_data.o: ..\Src\usbd_mass_storage\usb_conf.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f429xx.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\CMSIS\Include\core_cm4.h
@@ -18,6 +16,7 @@ dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy/stm32_hal_legacy.h
+dt900 configuration\usbd_msc_data.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -43,6 +42,3 @@ dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
-dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h
-dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h
-dt900 configuration\usbd_msc_data.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h

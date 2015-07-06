@@ -361,9 +361,9 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--C99</MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F429xx</Define>
+              <Define>USE_HAL_DRIVER,STM32F429xx,USE_USB_OTG_FS,USE_EMBEDDED_PHY</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy;..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\Middlewares\Third_Party\FatFs\src;..\Middlewares\Third_Party\FreeRTOS\Source\include;..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS;..\Drivers\CMSIS\Include;..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc;..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Inc;..\Drivers\BSP;..\Middlewares\ST\STemWin\inc;..\Middlewares\ST\STemWin\Config;..\Src\UI</IncludePath>
+              <IncludePath>..\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc;..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy;..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\Middlewares\Third_Party\FatFs\src;..\Middlewares\Third_Party\FreeRTOS\Source\include;..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS;..\Drivers\CMSIS\Include;..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\Drivers\BSP;..\Middlewares\ST\STemWin\inc;..\Middlewares\ST\STemWin\Config;..\Src\UI;..\Middlewares\STM32_USB_Device_Library\Class\msc\inc;..\Middlewares\STM32_USB_Device_Library\Core\inc;..\Middlewares\STM32_USB_OTG_Driver\inc;..\Src\usbd_mass_storage</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -654,46 +654,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Middlewares/USB_Device_Library</GroupName>
-          <Files>
-            <File>
-              <FileName>usbd_msc_bot.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Src\usbd_msc_bot.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_ctlreq.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Core\Src\usbd_ctlreq.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_msc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Src\usbd_msc.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_ioreq.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Core\Src\usbd_ioreq.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Core\Src\usbd_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_msc_scsi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Src\usbd_msc_scsi.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_msc_data.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\STM32_USB_Device_Library\Class\MSC\Src\usbd_msc_data.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Middlewares/STemWin</GroupName>
           <Files>
             <File>
@@ -827,26 +787,6 @@
               <FilePath>..\Src\main.c</FilePath>
             </File>
             <File>
-              <FileName>usbd_desc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\usbd_desc.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_storage_if.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\usbd_storage_if.c</FilePath>
-            </File>
-            <File>
-              <FileName>usb_device.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\usb_device.c</FilePath>
-            </File>
-            <File>
-              <FileName>usbd_conf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\usbd_conf.c</FilePath>
-            </File>
-            <File>
               <FileName>geotest.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\geotest.c</FilePath>
@@ -855,6 +795,31 @@
               <FileName>fft.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\fft.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\usbd_mass_storage\usb_bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\usbd_mass_storage\usb_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\usbd_mass_storage\usbd_desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_storage_msd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\usbd_mass_storage\usbd_storage_msd.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_usr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\usbd_mass_storage\usbd_usr.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -870,6 +835,61 @@
               <FileName>pMain.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pMain.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/USB_Device_Library</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_Device_Library\Core\src\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_ioreq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_Device_Library\Core\src\usbd_ioreq.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_req.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_Device_Library\Core\src\usbd_req.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_bot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_Device_Library\Class\msc\src\usbd_msc_bot.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_Device_Library\Class\msc\src\usbd_msc_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_Device_Library\Class\msc\src\usbd_msc_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_scsi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_Device_Library\Class\msc\src\usbd_msc_scsi.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_OTG_Driver\src\usb_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_dcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_OTG_Driver\src\usb_dcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_dcd_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\STM32_USB_OTG_Driver\src\usb_dcd_int.c</FilePath>
             </File>
           </Files>
         </Group>

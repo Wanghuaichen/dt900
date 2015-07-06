@@ -39,6 +39,3 @@ dt900 configuration\stm32f4xx_hal_flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\s
 dt900 configuration\stm32f4xx_hal_flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\stm32f4xx_hal_flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\stm32f4xx_hal_flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
-dt900 configuration\stm32f4xx_hal_flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h
-dt900 configuration\stm32f4xx_hal_flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h
-dt900 configuration\stm32f4xx_hal_flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h

@@ -2,6 +2,9 @@
 
 extern RTC_HandleTypeDef hrtc;
 
+RTC_DateTypeDef rtcDate;
+RTC_TimeTypeDef rtcTime;
+	
 void RTC_Set()
 {
 	RTC_DateTypeDef sdatestructure;
@@ -24,14 +27,8 @@ void RTC_Set()
   HAL_RTC_SetTime(&hrtc,&stimestructure,RTC_FORMAT_BCD);
 }
 
-void RTC_Get(char* str)
-{
-	RTC_DateTypeDef sdatestructureget;
-  RTC_TimeTypeDef stimestructureget;
-  
-  HAL_RTC_GetTime(&hrtc, &stimestructureget, RTC_FORMAT_BIN);
-  HAL_RTC_GetDate(&hrtc, &sdatestructureget, RTC_FORMAT_BIN);
-  sprintf(str,"%02d:%02d:%02d %02d-%02d-%02d",stimestructureget.Hours, stimestructureget.Minutes, stimestructureget.Seconds,
-	sdatestructureget.Month, sdatestructureget.Date,sdatestructureget.Year);
+void RTC_Get()
+{ 
+  HAL_RTC_GetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN);
 }
-

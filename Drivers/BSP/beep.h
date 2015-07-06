@@ -3,5 +3,6 @@
 
 #include "stm32f4xx_hal.h"
 void beep(uint32_t ms);
-
+void beepon();
+void beepoff();
 #endif

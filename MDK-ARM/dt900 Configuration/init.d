@@ -40,9 +40,6 @@ dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rt
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
-dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h
-dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h
-dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h
 dt900 configuration\init.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\init.o: ..\Drivers\BSP\adc.h
 dt900 configuration\init.o: ..\Drivers\BSP\beep.h

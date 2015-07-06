@@ -1,4 +1,5 @@
 #include "lcd.h"
+#include "GUI.h"
 
 extern LTDC_HandleTypeDef hltdc;
 extern TIM_HandleTypeDef htim5;
@@ -11,15 +12,24 @@ void LCD_PWR(int val)//1-on  0-off
 {
 	if(val)
 	{
-		HAL_GPIO_WritePin (GPIOI,GPIO_PIN_1,GPIO_PIN_SET);
-		HAL_Delay(120);
+		HAL_GPIO_WritePin (GPIOA,GPIO_PIN_15,GPIO_PIN_SET);//scr_rst high
+		HAL_Delay(100);
+		HAL_GPIO_WritePin (GPIOI,GPIO_PIN_1,GPIO_PIN_SET);//pwr_en
+		HAL_Delay(100);
+		HAL_GPIO_WritePin (GPIOA,GPIO_PIN_15,GPIO_PIN_RESET);
+		HAL_Delay(1);
+		HAL_GPIO_WritePin (GPIOA,GPIO_PIN_15,GPIO_PIN_SET);
+		HAL_Delay(150);
 		HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+
 	}
 	else
 	{
 		HAL_TIM_PWM_Stop(&htim5, TIM_CHANNEL_4);
 		HAL_Delay(120);
 		HAL_GPIO_WritePin (GPIOI,GPIO_PIN_1,GPIO_PIN_RESET);
+		HAL_Delay(10);
+		HAL_GPIO_WritePin (GPIOA,GPIO_PIN_15,GPIO_PIN_RESET);
 	}
 }
 	
@@ -73,5 +83,42 @@ void LCD_LayerCfg()
   pLayerCfg2.ImageWidth = 800;
   pLayerCfg2.ImageHeight = 480;
 	//HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg2, 1);
+	
+	memset((char *)FB_ADDR[0],0,800*480*3);
+	memset((char *)FB_ADDR[1],0,800*480*3);
 }
 
+void LCD_BLADJ()
+{
+	TIM_OC_InitTypeDef sConfigOC;
+	TIM_MasterConfigTypeDef sMasterConfig;
+	static int prescaler = 200;
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 99;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+
+  htim5.Instance = TIM5;
+	htim5.Init.Prescaler = prescaler;
+  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim5.Init.Period = 99;
+  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  HAL_TIM_PWM_Init(&htim5);
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig);
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 40;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+	
+	GUI_DispDecAt(prescaler,240,700,4);
+	prescaler+=100;
+}

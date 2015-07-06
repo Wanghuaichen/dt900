@@ -263,13 +263,13 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData) {
     break;
 
   case LCD_X_ON: 
-		LCD_PWR(1);
-		__HAL_LTDC_ENABLE(&hltdc);
+		//LCD_PWR(1);
+		//__HAL_LTDC_ENABLE(&hltdc);
     break;
 
   case LCD_X_OFF: 
-    __HAL_LTDC_DISABLE(&hltdc);
-		LCD_PWR(0);
+    //__HAL_LTDC_DISABLE(&hltdc);
+		//LCD_PWR(0);
     break;
     
   case LCD_X_SETVIS:

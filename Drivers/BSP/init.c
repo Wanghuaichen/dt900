@@ -7,6 +7,7 @@
 #include "spiflash.h"
 #include "GUI.h"
 
+
 void Board_Init()
 {
 //	DP_EN(0);
@@ -22,16 +23,16 @@ void Board_Init()
 //	}
 //	else
 	{
-		beep(500);
 		DP_EN(1);
-		HAL_Delay(2000);
+		beepon();
 		Sdram_Init();
 		SPI_FLASH_CS(1);
 		HAL_GPIO_WritePin (GPIOG,GPIO_PIN_10,GPIO_PIN_SET);//spi6-dac
 		GUI_Init();
+		HAL_Delay(100);
+		LCD_PWR(1);
+		beepoff();
 //		GUI_JPEG_Draw(_acbg2, sizeof(_acbg2), 0, 0);
-//		LCD_PWR(1);
-//		LCD_LayerCfg();
 		
   //MX_FATFS_Init();
   //MX_USB_DEVICE_Init();

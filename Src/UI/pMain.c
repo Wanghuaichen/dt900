@@ -1,20 +1,19 @@
 #include "ui.h"
 
-static struct Item pMainItem[4] = 
+static struct UIWidget widgetList[6] =
 {
-	{0,"Do a test",0,240,150},
-	{0,"Data files",0,240,250},
-	{0,"System settings",0,240,350},
-	{0,"About",0,240,450},
+	{1,0,{0,0,0,0},"Main",0,0,NULL,drawTitle},
+	{1,0,{100,200,379,259},"Do a test",0,0,NULL,drawButton},
+	{1,0,{100,300,379,359},"Test settings",0,0,NULL,drawButton},
+	{1,0,{100,400,379,459},"Data files",0,0,NULL,drawButton},
+	{1,0,{100,500,379,559},"System preference",0,0,NULL,drawButton},
+	{1,0,{100,600,379,659},"About",0,0,NULL,drawButton},
 };
 
-struct PageInfo pMain = 
+struct UIPage pMain = 
 {
-	"Main",		//Title
-	4,				//TotalItem
-	0,				//ItemIndex
-	pMainItem,
-	UIControl,
-	UIDraw,
+	NULL,//struct UIPage * parent;
+	6,//char widgetNum;
+	widgetList,//struct UIWidget * widgetList;
 };
 

@@ -17,5 +17,5 @@ void AMP_EN(int val)
 
 void MUX(int val)
 {
-	HAL_GPIO_WritePin (GPIOA,GPIO_PIN_15,(GPIO_PinState)val);
+	HAL_GPIO_WritePin (GPIOH,GPIO_PIN_13,(GPIO_PinState)val);
 }

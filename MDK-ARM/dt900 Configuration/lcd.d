@@ -40,6 +40,10 @@ dt900 configuration\lcd.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rtc
 dt900 configuration\lcd.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\lcd.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\lcd.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
-dt900 configuration\lcd.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h
-dt900 configuration\lcd.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h
-dt900 configuration\lcd.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h
+dt900 configuration\lcd.o: ..\Middlewares\ST\STemWin\inc\GUI.h
+dt900 configuration\lcd.o: ..\Middlewares\ST\STemWin\inc\GUI_ConfDefaults.h
+dt900 configuration\lcd.o: ..\Middlewares\ST\STemWin\Config\GUIConf.h
+dt900 configuration\lcd.o: ..\Middlewares\ST\STemWin\inc\GUI_Type.h
+dt900 configuration\lcd.o: ..\Middlewares\ST\STemWin\inc\LCD.h
+dt900 configuration\lcd.o: ..\Middlewares\ST\STemWin\inc\Global.h
+dt900 configuration\lcd.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h

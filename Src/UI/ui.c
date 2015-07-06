@@ -5,67 +5,63 @@ extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontVerdana32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
-extern struct PageInfo pMain;
+extern struct UIPage pMain;
+
 
 struct UIInfo UIInfo;
+
 
 void UI_Init()
 {
 	memset(&UIInfo,0,sizeof(UIInfo));
 	GUI_SetBkColor(WHITE);
 	GUI_Clear();
+	GUI_SetColor(TITLECOLOR);
+	GUI_FillRect(0,0,479,120);
 	PageJump(&pMain);
 }
 
-void PageJump(struct PageInfo *page)
+void PageJump(struct UIPage *page)
 {
 	UIInfo.PagePtr = page;
 	UIDraw(page);
 }
 
-void UIDraw(struct PageInfo *page)
+void UIDraw(struct UIPage *page)
 {
-	uint8_t string[100];
 	uint32_t i;
 	
-//Display Title
-	GUI_SetColor(0x00333333);
-	GUI_FillRect(0,0,479,149);
-	GUI_SetColor(WHITE);
-	GUI_SetBkColor(0x00333333);
-	GUI_SetFont(&GUI_FontHelveticaNeueLT48);
-	sprintf(string,"    %s    ",page->Title);
-	GUI_DispStringHCenterAt(string,240,60);
-	
-//Draw Item
-	for(i=0;i<page->TotalItem;i++)
+	for(i=0;i<page->widgetNum;i++)
 	{
-		switch(page->ItemList->Type)
-		{
-			case 0:
-				drawBtn(&page->ItemList[i]);
-				break;
-			default:
-				break;
-		}
+		if(page->widgetList[i].widgetInit)
+			page->widgetList[i].widgetInit(&page->widgetList[i]);
+		
+		if(page->widgetList[i].widgetDraw)
+			page->widgetList[i].widgetDraw(&page->widgetList[i]);
 	}
 }
 
-void UIControl()
+
+void drawTitle(struct UIWidget* widget)
 {
+	char str[30];
 	
+	sprintf(str,"     %s     ",widget->widgetTitle);
+	GUI_SetColor(WHITE);
+	GUI_SetBkColor(TITLECOLOR);
+	GUI_SetFont(&GUI_FontHelveticaNeueLT48);
+	GUI_DispStringHCenterAt(str,240,60);
 }
 
-void drawBtn(struct Item * item)
+void drawButton(struct UIWidget* widget)
 {
-	GUI_SetColor(DARKGRAY);
-	GUI_DrawHLine(item->PosY,0,479);
-	GUI_DrawHLine(item->PosY+100,0,479);
-	GUI_SetColor(WHITE);
-	GUI_FillRect(0,item->PosY+1,479,item->PosY+99);
+	GUI_SetColor(0x00606060);
+	GUI_SetPenSize(2);
+	GUI_AA_DrawRoundedRect(widget->rect.x0,widget->rect.y0,widget->rect.x1,widget->rect.y1,(widget->rect.y1-widget->rect.y0)/2);
+	
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
-	GUI_SetFont(&GUI_FontHelvetica32);
-	GUI_DispStringHCenterAt(item->Name,240,item->PosY+50-16);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_DispStringHCenterAt(widget->widgetTitle,240,(widget->rect.y1+widget->rect.y0)/2-16);
 }
 	

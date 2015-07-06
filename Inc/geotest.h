@@ -8,6 +8,7 @@
 //#define ADCMID 0x800000
 #define DACMID 0x7fff
 #define T_DELAY 500
+#define AMPGAIN 5
 
 void step0();
 void step1();
