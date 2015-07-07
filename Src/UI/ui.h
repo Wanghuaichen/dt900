@@ -7,6 +7,7 @@
 #define WHITE			0x00ffffff
 #define	BLACK			0x00000000
 #define TITLECOLOR 0x002d2d2d
+
 struct UIInfo
 {
 	struct UIPage * PagePtr;
@@ -14,7 +15,6 @@ struct UIInfo
 	uint8_t TouchEvent;
 	uint16_t tpX,tpY;
 };
-
 
 struct UIWidget
 {
@@ -28,12 +28,12 @@ struct UIWidget
 	void (*widgetDraw)(struct UIWidget* widget);
 };
 
-
 struct UIPage
 {
 	struct UIPage * parent;
 	char widgetNum;
 	struct UIWidget * widgetList;
+	void (*pageInit)(struct UIPage* page);
 };
 
 void UI_Init();
@@ -41,4 +41,5 @@ void PageJump(struct UIPage *page);
 void UIDraw(struct UIPage *page);
 void drawTitle(struct UIWidget* widget);
 void drawButton(struct UIWidget* widget);
+void drawLabel(struct UIWidget* widget);
 #endif

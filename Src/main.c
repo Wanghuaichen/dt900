@@ -77,6 +77,8 @@ osThreadId defaultTaskHandle;
 osThreadId keyTaskHandle;
 /* USER CODE BEGIN PV */
 uint32_t dbg0,dbg1;
+extern struct UIPage pMain;
+extern struct UIPage pSettings;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -152,8 +154,6 @@ int main(void)
 	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 1024);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
   keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
-
-	UI_Init();
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -572,6 +572,7 @@ void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
 	char str[100];
+	static char flag=0;
   /* Infinite loop */
 	for(;;)
   {
@@ -579,6 +580,18 @@ void StartDefaultTask(void const * argument)
 		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_1))
 		{
 			DP_EN(0);
+		}
+		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_2))
+		{
+			flag=1;
+		}
+		else
+		{
+			if(flag==1)
+			{
+				PageJump(&pSettings);
+				flag=0;
+			}
 		}
 		
 //		RTC_Get();

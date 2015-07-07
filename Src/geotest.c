@@ -11,8 +11,8 @@ static float Inbuff[4096];
 uint32_t test0,test1;
 uint32_t ADCMID = 0x800000;
 struct Geophone geophone;
-struct GeoParam *geoparam = (struct GeoParam *)PARAMADDR;
-struct Settings *settings = (struct Settings *)SETADDR;
+struct GeoParam geoparam[10];//(struct GeoParam *)PARAMADDR;
+struct Settings settings;//(struct Settings *)SETADDR;
 
 extern void rdft(int n, int isgn, float *a);
 

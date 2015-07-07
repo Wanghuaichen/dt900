@@ -19,7 +19,7 @@ void geotest();
 struct  Geophone         //parameters of target geonphone under test
 {
 	uint32_t sn;
-	uint8_t barcode[20];
+	char barcode[20];
 	uint32_t polarity;
 	uint32_t tilt;
 	float temp;
@@ -36,7 +36,7 @@ struct  Geophone         //parameters of target geonphone under test
 
 struct GeoParam			//geophone parameters in the list
 {
-	uint8_t type[20];
+	char type[20];
 	float R;
 	float Rp;
 	float Rn;
@@ -61,6 +61,8 @@ struct GeoParam			//geophone parameters in the list
 
 struct Settings		//test settings & system settings
 {
+	uint32_t magic;
+	
 	uint32_t totalparam;
 	uint32_t paramnum;
 	

@@ -26,14 +26,62 @@ Project File Date:  06/05/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
+compiling main.c...
+..\Src\UI/ui.h(39): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration step0 - give arg types
+  void step0();
+..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration step1 - give arg types
+  void step1();
+..\Inc\geotest.h(15): warning:  #1295-D: Deprecated declaration step2 - give arg types
+  void step2();
+..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration step3 - give arg types
+  void step3();
+..\Inc\geotest.h(17): warning:  #1295-D: Deprecated declaration geotest - give arg types
+  void geotest();
+..\Drivers\BSP\rtc.h(9): warning:  #1295-D: Deprecated declaration RTC_Set - give arg types
+  void RTC_Set();
+..\Drivers\BSP\rtc.h(10): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
+  void RTC_Get();
+..\Src\usbd_mass_storage\usb_conf.h(233): warning:  #47-D: incompatible redefinition of macro "__ALIGN_BEGIN" (declared at line 151 of "..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h")
+    #define __ALIGN_BEGIN
+..\Src\main.c(154): warning:  #188-D: enumerated type mixed with another type
+        osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 1024);
+..\Src\main.c(574): warning:  #177-D: variable "str" was declared but never referenced
+        char str[100];
+..\Src\main.c(610): warning:  #177-D: variable "i" was declared but never referenced
+        static uint32_t i = 0;
+..\Src\main.c: 12 warnings, 0 errors
+compiling ui.c...
+..\Src\UI\ui.h(39): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Src\UI\ui.c(16): warning:  #223-D: function "memset" declared implicitly
+        memset(&UIInfo,0,sizeof(UIInfo));
+..\Src\UI\ui.c(80): warning:  #1-D: last line of file ends without a newline
+        
+..\Src\UI\ui.c: 3 warnings, 0 errors
 compiling pMain.c...
 ..\Src\UI\ui.h(39): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
   void UI_Init();
 ..\Src\UI\pMain.c: 1 warning, 0 errors
+compiling pSettings.c...
+..\Src\UI\ui.h(39): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration step0 - give arg types
+  void step0();
+..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration step1 - give arg types
+  void step1();
+..\Inc\geotest.h(15): warning:  #1295-D: Deprecated declaration step2 - give arg types
+  void step2();
+..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration step3 - give arg types
+  void step3();
+..\Inc\geotest.h(17): warning:  #1295-D: Deprecated declaration geotest - give arg types
+  void geotest();
+..\Src\UI\pSettings.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=54234 RO-data=83442 RW-data=1020 ZI-data=162508  
+Program Size: Code=57198 RO-data=83442 RW-data=1572 ZI-data=180092  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 1 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 22 Warning(s).
 </pre>
 </body>
 </html>
