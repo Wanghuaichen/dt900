@@ -41,10 +41,10 @@
 /* USER CODE BEGIN Includes */
 #include "init.h"
 #include "GUI.h"
-#include "UI/ui.h"
 #include "pwr.h"
 #include "geotest.h"
 #include "rtc.h"
+#include "ui.h"
 /* USER CODE END Includes */
 
 #include "usb_bsp.h"
@@ -79,6 +79,7 @@ osThreadId keyTaskHandle;
 uint32_t dbg0,dbg1;
 extern struct UIPage pMain;
 extern struct UIPage pSettings;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -571,36 +572,21 @@ void MX_GPIO_Init(void)
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
-	char str[100];
-	static char flag=0;
-  /* Infinite loop */
+	char str[20];
+	
 	for(;;)
   {
-		//GUI_DispDecAt(i++,240,700,4);
-		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_1))
-		{
-			DP_EN(0);
-		}
-		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_2))
-		{
-			flag=1;
-		}
-		else
-		{
-			if(flag==1)
-			{
-				PageJump(&pSettings);
-				flag=0;
-			}
-		}
-		
-//		RTC_Get();
-//		sprintf(str,"%02d:%02d:%02d %02d-%02d-%02d",
-//								rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
-//								rtcDate.Month, rtcDate.Date,rtcDate.Year);
-//		GUI_DispStringAt(str,0,0);
-		
-		osDelay(10);
+		RTC_Get();
+////		sprintf(str,"%02d:%02d:%02d %02d-%02d-%02d",
+////								rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
+////								rtcDate.Month, rtcDate.Date,rtcDate.Year);
+		sprintf(str,"%02d:%02d",rtcTime.Hours, rtcTime.Minutes);
+		GUI_SetColor(WHITE);
+		GUI_SetBkColor(TITLECOLOR);
+		GUI_SetFont(&GUI_FontHelvetica32);	
+		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+		GUI_DispStringAt(str,0,0);
+		osDelay(1000);
   }
   /* USER CODE END 5 */ 
 }
@@ -610,9 +596,10 @@ void KeyTask(void const * argument)
 	static uint32_t i = 0;
   for(;;)
   {
-		//geotest();
-		//LCD_BLADJ();
-		osDelay(5000);
+		UIKeyboard();
+		UITouch();
+		UIEventManager();
+		osDelay(10);
   }
 }
 

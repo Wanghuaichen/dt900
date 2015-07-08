@@ -78,6 +78,7 @@
 "dt900 configuration\ui.o"
 "dt900 configuration\pmain.o"
 "dt900 configuration\psettings.o"
+"dt900 configuration\psubsettings.o"
 "dt900 configuration\usbd_core.o"
 "dt900 configuration\usbd_ioreq.o"
 "dt900 configuration\usbd_req.o"

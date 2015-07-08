@@ -836,6 +836,21 @@
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pMain.c</FilePath>
             </File>
+            <File>
+              <FileName>pSettings.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pSettings.c</FilePath>
+            </File>
+            <File>
+              <FileName>pSubSettings.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pSubSettings.c</FilePath>
+            </File>
+            <File>
+              <FileName>pKeyboard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pKeyboard.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
