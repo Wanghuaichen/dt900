@@ -45,9 +45,12 @@
 #include "geotest.h"
 #include "rtc.h"
 #include "ui.h"
+#include "adc.h"
 /* USER CODE END Includes */
 
 #include "usb_bsp.h"
+#include "ostask.h"
+
 extern USB_OTG_CORE_HANDLE     USB_OTG_dev;
 
 
@@ -77,9 +80,6 @@ osThreadId defaultTaskHandle;
 osThreadId keyTaskHandle;
 /* USER CODE BEGIN PV */
 uint32_t dbg0,dbg1;
-extern struct UIPage pMain;
-extern struct UIPage pSettings;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -97,8 +97,6 @@ static void MX_SPI6_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM3_Init(void);
 static void RTC_Init(void);
-void StartDefaultTask(void const * argument);
-void KeyTask(void const * argument);
 
 int main(void)
 {
@@ -131,7 +129,7 @@ int main(void)
   MX_TIM3_Init();
 	RTC_Init();
 	Board_Init();
-	//usbd_OpenMassStorage();
+	usbd_OpenMassStorage();
 	
 	
   /* USER CODE BEGIN 2 */ 
@@ -151,8 +149,8 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 1024);
-	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 1024);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal+1, 0, 1024);
+	osThreadDef(keyTask, KeyTask, osPriorityNormal, 0, 1024);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
   keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
   /* USER CODE BEGIN RTOS_THREADS */
@@ -570,38 +568,6 @@ void MX_GPIO_Init(void)
 /* USER CODE END 4 */
 
 /* StartDefaultTask function */
-void StartDefaultTask(void const * argument)
-{
-	char str[20];
-	
-	for(;;)
-  {
-		RTC_Get();
-////		sprintf(str,"%02d:%02d:%02d %02d-%02d-%02d",
-////								rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
-////								rtcDate.Month, rtcDate.Date,rtcDate.Year);
-		sprintf(str,"%02d:%02d",rtcTime.Hours, rtcTime.Minutes);
-		GUI_SetColor(WHITE);
-		GUI_SetBkColor(TITLECOLOR);
-		GUI_SetFont(&GUI_FontHelvetica32);	
-		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-		GUI_DispStringAt(str,0,0);
-		osDelay(1000);
-  }
-  /* USER CODE END 5 */ 
-}
-
-void KeyTask(void const * argument)
-{
-	static uint32_t i = 0;
-  for(;;)
-  {
-		UIKeyboard();
-		UITouch();
-		UIEventManager();
-		osDelay(10);
-  }
-}
 
 
 void USB_MspInit()

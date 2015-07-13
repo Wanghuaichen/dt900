@@ -61,22 +61,21 @@ struct GeoParam			//geophone parameters in the list
 
 struct Settings		//test settings & system settings
 {
-	uint32_t magic;
-	
 	uint32_t totalparam;
 	uint32_t paramnum;
 	
 	uint32_t sequence;
 	uint32_t ldrate;
-	float shunt;
+	uint32_t shunt;
+	uint32_t strings;
 	
-	uint32_t testnum;
+	uint32_t serialno;
 	uint8_t filename[20];
+	uint8_t barcode[20];
 	
 	uint32_t sensormode;
 	float temperature;
 	uint32_t testmode;
-	uint32_t barcode;
 	
 	uint32_t buzzer;
 	uint32_t backlight;
@@ -87,6 +86,8 @@ struct Settings		//test settings & system settings
 	uint32_t reserved2;
 	uint32_t reserved3;
 	uint32_t reserved4;
+	
+	uint32_t magic;
 };
 
 

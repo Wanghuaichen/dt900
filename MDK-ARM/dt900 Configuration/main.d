@@ -73,8 +73,10 @@ dt900 configuration\main.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\main.o: ..\Inc\geotest.h
 dt900 configuration\main.o: ..\Drivers\BSP\rtc.h
 dt900 configuration\main.o: ..\Src\UI\ui.h
+dt900 configuration\main.o: ..\Drivers\BSP\adc.h
 dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_bsp.h
 dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_core.h
 dt900 configuration\main.o: ..\Src\usbd_mass_storage\usb_conf.h
 dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_regs.h
 dt900 configuration\main.o: ..\Middlewares\STM32_USB_OTG_Driver\inc\usb_defines.h
+dt900 configuration\main.o: ..\Inc\ostask.h

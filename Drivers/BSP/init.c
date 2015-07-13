@@ -15,7 +15,7 @@ extern struct Settings settings;//(struct Settings *)SETADDR;
 void Board_Init()
 {
 	DP_EN(0);
-	if(ADC_GetValue()<3.3)
+	if(ADC_GetValue()<3.4)
 	{
 		beep(100);
 		HAL_Delay(100);
@@ -42,11 +42,10 @@ void Board_Init()
 		memset(&settings,0,sizeof(struct Settings));
 		memset(geoparam,0,10*sizeof(struct GeoParam));
 		settings.magic = 5566;
-		FlashProgram((uint32_t *)PARAMADDR,(uint32_t *)geoparam,10*sizeof(struct GeoParam)/4);
-		FlashProgram((uint32_t *)SETADDR,(uint32_t *)&settings,sizeof(struct Settings)/4);
+		FlashProgram();
 	}
 //		GUI_JPEG_Draw(_acbg2, sizeof(_acbg2), 0, 0);
 		
-  //MX_FATFS_Init();
+  MX_FATFS_Init();
   //MX_USB_DEVICE_Init();
 }

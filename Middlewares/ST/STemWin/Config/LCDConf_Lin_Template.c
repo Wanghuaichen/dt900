@@ -81,7 +81,7 @@ extern LTDC_HandleTypeDef hltdc;
 //
 // Buffers / VScreens
 //
-#define NUM_BUFFERS  3 // Number of multiple buffers to be used
+#define NUM_BUFFERS  0 // Number of multiple buffers to be used
 #define NUM_VSCREENS 1 // Number of virtual screens to be used
 
 /*********************************************************************

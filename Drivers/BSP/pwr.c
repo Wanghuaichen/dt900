@@ -1,7 +1,14 @@
 #include "pwr.h"
+#include "flash.h"
+#include "ui.h"
+extern struct UIInfo UIInfo;
 
 void DP_EN(int val)
 {
+	if(!val && UIInfo.flagSettings)
+	{
+		FlashProgram();
+	}
 	HAL_GPIO_WritePin (GPIOE,GPIO_PIN_2,(GPIO_PinState)val);
 }
 

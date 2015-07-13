@@ -243,7 +243,7 @@
             <Ra2Chk>0</Ra2Chk>
             <Ra3Chk>0</Ra3Chk>
             <Im1Chk>1</Im1Chk>
-            <Im2Chk>0</Im2Chk>
+            <Im2Chk>1</Im2Chk>
             <OnChipMemories>
               <Ocm1>
                 <Type>0</Type>
@@ -821,6 +821,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\usbd_mass_storage\usbd_usr.c</FilePath>
             </File>
+            <File>
+              <FileName>ostask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\ostask.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -850,6 +855,41 @@
               <FileName>pKeyboard.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pKeyboard.c</FilePath>
+            </File>
+            <File>
+              <FileName>pEditD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pEditD.c</FilePath>
+            </File>
+            <File>
+              <FileName>pEditF.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pEditF.c</FilePath>
+            </File>
+            <File>
+              <FileName>pEditR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pEditR.c</FilePath>
+            </File>
+            <File>
+              <FileName>pEditS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pEditS.c</FilePath>
+            </File>
+            <File>
+              <FileName>pConfig.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pConfig.c</FilePath>
+            </File>
+            <File>
+              <FileName>pGeoParam.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pGeoParam.c</FilePath>
+            </File>
+            <File>
+              <FileName>pTest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pTest.c</FilePath>
             </File>
           </Files>
         </Group>

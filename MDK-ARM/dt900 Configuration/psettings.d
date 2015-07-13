@@ -48,3 +48,4 @@ dt900 configuration\psettings.o: ..\Middlewares\ST\STemWin\inc\LCD.h
 dt900 configuration\psettings.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\psettings.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
 dt900 configuration\psettings.o: ..\Inc\geotest.h
+dt900 configuration\psettings.o: ..\Drivers\BSP\flash.h

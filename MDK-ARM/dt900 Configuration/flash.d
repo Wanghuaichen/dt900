@@ -40,3 +40,4 @@ dt900 configuration\flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_r
 dt900 configuration\flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\flash.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
+dt900 configuration\flash.o: ..\Inc\geotest.h

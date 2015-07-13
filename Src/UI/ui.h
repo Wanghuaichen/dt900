@@ -13,9 +13,17 @@
 #define KEY_DOWN 0x2
 #define KEY_OK 0x4
 
+struct KBInfo
+{
+struct UIPage *kbParent;
+char kbTitle[20];
+char kbBuff[20];
+void (*kbCallBack)();
+};
 
 struct UIInfo
 {
+	char flagSettings;
 	struct UIPage * PagePtr;
 	uint8_t KeyEvent;
 	char currentKey;
@@ -33,7 +41,7 @@ struct UIWidget
 	char active;
 	GUI_RECT rect;//x0,y0,x1,y1
 	char widgetTitle[20];
-	float widgetValue;
+	int widgetValue;
 	void* widgetPtr;
 	void (*widgetInit)(struct UIWidget* widget);
 	void (*widgetDraw)(struct UIWidget* widget);
@@ -43,11 +51,11 @@ struct UIWidget
 struct UIPage
 {
 	char pageTitle[20];
-	struct UIPage * parent;
 	char widgetNum;
 	short widgetSelected;
 	struct UIWidget * widgetList;
 	void (*pageInit)(struct UIPage* page);
+	void (*pageReturn)(struct UIPage* page);
 	void (*keyboard)(struct UIPage* page);
 	void (*touch)(struct UIPage* page);
 };

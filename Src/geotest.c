@@ -6,6 +6,7 @@
 #include "flash.h"
 #include <stdlib.h>
 #include <math.h>
+#include "ui.h"
 
 static float Inbuff[4096];
 uint32_t test0,test1;
@@ -74,6 +75,11 @@ void geotest()
 	char str[20];
 	static int counter = 1;
 	
+	GUI_SetColor(BLACK);
+	GUI_SetBkColor(WHITE);
+	//GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+	
 	AP_EN(1);
 	AMP_EN(1);
 	DAC_SET(DACMID);
@@ -83,26 +89,23 @@ void geotest()
 	AD7190_Calibration();
 	AD7190_Setup();
 	
-	sprintf(str,"%s:%04d",geo.type,counter++);
-	GUI_DispStringAt(str,0,600);
-	
 	step0();
 	sprintf(str,"Noise:%.1f",geophone.nois);
-	GUI_DispStringAt(str,240,600);
+	GUI_DispStringAt(str,0,350);
 	
 	step1();
 	sprintf(str,"R:%d",geophone.resi);
-	GUI_DispStringAt(str,0,650);
+	GUI_DispStringAt(str,0,400);
 	
 	
 	step2();
 	sprintf(str,"F:%.2f    B:%.3f    S:%.1f",geophone.freq,geophone.damp,geophone.sens);
-	GUI_DispStringAt(str,0,700);
+	GUI_DispStringAt(str,0,450);
 	
 	
 	step3();
 	sprintf(str,"D:%.3f  Z:%d",geophone.dist,geophone.impe);
-	GUI_DispStringAt(str,0,750);
+	GUI_DispStringAt(str,0,500);
 	
 	AD7190_PowerDown();
 	AP_EN(0);
