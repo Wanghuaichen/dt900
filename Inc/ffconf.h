@@ -20,7 +20,7 @@
 / Functions and Buffer Configurations
 /-----------------------------------------------------------------------------*/
 
-#define _FS_TINY             0      /* 0:Normal or 1:Tiny */
+#define _FS_TINY             1      /* 0:Normal or 1:Tiny */
 /* When _FS_TINY is set to 1, it reduces memory consumption _MAX_SS bytes each
 /  file object. For file data transfer, FatFs uses the common sector buffer in
 /  the file system object (FATFS) instead of private sector buffer eliminated
@@ -91,7 +91,7 @@
 /   1    - ASCII (Valid for only non-LFN configuration) */
 
 #define _USE_LFN     3    /* 0 to 3 */
-#define _MAX_LFN     255  /* Maximum LFN length to handle (12 to 255) */
+#define _MAX_LFN     19  /* Maximum LFN length to handle (12 to 255) */
 /* The _USE_LFN option switches the LFN feature.
 /
 /   0: Disable LFN feature. _MAX_LFN has no effect.
@@ -135,7 +135,7 @@
 
 /* USER CODE BEGIN Volumes */  
 #define _STR_VOLUME_ID          0	/* 0:Use only 0-9 for drive ID, 1:Use strings for drive ID */
-#define _VOLUME_STRS            "RAM","NAND","CF","SD1","SD2","USB1","USB2","USB3"
+#define _VOLUME_STRS            "RAM"
 /* When _STR_VOLUME_ID is set to 1, also pre-defined strings can be used as drive
 /  number in the path name. _VOLUME_STRS defines the drive ID strings for each logical
 /  drives. Number of items must be equal to _VOLUMES. Valid characters for the drive ID
@@ -148,8 +148,8 @@
 /  each logical drive number is bound to arbitrary drive/partition listed in VolToPart[].
 */
 
-#define _MIN_SS    2048  /* 512, 1024, 2048 or 4096 */
-#define _MAX_SS    2048  /* 512, 1024, 2048 or 4096 */
+#define _MIN_SS    4096  /* 512, 1024, 2048 or 4096 */
+#define _MAX_SS    4096  /* 512, 1024, 2048 or 4096 */
 /* These options configure the range of sector size to be supported. (512, 1024, 2048 or
 /  4096) Always set both 512 for most systems, all memory card and harddisk. But a larger
 /  value may be required for on-board flash memory and some type of optical media.

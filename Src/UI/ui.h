@@ -23,11 +23,11 @@ void (*kbCallBack)();
 
 struct UIInfo
 {
-	char flagSettings;
+	uint8_t flagSettings;
 	struct UIPage * PagePtr;
 	uint8_t KeyEvent;
-	char currentKey;
-	char lastKey;
+	uint8_t currentKey;
+	uint8_t lastKey;
 	uint32_t keyCombo;
 	
 	uint8_t TouchEvent;

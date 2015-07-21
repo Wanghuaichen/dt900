@@ -1,14 +1,14 @@
 #include "ui.h"
 
 extern struct UIPage pSettings;
-extern struct UIPage pConfig;
+extern struct UIPage pSetup;
 
 static void key(struct UIWidget* widget)
 {
 	switch(widget->widgetIndex)
 	{
 		case 0:
-			PageJump(&pConfig);
+			PageJump(&pSetup);
 			break;
 		case 1:
 			PageJump(&pSettings);
@@ -26,7 +26,7 @@ static struct UIWidget widgetList[5] =
 {
 	{0,1,0,{100,200,379,259},"Do a test",0,NULL,NULL,drawButton,key},
 	{1,1,0,{100,300,379,359},"Geophone settings",0,NULL,NULL,drawButton,key},
-	{2,1,0,{100,400,379,459},"Data files",0,NULL,NULL,drawButton,key},
+	{2,1,0,{100,400,379,459},"Test configuration",0,NULL,NULL,drawButton,key},
 	{3,1,0,{100,500,379,559},"System preference",0,NULL,NULL,drawButton,key},
 	{4,1,0,{100,600,379,659},"About",0,NULL,NULL,drawButton,key},
 };

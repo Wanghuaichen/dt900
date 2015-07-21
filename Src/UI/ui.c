@@ -1,8 +1,9 @@
 #include "GUI.h"
 #include "ui.h"
+#include "pwr.h"
+#include "lcd.h"
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontVerdana32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
 extern struct UIPage pMain;

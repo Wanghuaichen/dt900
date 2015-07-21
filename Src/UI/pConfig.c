@@ -17,6 +17,7 @@ static struct UIWidget widgetList[9];
 static void kbCallBack()
 {
 	char str[20];
+	int val;
 	switch(pConfig.widgetSelected)
 	{
 		case 0:
@@ -25,21 +26,20 @@ static void kbCallBack()
 				sprintf(settings.filename,"Test");
 			break;
 		case 1:
-			settings.serialno = atoi(kbInfo.kbBuff);
-			if(settings.serialno==0)
-				settings.serialno = 1;
+			val = atoi(kbInfo.kbBuff);
+			settings.serialno = val<1 ? 1 : val;
 			break;
 		case 4:
 			settings.temperature = (int)(atof(kbInfo.kbBuff)*10)/10.0;
 			break;
 		case 5:
-			settings.shunt = atoi(kbInfo.kbBuff);
+			val = atoi(kbInfo.kbBuff);
+			settings.shunt = val>9999 ? 9999 : val<0 ? 0 : val;
 			if(settings.shunt>9999)
 				settings.shunt = 9999;
 		case 6:
-			settings.strings = atoi(kbInfo.kbBuff);
-			if(settings.strings>99)
-				settings.strings = 99;
+			val = atoi(kbInfo.kbBuff);
+			settings.strings = val>99 ? 99 : val<1 ? 1 : val;
 			break;
 		default:
 			break;
@@ -67,6 +67,7 @@ static void goSubPage(struct UIWidget * widget)
 			PageJump(&pTest);
 			break;
 	}
+	UIInfo.flagSettings = 1;
 }
 
 
@@ -95,7 +96,7 @@ static void widgetInit(struct UIWidget * widget)
 			break;
 		case 4:
 			widget->enable = settings.sensormode != 3 ? 0 : 1;
-			sprintf(widget->widgetPtr,"%.1f",settings.temperature);
+			sprintf(widget->widgetPtr,"%g",settings.temperature);
 			break;
 		case 5:
 			sprintf(widget->widgetPtr,"%d",settings.shunt);
@@ -133,7 +134,7 @@ static struct UIWidget widgetList[9] =
 	{2,1,0,{0,240,479,299},"Geo Spec.",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
 	{3,1,0,{0,300,479,359},"Sensor Mode",0,StringArray[3],widgetInit,drawSLabel,sensormode},
 	{4,0,0,{0,360,479,419},"Temperature",0,StringArray[4],widgetInit,drawSLabel,goSubSettings},
-	{5,1,0,{0,420,479,479},"Shunt(Ohm)",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
+	{5,1,0,{0,420,479,479},"Shunt(})",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
 	{6,1,0,{0,480,479,539},"String No.",0,StringArray[6],widgetInit,drawSLabel,goSubSettings},
 	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,NULL},
 	{8,1,0,{120,660,359,719},"Continue",0,NULL,NULL,drawButton,goSubPage},

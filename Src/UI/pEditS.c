@@ -46,13 +46,13 @@ static void widgetInit(struct UIWidget * widget)
 	switch(widget->widgetIndex)
 	{
 		case 0:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].S);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].S);
 			break;
 		case 1:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].Sp*100);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].Sp*100);
 			break;
 		case 2:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].Sn*100);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].Sn*100);
 			break;
 		default:
 			break;
@@ -67,8 +67,8 @@ static void pageReturn(struct UIPage * page)
 static struct UIWidget widgetList[3] =
 {
 	{0,1,0,{0,120,479,179},"Sensitivity(V/m/s)",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
-	{1,1,0,{0,180,479,239},"S Max(+)",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
-	{2,1,0,{0,240,479,299},"S Min(-)",0,StringArray[2],widgetInit,drawSLabel,goSubSettings},
+	{1,1,0,{0,180,479,239},"S Max(+%)",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
+	{2,1,0,{0,240,479,299},"S Min(-%)",0,StringArray[2],widgetInit,drawSLabel,goSubSettings},
 };
 
 struct UIPage pEditS = 

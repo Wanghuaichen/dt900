@@ -7,6 +7,9 @@
 #include "beep.h"
 #include "pwr.h"
 #include "cmsis_os.h"
+#include "cyma568.h"
+
+//#define _DEBUG
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern struct GeoParam geoparam[10];
@@ -17,12 +20,15 @@ void StartDefaultTask(void const * argument)
 	char str[20];
 	static int i=0;
 	float volt;
+#ifdef _DEBUG	
+	tpTest();
+#endif
 	for(;;)
   {
+		
+		
+#ifndef _DEBUG	
 		RTC_Get();
-////		sprintf(str,"%02d:%02d:%02d %02d-%02d-%02d",
-////								rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
-////								rtcDate.Month, rtcDate.Date,rtcDate.Year);
 		sprintf(str,"%02d:%02d",rtcTime.Hours, rtcTime.Minutes);
 		GUI_SetColor(WHITE);
 		GUI_SetBkColor(TITLECOLOR);
@@ -51,7 +57,10 @@ void StartDefaultTask(void const * argument)
 			}
 		}
 		i++;
-		osDelay(1000);
+#endif
+
+
+	osDelay(1000);
   }
 }
 
@@ -66,3 +75,16 @@ void KeyTask(void const * argument)
 		osDelay(10);
   }
 }
+
+void dbg(char * str)
+{
+	char s[80];
+	sprintf(s,"    %s    ",str);
+	GUI_SetColor(WHITE);
+	GUI_SetBkColor(TITLECOLOR);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+	GUI_DispStringAt(s,240,0);
+}
+
+

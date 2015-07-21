@@ -10,7 +10,7 @@ extern struct Settings settings;
 struct UIPage pKeyboard;
 
 struct KBInfo kbInfo;
-static char StringArray[10][20]={"","ABC","DEF","GHI","JKL","MNO","PQRS","TUV","WXYZ",""};
+static char StringArray[10][5]={"","ABC","DEF","GHI","JKL","MNO","PQRS","TUV","WXYZ","-"};
 
 
 static void keyPress(struct UIWidget * widget)
@@ -30,7 +30,7 @@ static void keyPress(struct UIWidget * widget)
 	else
 		kbInfo.kbBuff[len-1] = ((char*)(widget->widgetPtr))[index-1];
 	kbInfo.kbBuff[len] = '\0';
-	sprintf(str,"%s_",kbInfo.kbBuff);
+	sprintf(str,"  %s_  ",kbInfo.kbBuff);
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
 	GUI_SetFont(&GUI_FontHelveticaNeueLT48);
@@ -95,7 +95,7 @@ static struct UIWidget widgetList[12] =
 	{7,1,0,{170,595,309,674},"8",4,StringArray[7],NULL,drawKey,keyPress},
 	{8,1,0,{320,595,459,674},"9",5,StringArray[8],NULL,drawKey,keyPress},
 	{9,1,0,{20,705,159,784},".",1,NULL,NULL,drawKey,keyPress},
-	{10,1,0,{170,705,309,784},"0",1,StringArray[9],NULL,drawKey,keyPress},
+	{10,1,0,{170,705,309,784},"0",2,StringArray[9],NULL,drawKey,keyPress},
 	{11,1,0,{320,705,459,784},"X",0,NULL,NULL,drawKey,keyDel},
 };
 

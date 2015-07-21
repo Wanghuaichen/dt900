@@ -243,7 +243,7 @@
             <Ra2Chk>0</Ra2Chk>
             <Ra3Chk>0</Ra3Chk>
             <Im1Chk>1</Im1Chk>
-            <Im2Chk>1</Im2Chk>
+            <Im2Chk>0</Im2Chk>
             <OnChipMemories>
               <Ocm1>
                 <Type>0</Type>
@@ -345,7 +345,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>3</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -682,11 +682,6 @@
               <FilePath>..\Middlewares\ST\Helvetica32.c</FilePath>
             </File>
             <File>
-              <FileName>Verdana32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Middlewares\ST\Verdana32.c</FilePath>
-            </File>
-            <File>
               <FileName>HelveticaNeueLT48.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Middlewares\ST\HelveticaNeueLT48.c</FilePath>
@@ -750,6 +745,11 @@
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>cyma568.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\cyma568.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -890,6 +890,11 @@
               <FileName>pTest.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pTest.c</FilePath>
+            </File>
+            <File>
+              <FileName>pSetup.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pSetup.c</FilePath>
             </File>
           </Files>
         </Group>

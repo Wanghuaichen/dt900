@@ -29,12 +29,12 @@ static void impedence()
 	bt = geoparam[pSettings.widgetSelected].B;
 	r = geoparam[pSettings.widgetSelected].R;
 	
-	a = bt*w;
-	b = w*s*s;
-	c = m*(w0*w0-w*w);
-	d = a*a+c*c;
-	re = r+a*b/d;
-	im = b*c/d;
+	a = w*s*s/m;
+	b = w0*w0-w*w;
+	c = 2*bt*w*w0;
+	d = b*b+c*c;
+	re = r+a*c/d;
+	im = a*b/d;
 	geoparam[pSettings.widgetSelected].Z = round(sqrt(re*re+im*im));
 	
 	GUI_DispDecAt((int)geoparam[pSettings.widgetSelected].Z,0,750,6);
@@ -122,28 +122,28 @@ static void widgetInit(struct UIWidget * widget)
 			sprintf(widget->widgetPtr,"%d",(int)geoparam[pSettings.widgetSelected].R);
 			break;
 		case 2:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].F);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].F);
 			break;
 		case 3:
-			sprintf(widget->widgetPtr,"%.3f",geoparam[pSettings.widgetSelected].B);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].B);
 			break;
 		case 4:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].S);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].S);
 			break;
 		case 5:
-			sprintf(widget->widgetPtr,"%.3f",geoparam[pSettings.widgetSelected].D);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].D);
 			break;
 		case 6:
 			sprintf(widget->widgetPtr,"%d",(int)geoparam[pSettings.widgetSelected].DF);
 			break;
 		case 7:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].X*1000);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].X*1000);
 			break;
 		case 8:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].M*1000);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].M*1000);
 			break;
 		case 9:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].T);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].T);
 			impedence();
 			break;
 		default:
@@ -176,7 +176,7 @@ static void pageReturn(struct UIPage * page)
 static struct UIWidget widgetList[11] =
 {
 	{0,1,0,{0,120,479,179},"Type",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
-	{1,1,0,{0,180,479,239},"Resistence(Ohm)",0,StringArray[1],widgetInit,drawSLabel,goSubPage},
+	{1,1,0,{0,180,479,239},"Resistence(})",0,StringArray[1],widgetInit,drawSLabel,goSubPage},
 	{2,1,0,{0,240,479,299},"Frequency(Hz)",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
 	{3,1,0,{0,300,479,359},"Damping",0,StringArray[3],widgetInit,drawSLabel,goSubPage},
 	{4,1,0,{0,360,479,419},"Sensitivity(V/m/s)",0,StringArray[4],widgetInit,drawSLabel,goSubPage},

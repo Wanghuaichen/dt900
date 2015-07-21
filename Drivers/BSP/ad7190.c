@@ -25,7 +25,7 @@ void AD7190_Setup()
 	uint8_t conf[4] = {0x10,0x00,0x40,0x00};
 	AD7190_SPI_Write(conf,4);
 	AD7190_SPI_Write(mode,4);
-	HAL_Delay(200);
+	//HAL_Delay(200);
 }
 
 void AD7190_Calibration(void)

@@ -46,13 +46,13 @@ static void widgetInit(struct UIWidget * widget)
 	switch(widget->widgetIndex)
 	{
 		case 0:
-			sprintf(widget->widgetPtr,"%.3f",geoparam[pSettings.widgetSelected].B);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].B);
 			break;
 		case 1:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].Bp*100);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].Bp*100);
 			break;
 		case 2:
-			sprintf(widget->widgetPtr,"%.1f",geoparam[pSettings.widgetSelected].Bn*100);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].Bn*100);
 			break;
 		default:
 			break;
@@ -67,8 +67,8 @@ static void pageReturn(struct UIPage * page)
 static struct UIWidget widgetList[3] =
 {
 	{0,1,0,{0,120,479,179},"Damping",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
-	{1,1,0,{0,180,479,239},"D Max(+)",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
-	{2,1,0,{0,240,479,299},"D Min(-)",0,StringArray[2],widgetInit,drawSLabel,goSubSettings},
+	{1,1,0,{0,180,479,239},"D Max(+%)",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
+	{2,1,0,{0,240,479,299},"D Min(-%)",0,StringArray[2],widgetInit,drawSLabel,goSubSettings},
 };
 
 struct UIPage pEditD = 

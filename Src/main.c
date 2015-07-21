@@ -149,8 +149,8 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal+1, 0, 1024);
-	osThreadDef(keyTask, KeyTask, osPriorityNormal, 0, 1024);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 2048);
+	osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 2048);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
   keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
   /* USER CODE BEGIN RTOS_THREADS */
@@ -281,7 +281,7 @@ void MX_I2C3_Init(void)
   hi2c3.Instance = I2C3;
   hi2c3.Init.ClockSpeed = 100000;
   hi2c3.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.OwnAddress1 = 0x24;
   hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLED;
   hi2c3.Init.OwnAddress2 = 0;
@@ -337,7 +337,7 @@ void MX_SPI3_Init(void)
 }
 
 /* SPI5 init function */
-void MX_SPI5_Init(void)
+void MX_SPI5_Init(void)//flash
 {
 
   hspi5.Instance = SPI5;
@@ -518,7 +518,8 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PC8 */
   GPIO_InitStruct.Pin = GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
+  //GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 	
@@ -555,12 +556,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-//	GPIO_InitStruct.Pin = GPIO_PIN_2;
-//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-//  GPIO_InitStruct.Pull = GPIO_NOPULL;
-//  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
 }
 
 /* USER CODE BEGIN 4 */

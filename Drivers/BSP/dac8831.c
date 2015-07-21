@@ -14,15 +14,19 @@ void DAC_SWEEP(uint32_t frequency,float mag,float offset)
 	uint32_t i;
 	uint32_t period;
 	
-	HAL_TIM_Base_Stop_IT(&htim2);
-	DAC_SET(DACMID);
-	if(frequency>0)
+	if(!frequency)
+	{
+		HAL_TIM_Base_Stop_IT(&htim2);
+		HAL_TIM_Base_DeInit(&htim2);
+		DAC_SET(DACMID);
+	}
+	else
 	{
 		index = 0;
 		period = 84000000.0/POINTS/frequency;
-		TIM2_Init(period);
 		for(i=0;i<POINTS;i++)
 				DataBuf[i] = (uint16_t)(DACMID+offset*0xffff/5+mag/5*0xffff*sin(2*PI*i/POINTS));
+		TIM2_Init(period);
 		HAL_TIM_Base_Start_IT(&htim2);
 	}
 }
@@ -51,12 +55,12 @@ void TIM2_Init(uint32_t period)
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   HAL_TIM_Base_Init(&htim2);
 
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig);
+//  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+//  HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig);
 
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
+//  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+//  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+//  HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
 
 }
 

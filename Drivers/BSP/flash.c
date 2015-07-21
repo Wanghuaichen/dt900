@@ -1,12 +1,13 @@
 #include "flash.h"
 #include "geotest.h"
-extern struct GeoParam geoparam[10];//(struct GeoParam *)PARAMADDR;
-extern struct Settings settings;//(struct Settings *)SETADDR;
+extern struct GeoParam geoparam[10];
+extern struct Settings settings;
 
 void FlashProgram()
 {
 	uint32_t index;
 	uint32_t error;
+	uint32_t ret;
 	FLASH_EraseInitTypeDef erase;
 	
 	erase.TypeErase = TYPEERASE_SECTORS;
@@ -14,8 +15,8 @@ void FlashProgram()
 	erase.Banks = FLASH_BANK_2;
 	erase.NbSectors = 1;
 	erase.Sector = FLASH_SECTOR_23;
-	HAL_FLASH_Unlock();
-	HAL_FLASHEx_Erase(&erase,&error);
+	ret = HAL_FLASH_Unlock();
+	ret = HAL_FLASHEx_Erase(&erase,&error);
 	
 	
 	for(index=0;index<10*sizeof(struct GeoParam);index+=4)

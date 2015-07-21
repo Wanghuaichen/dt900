@@ -80,12 +80,7 @@ Diskio_drvTypeDef  USER_Driver =
   */
 DSTATUS USER_initialize(void)
 {
-  Stat = STA_NOINIT;
-  
-  /* USER CODE HERE */
-  
-  Stat &= ~STA_NOINIT;
-  return Stat;
+  return 0;
 }
 
 /**
@@ -95,11 +90,7 @@ DSTATUS USER_initialize(void)
   */
 DSTATUS USER_status(void)
 {
-  Stat = STA_NOINIT;
-  
-  Stat &= ~STA_NOINIT;
-
-  return Stat;
+  return 0;
 }
 
 /**
@@ -112,7 +103,7 @@ DSTATUS USER_status(void)
 DRESULT USER_read(BYTE *buff, DWORD sector, UINT count)
 {
   /* USER CODE HERE */
-  SPI_Flash_Read(buff,sector<<12,4096);
+  SPI_Flash_Read(buff,4096*sector,4096*count);
   return RES_OK;
 }
 
@@ -127,7 +118,7 @@ DRESULT USER_read(BYTE *buff, DWORD sector, UINT count)
 DRESULT USER_write(const BYTE *buff, DWORD sector, UINT count)
 { 
   /* USER CODE HERE */
-	SPI_Flash_Write((uint8_t *)buff,sector<<12,4096);
+	SPI_Flash_Write((uint8_t *)buff,4096*sector,4096*count);
   return RES_OK;
 }
 #endif /* _USE_WRITE == 1 */
@@ -141,9 +132,26 @@ DRESULT USER_write(const BYTE *buff, DWORD sector, UINT count)
 #if _USE_IOCTL == 1
 DRESULT USER_ioctl(BYTE cmd, void *buff)
 {
-  DRESULT res = RES_ERROR;
+  DRESULT res = RES_OK;
   
   /* USER CODE HERE */
+	 switch(cmd)
+   {
+		 case CTRL_SYNC:
+			break;
+		 case GET_BLOCK_SIZE:
+      *(DWORD*)buff = 2048;
+      break;
+    case GET_SECTOR_COUNT:
+      *(DWORD*)buff = 2048;
+      break;
+    case GET_SECTOR_SIZE:
+      *(WORD*)buff = 4096;
+      break;
+    default:
+      res = RES_PARERR;
+      break;
+   }
 
   return res;
 }
