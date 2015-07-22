@@ -751,6 +751,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\cyma568.c</FilePath>
             </File>
+            <File>
+              <FileName>ds18b20.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\ds18b20.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

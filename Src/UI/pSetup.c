@@ -125,6 +125,7 @@ static void sensormode(struct UIWidget * widget)
 	widget->widgetDraw(widget);
 	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
 	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
+	UIInfo.flagSettings = 1;
 }
 
 static struct UIWidget widgetList[9] =

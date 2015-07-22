@@ -8,7 +8,7 @@
 #include "pwr.h"
 #include "cmsis_os.h"
 #include "cyma568.h"
-
+#include "ds18b20.h"
 //#define _DEBUG
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;

@@ -1,7 +1,6 @@
 #ifndef __DS18B20_H
 #define __DS18B20_H
-
-extern volatile char dsflag;
+#include "stm32f4xx_hal.h"
 
 void DS18B20_IO_IN(void);
 void DS18B20_IO_OUT(void);										   

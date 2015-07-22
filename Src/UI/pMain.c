@@ -1,10 +1,12 @@
 #include "ui.h"
+#include "ds18b20.h"
 
 extern struct UIPage pSettings;
 extern struct UIPage pSetup;
 
 static void key(struct UIWidget* widget)
 {
+char str[20];	
 	switch(widget->widgetIndex)
 	{
 		case 0:
@@ -14,6 +16,8 @@ static void key(struct UIWidget* widget)
 			PageJump(&pSettings);
 			break;
 		case 2:
+			sprintf(str,"%f",DS18B20_Get_Temp());
+			GUI_DispStringAt(str,0,750);
 			break;
 		case 3:
 			break;

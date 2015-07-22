@@ -62,6 +62,7 @@
 "dt900 configuration\flash.o"
 "dt900 configuration\rtc.o"
 "dt900 configuration\cyma568.o"
+"dt900 configuration\ds18b20.o"
 "dt900 configuration\fatfs.o"
 "dt900 configuration\freertos.o"
 "dt900 configuration\stm32f4xx_hal_msp.o"

@@ -68,3 +68,4 @@ dt900 configuration\ostask.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include
 dt900 configuration\ostask.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h
 dt900 configuration\ostask.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h
 dt900 configuration\ostask.o: ..\Drivers\BSP\cyma568.h
+dt900 configuration\ostask.o: ..\Drivers\BSP\ds18b20.h
