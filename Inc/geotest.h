@@ -75,7 +75,7 @@ struct Settings		//test settings & system settings
 	
 	uint32_t sensormode;
 	float temperature;
-	uint32_t testmode;
+	uint32_t iteration;
 	
 	uint32_t buzzer;
 	uint32_t backlight;

@@ -143,7 +143,7 @@ float DS18B20_Get_Temp(void)
 {
     uint8_t temp;
     uint8_t TL,TH;
-		short tem;
+		int tem;
 		
 		DS18B20_Start();
     DS18B20_Rst();
@@ -162,6 +162,7 @@ float DS18B20_Get_Temp(void)
     tem<<=8;    
     tem+=TL;//»ñµÃµ×°ËÎ»
 		tem = temp ? tem : -tem;
-		return (int)(0.625*tem)/10.0;
+		tem = 0.625*tem;
+		return tem/10.0;
 		//return 0.0625*tem;   
 } 

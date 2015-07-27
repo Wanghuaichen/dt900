@@ -21,7 +21,8 @@ void StartDefaultTask(void const * argument)
 	static int i=0;
 	float volt;
 #ifdef _DEBUG	
-	tpTest();
+	GUI_SetColor(WHITE);
+	GUI_FillRect(0,0,479,799);
 #endif
 	for(;;)
   {
@@ -36,14 +37,18 @@ void StartDefaultTask(void const * argument)
 		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
 		GUI_DispStringAt(str,0,0);
 		
+		if(i%120==0 && (settings.sensormode==1 || settings.sensormode==2))
+		{
+			sprintf(str," %.1f~C ",DS18B20_Get_Temp());
+			GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+			GUI_DispStringAt(str,240,0);
+		}
+			
 		if(i%300==0)
 		{
-			volt = ADC_GetValue();
-			GUI_SetColor(WHITE);
-			GUI_SetBkColor(TITLECOLOR);
-			GUI_SetFont(&GUI_FontHelvetica32);	
-			GUI_SetTextAlign(GUI_TA_RIGHT | GUI_TA_TOP);
+			volt = ADC_GetValue();	
 			sprintf(str,"  %.1fV",volt);
+			GUI_SetTextAlign(GUI_TA_RIGHT | GUI_TA_TOP);
 			GUI_DispStringAt(str,479,0);
 			if(volt<3.3)
 			{
@@ -56,6 +61,8 @@ void StartDefaultTask(void const * argument)
 				DP_EN(0);
 			}
 		}
+		
+		
 		i++;
 #endif
 
@@ -69,6 +76,9 @@ void KeyTask(void const * argument)
 	static uint32_t i = 0;
   for(;;)
   {
+#ifdef _DEBUG
+		touchreport();
+#endif
 		UIKeyboard();
 		UITouch();
 		UIEventManager();
