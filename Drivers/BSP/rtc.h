@@ -8,5 +8,6 @@ extern RTC_TimeTypeDef rtcTime;
 
 void RTC_Set();
 void RTC_Get();
+void RTC_SetDateTime(RTC_DateTypeDef *sdatestructure, RTC_TimeTypeDef *stimestructure);
 #endif
 

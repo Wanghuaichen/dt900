@@ -2,12 +2,15 @@
 #include "ui.h"
 #include "pwr.h"
 #include "lcd.h"
+#include "geotest.h"
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
 extern struct UIPage pMain;
 extern struct UIPage pKeyboard;
+
+extern struct Settings settings;
 
 struct UIInfo UIInfo;
 
@@ -40,7 +43,7 @@ void UITouch()
 	
 void UIEventManager()
 {
-	if(UIInfo.keyCombo>30000 || (UIInfo.keyCombo==250 && UIInfo.KeyEvent==KEY_CANCEL))
+	if(UIInfo.keyCombo>6000*settings.shuttime || (UIInfo.keyCombo==250 && UIInfo.KeyEvent==KEY_CANCEL))
 	{
 		LCD_PWR(0);
 		DP_EN(0);
