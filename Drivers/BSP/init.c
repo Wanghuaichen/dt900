@@ -8,6 +8,9 @@
 #include "GUI.h"
 #include "geotest.h"
 #include "flash.h"
+#include "fatfs.h"
+#include "ds18b20.h"
+#include "ui.h"
 
 extern struct GeoParam geoparam[10];//(struct GeoParam *)PARAMADDR;
 extern struct Settings settings;//(struct Settings *)SETADDR;
@@ -44,7 +47,7 @@ void Board_Init()
 		memset(&settings,0,sizeof(struct Settings));
 		memset(geoparam,0,10*sizeof(struct GeoParam));
 		settings.magic = 5566;
-		settings.backlight = 20;
+		settings.backlight = 25;
 		settings.buzzer = 1;
 		settings.iteration = 1;
 		settings.serialno = 1;

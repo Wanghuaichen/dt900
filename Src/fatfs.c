@@ -48,7 +48,8 @@ void MX_FATFS_Init(void)
 
   /* USER CODE BEGIN Init */
   /* additional user code for init */  
-	f_mount(&FLASHFS, (TCHAR const*)USER_Path, 0);
+	f_mount(&FLASHFS,"", 0);
+	//f_mount(&FLASHFS, (TCHAR const*)USER_Path, 0);
   /* USER CODE END Init */
 }
 

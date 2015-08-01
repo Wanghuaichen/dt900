@@ -17,6 +17,8 @@ static float Inbuff[4096];
 struct Geophone geophone;
 struct GeoParam geoparam[10];
 struct Settings settings;
+float curTemperature;
+float curVolt;
 static struct GeoParam *geo;
 
 void geotest()
@@ -26,8 +28,10 @@ void geotest()
 	geo = &geoparam[settings.paramnum];
 	if(settings.sensormode == 3)
 		geophone.temp = settings.temperature;
-	else
+	else if(settings.sensormode == 0)
 		geophone.temp = geo->T;
+	else
+		geophone.temp = curTemperature;
 	
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
@@ -97,7 +101,7 @@ void step1()
 	double val=0;
 	int i;
 	unsigned short offset;
-	float volt = geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S*settings.strings;
+	float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S*settings.strings;
 	int resi;
 	int flag=0;
 	
