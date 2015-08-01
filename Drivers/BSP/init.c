@@ -44,11 +44,19 @@ void Board_Init()
 		memset(&settings,0,sizeof(struct Settings));
 		memset(geoparam,0,10*sizeof(struct GeoParam));
 		settings.magic = 5566;
+		settings.backlight = 20;
+		settings.buzzer = 1;
+		settings.iteration = 1;
+		settings.serialno = 1;
+		settings.strings = 1;
+		settings.sleeptime = 5;
+		settings.shuttime = 20;
+		settings.temperature = 25;
 		FlashProgram();
 	}
 	
   MX_FATFS_Init();
-  //MX_USB_DEVICE_Init();
 	LCD_PWR(1);
+	LCD_BL(settings.backlight);
 	beepoff();
 }
