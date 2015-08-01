@@ -28,9 +28,11 @@ static void kbCallBack()
 		case 3:
 			val = atoi(kbInfo.kbBuff);
 			settings.sleeptime = val<1 ? 1 : val;
+			break;
 		case 4:
 			val = atoi(kbInfo.kbBuff);
 			settings.shuttime = val<1 ? 1 : val;
+			break;
 		default:
 			break;
 	}

@@ -22,22 +22,95 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 Z:\GitHub\dt900\MDK-ARM\dt900.uvproj
-Project File Date:  07/26/2015
+Project File Date:  08/01/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling rtc.c...
+compiling ccsbcs.c...
+compiling diskio.c...
+compiling syscall.c...
+compiling ff.c...
+compiling ff_gen_drv.c...
+compiling fatfs.c...
+compiling user_diskio.c...
+compiling main.c...
+..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration step0 - give arg types
+  void step0();
+..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration step1 - give arg types
+  void step1();
+..\Inc\geotest.h(15): warning:  #1295-D: Deprecated declaration step2 - give arg types
+  void step2();
+..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration step3 - give arg types
+  void step3();
+..\Inc\geotest.h(17): warning:  #1295-D: Deprecated declaration geotest - give arg types
+  void geotest();
 ..\Drivers\BSP\rtc.h(9): warning:  #1295-D: Deprecated declaration RTC_Set - give arg types
   void RTC_Set();
 ..\Drivers\BSP\rtc.h(10): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
   void RTC_Get();
-..\Drivers\BSP\rtc.c(40): warning:  #1-D: last line of file ends without a newline
-  }
-..\Drivers\BSP\rtc.c: 3 warnings, 0 errors
+..\Src\UI\ui.h(63): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Src\UI\ui.h(65): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
+  void UIKeyboard();
+..\Src\UI\ui.h(66): warning:  #1295-D: Deprecated declaration UITouch - give arg types
+  void UITouch();
+..\Src\UI\ui.h(67): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
+  void UIEventManager();
+..\Src\usbd_mass_storage\usb_conf.h(233): warning:  #47-D: incompatible redefinition of macro "__ALIGN_BEGIN" (declared at line 151 of "..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h")
+    #define __ALIGN_BEGIN
+..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
+  void reTemp();
+..\Inc\ostask.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Src\main.c(132): warning:  #223-D: function "usbd_OpenMassStorage" declared implicitly
+        usbd_OpenMassStorage();
+..\Src\main.c(153): warning:  #188-D: enumerated type mixed with another type
+        osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 2048);
+..\Src\main.c: 16 warnings, 0 errors
+compiling pTest.c...
+..\Src\UI\ui.h(63): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Src\UI\ui.h(65): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
+  void UIKeyboard();
+..\Src\UI\ui.h(66): warning:  #1295-D: Deprecated declaration UITouch - give arg types
+  void UITouch();
+..\Src\UI\ui.h(67): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
+  void UIEventManager();
+..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration step0 - give arg types
+  void step0();
+..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration step1 - give arg types
+  void step1();
+..\Inc\geotest.h(15): warning:  #1295-D: Deprecated declaration step2 - give arg types
+  void step2();
+..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration step3 - give arg types
+  void step3();
+..\Inc\geotest.h(17): warning:  #1295-D: Deprecated declaration geotest - give arg types
+  void geotest();
+..\Drivers\BSP\flash.h(10): warning:  #1295-D: Deprecated declaration FlashProgram - give arg types
+  void FlashProgram();
+..\Drivers\BSP\rtc.h(9): warning:  #1295-D: Deprecated declaration RTC_Set - give arg types
+  void RTC_Set();
+..\Drivers\BSP\rtc.h(10): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
+  void RTC_Get();
+..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
+  void reTemp();
+..\Inc\ostask.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Src\UI\pTest.c(54): warning:  #223-D: function "strlen" declared implicitly
+        f_write(&MyFile, str, strlen(str), (void *)&wbytes);
+..\Src\UI\pTest.c(102): warning:  #144-D: a value of type "void (*)()" cannot be used to initialize an entity of type "void (*)(struct UIWidget *)"
+        {0,1,0,{20,700,219,760},"Save",0,NULL,NULL,drawButton,save},
+..\Src\UI\pTest.c(103): warning:  #144-D: a value of type "void (*)()" cannot be used to initialize an entity of type "void (*)(struct UIWidget *)"
+        {1,1,0,{260,700,459,760},"Test",0,NULL,NULL,drawButton,test},
+..\Src\UI\pTest.c(121): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+        GUI_DispStringAt(settings.filename,0,140);
+..\Src\UI\pTest.c(108): warning:  #177-D: variable "str" was declared but never referenced
+        char str[20];
+..\Src\UI\pTest.c: 19 warnings, 0 errors
 linking...
-Program Size: Code=117658 RO-data=156442 RW-data=6940 ZI-data=128260  
+Program Size: Code=118026 RO-data=156994 RW-data=6944 ZI-data=128256  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 3 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 35 Warning(s).
 </pre>
 </body>
 </html>

@@ -4,4 +4,5 @@ void StartDefaultTask(void const * argument);
 void KeyTask(void const * argument);
 
 void dbg(char * str);
+void reTemp();
 #endif
