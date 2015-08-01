@@ -90,8 +90,6 @@
 "dt900 configuration\pgeoparam.o"
 "dt900 configuration\ptest.o"
 "dt900 configuration\psetup.o"
-"dt900 configuration\psys.o"
-"dt900 configuration\ptime.o"
 "dt900 configuration\usbd_core.o"
 "dt900 configuration\usbd_ioreq.o"
 "dt900 configuration\usbd_req.o"

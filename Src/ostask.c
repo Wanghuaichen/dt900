@@ -14,7 +14,6 @@
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
-extern float curTemperature;
 
 void StartDefaultTask(void const * argument)
 {
@@ -24,25 +23,23 @@ void StartDefaultTask(void const * argument)
 #ifdef _DEBUG	
 	GUI_SetColor(WHITE);
 	GUI_FillRect(0,0,479,799);
-#else
-	reTemp();
 #endif
-	
 	for(;;)
   {
+		
+		
 #ifndef _DEBUG	
 		RTC_Get();
-		sprintf(str,"[ %02d:%02d  ",rtcTime.Hours, rtcTime.Minutes);
+		sprintf(str,"%02d:%02d",rtcTime.Hours, rtcTime.Minutes);
 		GUI_SetColor(WHITE);
 		GUI_SetBkColor(TITLECOLOR);
 		GUI_SetFont(&GUI_FontHelvetica32);	
 		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-		GUI_DispStringAt(str,20,0);
+		GUI_DispStringAt(str,0,0);
 		
 		if(i%120==0 && (settings.sensormode==1 || settings.sensormode==2))
 		{
-			curTemperature = DS18B20_Get_Temp();
-			sprintf(str,"  ] %.1f~C  ",curTemperature);
+			sprintf(str," %.1f~C ",DS18B20_Get_Temp());
 			GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 			GUI_DispStringAt(str,240,0);
 		}
@@ -52,7 +49,7 @@ void StartDefaultTask(void const * argument)
 			volt = ADC_GetValue();	
 			sprintf(str,"  %.1fV",volt);
 			GUI_SetTextAlign(GUI_TA_RIGHT | GUI_TA_TOP);
-			GUI_DispStringAt(str,459,0);
+			GUI_DispStringAt(str,479,0);
 			if(volt<3.3)
 			{
 				beep(100);
@@ -73,9 +70,6 @@ void StartDefaultTask(void const * argument)
 	osDelay(1000);
   }
 }
-
-
-
 
 void KeyTask(void const * argument)
 {
@@ -103,28 +97,4 @@ void dbg(char * str)
 	GUI_DispStringAt(s,240,0);
 }
 
-void reTemp()
-{
-	char str[20];
-	
-	switch(settings.sensormode)
-	{
-		case 0:
-			sprintf(str,"  ] OFF  ");
-			break;
-		case 3:
-			sprintf(str,"  ] %.1f~C  ",settings.temperature);
-			break;
-		default:
-			DS18B20_Get_Temp();
-			curTemperature = DS18B20_Get_Temp();
-			sprintf(str,"  ] %.1f~C  ",curTemperature);
-			break;
-	}
-	GUI_SetColor(WHITE);
-	GUI_SetBkColor(TITLECOLOR);
-	GUI_SetFont(&GUI_FontHelvetica32);
-	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,240,0);
-}
 

@@ -901,16 +901,6 @@
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pSetup.c</FilePath>
             </File>
-            <File>
-              <FileName>pSys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\UI\pSys.c</FilePath>
-            </File>
-            <File>
-              <FileName>pTime.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\UI\pTime.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

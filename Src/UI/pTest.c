@@ -15,11 +15,11 @@ extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
 static struct UIWidget widgetList[10];
 struct UIPage pTest;
-int ret;
+
 static void save()
 {
 	FIL MyFile;
-	char str[80];
+	char str[200];
 	UINT wbytes;
 	
 	sprintf(widgetList[1].widgetTitle,"Test");
@@ -30,9 +30,8 @@ static void save()
 	widgetList[0].widgetDraw(&widgetList[0]);
 	widgetList[1].widgetDraw(&widgetList[1]);
 dbg("save 0");	
-	sprintf(str,"%s.geo",settings.filename);
+	sprintf(str,"0:%s.geo",settings.filename);
 dbg("save 1");	
-	ret = f_open(&MyFile,(TCHAR *)str,FA_OPEN_ALWAYS | FA_WRITE);
 	if(f_open(&MyFile,(TCHAR *)str,FA_OPEN_ALWAYS | FA_WRITE) != FR_OK)
 		return;
 dbg("save 2");	

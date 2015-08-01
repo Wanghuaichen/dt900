@@ -2,7 +2,6 @@
 #include "cyma568.h"
 extern struct UIPage pSettings;
 extern struct UIPage pSetup;
-extern struct UIPage pSys;
 
 static void key(struct UIWidget* widget)
 {
@@ -22,7 +21,6 @@ char str[20];
 			//HidDes();
 			break;
 		case 3:
-			PageJump(&pSys);
 			break;
 		default:
 			break;

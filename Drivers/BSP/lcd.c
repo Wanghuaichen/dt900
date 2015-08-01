@@ -35,17 +35,13 @@ void LCD_PWR(int val)//1-on  0-off
 	
 void LCD_BL(int val)
 {
-  TIM_OC_InitTypeDef sConfigOC;
-
-  htim5.Instance = TIM5;
-	htim5.Init.Prescaler = 20;
-  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim5.Init.Period = 99;
-  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  //HAL_TIM_PWM_Init(&htim5);
+	TIM_OC_InitTypeDef sConfigOC;
 	
+	if(val<10 || val>90)
+		return;
+
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = val*0.7+10;
+  sConfigOC.Pulse = val;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
@@ -90,4 +86,39 @@ void LCD_LayerCfg()
 	
 	memset((char *)FB_ADDR[0],0,800*480*3);
 	memset((char *)FB_ADDR[1],0,800*480*3);
+}
+
+void LCD_BLADJ()
+{
+	TIM_OC_InitTypeDef sConfigOC;
+	TIM_MasterConfigTypeDef sMasterConfig;
+	static int prescaler = 200;
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 99;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+
+  htim5.Instance = TIM5;
+	htim5.Init.Prescaler = prescaler;
+  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim5.Init.Period = 99;
+  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  HAL_TIM_PWM_Init(&htim5);
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig);
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 40;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+	
+	GUI_DispDecAt(prescaler,240,700,4);
+	prescaler+=100;
 }

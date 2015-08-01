@@ -1,7 +1,7 @@
 #include "ui.h"
 #include "geotest.h"
 #include <stdlib.h>
-#include "ostask.h"
+
 extern struct UIPage pMain;
 extern struct UIPage pKeyboard;
 extern struct UIPage pGeoParam;
@@ -133,7 +133,6 @@ static void sensormode(struct UIWidget * widget)
 	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
 	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
 	UIInfo.flagSettings = 1;
-	reTemp();
 }
 
 static struct UIWidget widgetList[10] =
