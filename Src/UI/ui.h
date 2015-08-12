@@ -24,8 +24,6 @@ void (*kbCallBack)();
 struct UIInfo
 {
 	uint8_t flagSettings;
-	uint32_t chargeflag;
-	
 	struct UIPage * PagePtr;
 	uint8_t KeyEvent;
 	uint8_t currentKey;

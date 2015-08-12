@@ -2,15 +2,12 @@
 #include "ui.h"
 #include "pwr.h"
 #include "lcd.h"
-#include "geotest.h"
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
 extern struct UIPage pMain;
 extern struct UIPage pKeyboard;
-
-extern struct Settings settings;
 
 struct UIInfo UIInfo;
 
@@ -43,7 +40,7 @@ void UITouch()
 	
 void UIEventManager()
 {
-	if(UIInfo.keyCombo>6000*settings.shuttime || (UIInfo.keyCombo==250 && UIInfo.KeyEvent==KEY_CANCEL))
+	if(UIInfo.keyCombo>30000 || (UIInfo.keyCombo==250 && UIInfo.KeyEvent==KEY_CANCEL))
 	{
 		LCD_PWR(0);
 		DP_EN(0);
@@ -147,17 +144,14 @@ void drawButton(struct UIWidget* widget)
 {
 	GUI_SetColor(WHITE);
 	GUI_FillRect(widget->rect.x0,widget->rect.y0,widget->rect.x1,widget->rect.y1);	
-	if(widget->enable)
-	{
-		GUI_SetPenSize(2);
-		GUI_SetColor(widget->enable ? (widget->active ? 0x003fceff : 0x002f2f2f) : 0x00f0f0f0);
-		GUI_AA_DrawRoundedRect(widget->rect.x0+1,widget->rect.y0+1,widget->rect.x1-1,widget->rect.y1-1,(widget->rect.y1-widget->rect.y0-2)/2);
-		GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00f0f0f0);
-		GUI_SetBkColor(WHITE);
-		GUI_SetFont(&GUI_FontHelvetica32);	
-		GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
-		GUI_DispStringAt(widget->widgetTitle,(widget->rect.x1+widget->rect.x0)/2,(widget->rect.y1+widget->rect.y0)/2);
-	}
+	GUI_SetPenSize(2);
+	GUI_SetColor(widget->enable ? (widget->active ? 0x003fceff : 0x002f2f2f) : 0x00f0f0f0);
+	GUI_AA_DrawRoundedRect(widget->rect.x0+1,widget->rect.y0+1,widget->rect.x1-1,widget->rect.y1-1,(widget->rect.y1-widget->rect.y0-2)/2);
+	GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00f0f0f0);
+	GUI_SetBkColor(WHITE);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
+	GUI_DispStringAt(widget->widgetTitle,(widget->rect.x1+widget->rect.x0)/2,(widget->rect.y1+widget->rect.y0)/2);
 }
 
 

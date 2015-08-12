@@ -13,7 +13,7 @@ extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontVerdana32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
-static struct UIWidget widgetList[2];
+static struct UIWidget widgetList[10];
 struct UIPage pTest;
 
 static void save()
@@ -59,13 +59,15 @@ dbg("save 6");
 		GUI_SetColor(BLACK);
 		GUI_SetBkColor(WHITE);
 		GUI_SetFont(&GUI_FontHelvetica32);	
-		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_BOTTOM);
-		sprintf(str,"No.:%05d",++settings.serialno);
-		GUI_DispStringAt(str,0,210);
+		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+		settings.serialno++;
+		GUI_DispDecAt(settings.serialno,0,180,6);
+		GUI_DispDecAt(settings.iteration,0,260,6);
 }
-
 static void test()
 {
+	GUI_SetColor(WHITE);
+	GUI_FillRect(0,350,479,799);
 	if(settings.iteration==1)
 	{
 		geotest();
@@ -74,14 +76,11 @@ static void test()
 	}
 	else
 	{	
-		settings.ldrate=0;
-		settings.polarity=0;
 		widgetList[1].enable = 0;
 		while(settings.iteration-->0)
 		{
-			sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
-			//GUI_SetColor(WHITE);
-			//GUI_FillRect(0,350,479,799);
+			GUI_SetColor(WHITE);
+			GUI_FillRect(0,350,479,799);
 			geotest();
 			save();
 			if((GPIOA->IDR&0x7) == 0x2)
@@ -93,13 +92,12 @@ static void test()
 		}
 		widgetList[1].enable = 1;
 		settings.iteration=1;
-		sprintf(widgetList[0].widgetTitle,"Save");
 	}
 	widgetList[0].widgetDraw(&widgetList[0]);
 	widgetList[1].widgetDraw(&widgetList[1]);
 }
 
-static struct UIWidget widgetList[2] =
+static struct UIWidget widgetList[10] =
 {
 	{0,1,0,{20,700,219,760},"Save",0,NULL,NULL,drawButton,save},
 	{1,1,0,{260,700,459,760},"Test",0,NULL,NULL,drawButton,test},
@@ -107,9 +105,7 @@ static struct UIWidget widgetList[2] =
 
 static void pageInit(struct UIPage * page)
 {
-	char str[40];
-	
-	sprintf(page->pageTitle,geoparam[settings.paramnum].type);
+	char str[20];
 	
 	page->widgetSelected = 1;
 	page->widgetList[1].active = 1;
@@ -120,17 +116,12 @@ static void pageInit(struct UIPage * page)
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
 	GUI_SetFont(&GUI_FontHelvetica32);	
-	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_BOTTOM);
+	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
 	
-	sprintf(str,"File:%s",settings.filename);
-	GUI_DispStringAt(str,0,170);
-	sprintf(str,"No.:%05d",settings.serialno);
-	GUI_DispStringAt(str,0,210);
-	
-	if(settings.iteration>1)
-	{
-		sprintf(page->widgetList[0].widgetTitle,"%d",settings.iteration);
-	}
+	GUI_DispStringAt(settings.filename,0,140);
+	GUI_DispDecAt(settings.serialno,0,180,6);
+	GUI_DispStringAt(geoparam[settings.paramnum].type,0,220);
+	GUI_DispDecAt(settings.iteration,0,260,6);
 }
 	
 static void pageReturn(struct UIPage * page)

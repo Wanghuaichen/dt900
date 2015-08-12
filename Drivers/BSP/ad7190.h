@@ -12,7 +12,7 @@ void AD7190_SPI_Read(uint8_t* data,uint8_t bytesNumber);
 
 void AD7190_Reset(void);
 
-void AD7190_Setup(int leak);
+void AD7190_Setup();
 	
 void AD7190_Calibration(void);
 

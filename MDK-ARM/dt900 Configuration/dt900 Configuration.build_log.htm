@@ -22,20 +22,38 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 Z:\GitHub\dt900\MDK-ARM\dt900.uvproj
-Project File Date:  08/02/2015
+Project File Date:  08/12/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling ds18b20.c...
-..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration geotest - give arg types
-  void geotest();
-..\Drivers\BSP\ds18b20.c(39): warning:  #188-D: enumerated type mixed with another type
-        HAL_GPIO_WritePin (GPIOA,pin,code);
-..\Drivers\BSP\ds18b20.c: 2 warnings, 0 errors
+compiling pMain.c...
+..\Src\UI\ui.h(63): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Src\UI\ui.h(65): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
+  void UIKeyboard();
+..\Src\UI\ui.h(66): warning:  #1295-D: Deprecated declaration UITouch - give arg types
+  void UITouch();
+..\Src\UI\ui.h(67): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
+  void UIEventManager();
+..\Drivers\BSP\cyma568.h(4): warning:  #1295-D: Deprecated declaration tpTest - give arg types
+  void tpTest();
+..\Drivers\BSP\cyma568.h(5): warning:  #1295-D: Deprecated declaration ping - give arg types
+  void ping();
+..\Drivers\BSP\cyma568.h(6): warning:  #1295-D: Deprecated declaration touchreport - give arg types
+  void touchreport();
+..\Drivers\BSP\cyma568.h(7): warning:  #1295-D: Deprecated declaration HidDes - give arg types
+  void HidDes();
+..\Drivers\BSP\cyma568.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Src\UI\pMain.c(21): warning:  #223-D: function "DS18B20_Get_Temp" declared implicitly
+                        sprintf(str,"%f",DS18B20_Get_Temp());
+..\Src\UI\pMain.c(21): warning:  #181-D: argument is incompatible with corresponding format string conversion
+                        sprintf(str,"%f",DS18B20_Get_Temp());
+..\Src\UI\pMain.c: 11 warnings, 0 errors
 linking...
-Program Size: Code=122178 RO-data=157058 RW-data=6540 ZI-data=128348  
+Program Size: Code=115890 RO-data=156442 RW-data=6224 ZI-data=128016  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 2 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 11 Warning(s).
 </pre>
 </body>
 </html>

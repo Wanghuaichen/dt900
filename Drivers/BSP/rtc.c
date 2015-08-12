@@ -32,9 +32,3 @@ void RTC_Get()
   HAL_RTC_GetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN);
   HAL_RTC_GetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN);
 }
-
-void RTC_SetDateTime(RTC_DateTypeDef *sdatestructure, RTC_TimeTypeDef *stimestructure)
-{
-  HAL_RTC_SetDate(&hrtc,sdatestructure,RTC_FORMAT_BIN);
-  HAL_RTC_SetTime(&hrtc,stimestructure,RTC_FORMAT_BIN);
-}

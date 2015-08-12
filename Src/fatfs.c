@@ -45,12 +45,10 @@ void MX_FATFS_Init(void)
 {
   /*## FatFS: Link the USER driver ###########################*/
   retUSER = FATFS_LinkDriver(&USER_Driver, USER_Path);
-	FIL MyFile;
+
   /* USER CODE BEGIN Init */
   /* additional user code for init */  
 	f_mount(&FLASHFS, (TCHAR const*)USER_Path, 0);
-	if(f_open(&MyFile,"",FA_OPEN_ALWAYS | FA_WRITE) == FR_OK)
-		f_close(&MyFile);
   /* USER CODE END Init */
 }
 

@@ -10,15 +10,15 @@ extern struct KBInfo kbInfo;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
-static char StringArray[9][20];
-struct UIPage pSetup;
-static struct UIWidget widgetList[10];
+static char StringArray[8][20];
+struct UIPage pConfig;
+static struct UIWidget widgetList[9];
 
 static void kbCallBack()
 {
 	char str[20];
 	int val;
-	switch(pSetup.widgetSelected)
+	switch(pConfig.widgetSelected)
 	{
 		case 0:
 			strcpy(settings.filename,kbInfo.kbBuff);
@@ -41,10 +41,6 @@ static void kbCallBack()
 			val = atoi(kbInfo.kbBuff);
 			settings.strings = val>99 ? 99 : val<1 ? 1 : val;
 			break;
-		case 8:
-			val = atoi(kbInfo.kbBuff);
-			settings.iteration = val>999999 ? 999999 : val<1 ? 1 : val;
-			break;
 		default:
 			break;
 	}
@@ -53,7 +49,7 @@ static void kbCallBack()
 
 static void goSubSettings(struct UIWidget * widget)
 {
-	kbInfo.kbParent = &pSetup;
+	kbInfo.kbParent = &pConfig;
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
@@ -111,9 +107,6 @@ static void widgetInit(struct UIWidget * widget)
 		case 7:
 			sprintf(widget->widgetPtr,"std");
 			break;
-		case 8:
-			sprintf(widget->widgetPtr,"%d",settings.iteration);
-			break;
 		default:
 			break;
 	}
@@ -130,12 +123,11 @@ static void sensormode(struct UIWidget * widget)
 	settings.sensormode = (settings.sensormode+1)&0x3;
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
-	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
-	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
-	UIInfo.flagSettings = 1;
+	pConfig.widgetList[4].widgetInit(&pConfig.widgetList[4]);
+	pConfig.widgetList[4].widgetDraw(&pConfig.widgetList[4]);
 }
 
-static struct UIWidget widgetList[10] =
+static struct UIWidget widgetList[9] =
 {
 	{0,1,0,{0,120,479,179},"File Name",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
 	{1,1,0,{0,180,479,239},"Serial No.",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
@@ -145,14 +137,13 @@ static struct UIWidget widgetList[10] =
 	{5,1,0,{0,420,479,479},"Shunt(})",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
 	{6,1,0,{0,480,479,539},"String No.",0,StringArray[6],widgetInit,drawSLabel,goSubSettings},
 	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,NULL},
-	{8,1,0,{0,600,479,659},"Iteration",0,StringArray[8],widgetInit,drawSLabel,goSubSettings},
-	{9,1,0,{120,720,359,779},"Continue",0,NULL,NULL,drawButton,goSubPage},
+	{8,1,0,{120,660,359,719},"Continue",0,NULL,NULL,drawButton,goSubPage},
 };
 
-struct UIPage pSetup = 
+struct UIPage pConfig = 
 {
-	"Test",
-	10,//char widgetNum;
+	"Test Config",
+	9,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
 	NULL,
