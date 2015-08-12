@@ -5,7 +5,7 @@
 #include "rtc.h"
 #include "ostask.h"
 
-extern struct UIPage pSetup;
+extern struct UIPage pConfig;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
 extern struct Geophone geophone;
@@ -56,43 +56,20 @@ dbg("save 5");
   f_close(&MyFile);
 dbg("save 6");	
 	
-		GUI_SetColor(BLACK);
-		GUI_SetBkColor(WHITE);
-		GUI_SetFont(&GUI_FontHelvetica32);	
-		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-		settings.serialno++;
-		GUI_DispDecAt(settings.serialno,0,180,6);
-		GUI_DispDecAt(settings.iteration,0,260,6);
+	GUI_SetColor(BLACK);
+	GUI_SetBkColor(WHITE);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+	settings.serialno = settings.serialno+1;
+	GUI_DispDecAt(settings.serialno,0,180,5);
 }
 static void test()
 {
 	GUI_SetColor(WHITE);
 	GUI_FillRect(0,350,479,799);
-	if(settings.iteration==1)
-	{
-		geotest();
-		sprintf(widgetList[1].widgetTitle,"Retest");
-		widgetList[0].enable = 1;
-	}
-	else
-	{	
-		widgetList[1].enable = 0;
-		while(settings.iteration-->0)
-		{
-			GUI_SetColor(WHITE);
-			GUI_FillRect(0,350,479,799);
-			geotest();
-			save();
-			if((GPIOA->IDR&0x7) == 0x2)
-			{
-				settings.iteration=0;
-				break;
-			}
-			osDelay(3000);
-		}
-		widgetList[1].enable = 1;
-		settings.iteration=1;
-	}
+	geotest();
+	sprintf(widgetList[1].widgetTitle,"Retest");
+	widgetList[0].enable = 1;
 	widgetList[0].widgetDraw(&widgetList[0]);
 	widgetList[1].widgetDraw(&widgetList[1]);
 }
@@ -119,14 +96,13 @@ static void pageInit(struct UIPage * page)
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
 	
 	GUI_DispStringAt(settings.filename,0,140);
-	GUI_DispDecAt(settings.serialno,0,180,6);
+	GUI_DispDecAt(settings.serialno,0,180,5);
 	GUI_DispStringAt(geoparam[settings.paramnum].type,0,220);
-	GUI_DispDecAt(settings.iteration,0,260,6);
 }
 	
 static void pageReturn(struct UIPage * page)
 {
-	PageJump(&pSetup);
+	PageJump(&pConfig);
 }
 
 struct UIPage pTest = 

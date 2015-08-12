@@ -38,7 +38,6 @@ void geotest()
 	AMP_EN(1);
 	DAC_SET(DACMID);
 	MUX(1);
-	HAL_Delay(100);
 	AD7190_Reset();
 	AD7190_Calibration();
 	AD7190_Setup();
@@ -62,8 +61,8 @@ void geotest()
 	GUI_DispStringAt(str,0,500);
 	
 	AD7190_PowerDown();
-	AMP_EN(0);
 	AP_EN(0);
+	AMP_EN(0);
 	MUX(0);
 }
 

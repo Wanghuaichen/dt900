@@ -1,5 +1,6 @@
 #include "ui.h"
-#include "cyma568.h"
+#include "ds18b20.h"
+
 extern struct UIPage pSettings;
 extern struct UIPage pSetup;
 
@@ -10,17 +11,13 @@ char str[20];
 	{
 		case 0:
 			PageJump(&pSetup);
-			//tpTest();
-			//touchreport();
 			break;
 		case 1:
 			PageJump(&pSettings);
-			//ping();
 			break;
 		case 2:
 			sprintf(str,"%f",DS18B20_Get_Temp());
 			GUI_DispStringAt(str,0,750);
-			//HidDes();
 			break;
 		case 3:
 			break;
