@@ -1,18 +1,21 @@
 #include "ui.h"
 #include "geotest.h"
 #include <stdlib.h>
+#include "ostask.h"
 
 extern struct UIPage pMain;
 extern struct UIPage pKeyboard;
 extern struct UIPage pGeoParam;
 extern struct UIPage pTest;
+extern struct UIPage pString;
+extern struct UIPage pFlow;
 extern struct KBInfo kbInfo;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
-static char StringArray[8][20];
+static char StringArray[10][30];
 struct UIPage pSetup;
-static struct UIWidget widgetList[9];
+static struct UIWidget widgetList[11];
 
 static void kbCallBack()
 {
@@ -35,11 +38,10 @@ static void kbCallBack()
 		case 5:
 			val = atoi(kbInfo.kbBuff);
 			settings.shunt = val>9999 ? 9999 : val<0 ? 0 : val;
-			if(settings.shunt>9999)
-				settings.shunt = 9999;
-		case 6:
+			break;
+		case 9:
 			val = atoi(kbInfo.kbBuff);
-			settings.strings = val>99 ? 99 : val<1 ? 1 : val;
+			settings.iteration = val>99999 ? 99999 : val<1 ? 1 : val;
 			break;
 		default:
 			break;
@@ -62,6 +64,12 @@ static void goSubPage(struct UIWidget * widget)
 	{
 		case 2:
 			PageJump(&pGeoParam);
+			break;
+		case 6:
+			PageJump(&pString);
+			break;
+		case 7:
+			PageJump(&pFlow);
 			break;
 		default:
 			PageJump(&pTest);
@@ -102,10 +110,21 @@ static void widgetInit(struct UIWidget * widget)
 			sprintf(widget->widgetPtr,"%d",settings.shunt);
 			break;
 		case 6:
-			sprintf(widget->widgetPtr,"%d",settings.strings);
+			sprintf(widget->widgetPtr,"%d{%d %d/%d/%d",
+			settings.series,settings.parallel,settings.lineR,settings.leadin,settings.interval);
 			break;
 		case 7:
 			sprintf(widget->widgetPtr,"std");
+			if(settings.ldrate)
+				sprintf(widget->widgetPtr,"%s/ld:%d",widget->widgetPtr,settings.ldrate);
+			if(settings.polarity)
+				sprintf(widget->widgetPtr,"%s/pol",widget->widgetPtr);
+			break;
+		case 8:
+			sprintf(widget->widgetPtr,settings.constant ? "Velocity" : "Excurtion");
+			break;
+		case 9:
+			sprintf(widget->widgetPtr,"%d",settings.iteration);
 			break;
 		default:
 			break;
@@ -126,9 +145,18 @@ static void sensormode(struct UIWidget * widget)
 	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
 	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
 	UIInfo.flagSettings = 1;
+	reTemp();
 }
 
-static struct UIWidget widgetList[9] =
+static void constant(struct UIWidget * widget)
+{
+	settings.constant = settings.constant ? 0 : 1;
+	widget->widgetInit(widget);
+	widget->widgetDraw(widget);
+	UIInfo.flagSettings = 1;
+}
+
+static struct UIWidget widgetList[11] =
 {
 	{0,1,0,{0,120,479,179},"File Name",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
 	{1,1,0,{0,180,479,239},"Serial No.",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
@@ -136,15 +164,17 @@ static struct UIWidget widgetList[9] =
 	{3,1,0,{0,300,479,359},"Sensor Mode",0,StringArray[3],widgetInit,drawSLabel,sensormode},
 	{4,0,0,{0,360,479,419},"Temperature",0,StringArray[4],widgetInit,drawSLabel,goSubSettings},
 	{5,1,0,{0,420,479,479},"Shunt(})",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
-	{6,1,0,{0,480,479,539},"String No.",0,StringArray[6],widgetInit,drawSLabel,goSubSettings},
-	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,NULL},
-	{8,1,0,{120,660,359,719},"Continue",0,NULL,NULL,drawButton,goSubPage},
+	{6,1,0,{0,480,479,539},"String",0,StringArray[6],widgetInit,drawSLabel,goSubPage},
+	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,goSubPage},
+	{8,1,0,{0,600,479,659},"@Constant",0,StringArray[8],widgetInit,drawSLabel,constant},
+	{9,1,0,{0,660,479,719},"Iteration",0,StringArray[9],widgetInit,drawSLabel,goSubSettings},
+	{10,1,0,{120,740,359,779},"Continue",0,NULL,NULL,drawButton,goSubPage},
 };
 
 struct UIPage pSetup = 
 {
 	"Test",
-	9,//char widgetNum;
+	11,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
 	NULL,

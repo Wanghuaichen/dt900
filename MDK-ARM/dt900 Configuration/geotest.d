@@ -56,3 +56,4 @@ dt900 configuration\geotest.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 dt900 configuration\geotest.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 dt900 configuration\geotest.o: ..\Src\UI\ui.h
 dt900 configuration\geotest.o: ..\Inc\ostask.h
+dt900 configuration\geotest.o: ..\Drivers\BSP\beep.h

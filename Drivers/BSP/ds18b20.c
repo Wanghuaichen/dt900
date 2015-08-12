@@ -7,7 +7,8 @@ extern struct Settings settings;
 static void delay_us(int code)
 {
 	volatile int i;
-	for(i=0;i<code*50;i++);
+	int cycle = settings.iteration;
+	for(i=0;i<code*cycle;i++);
 }
 
 void DS18B20_IO_IN()
@@ -58,15 +59,16 @@ unsigned char DS18B20_Check(void)
 {   
 	uint8_t retry=0;
 	DS18B20_IO_IN();
-    while (DS18B20_DQ_IN()&&retry<200)
+  while (DS18B20_DQ_IN()&&retry<200)
 	{
 		retry++;
 		delay_us(1);
 	};
 	if(retry>=200)
 		return 1;
-		else retry=0;
-    while (!DS18B20_DQ_IN()&&retry<240)
+	else
+		retry=0;
+  while (!DS18B20_DQ_IN()&&retry<240)
 	{
 		retry++;
 		delay_us(1);
@@ -147,7 +149,8 @@ float DS18B20_Get_Temp(void)
 		
 		DS18B20_Start();
     DS18B20_Rst();
-    DS18B20_Check();	 
+    if(DS18B20_Check())
+			return 333;
     DS18B20_Write_Byte(0xcc);// skip rom
     DS18B20_Write_Byte(0xbe);// convert	    
     TL=DS18B20_Read_Byte(); // LSB   
@@ -162,6 +165,5 @@ float DS18B20_Get_Temp(void)
     tem<<=8;    
     tem+=TL;//»ñµÃµ×°ËÎ»
 		tem = temp ? tem : -tem;
-		return (int)(0.625*tem)/10.0;
-		//return 0.0625*tem;   
+		return 0.0625*tem;   
 } 
