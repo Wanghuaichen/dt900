@@ -147,14 +147,17 @@ void drawButton(struct UIWidget* widget)
 {
 	GUI_SetColor(WHITE);
 	GUI_FillRect(widget->rect.x0,widget->rect.y0,widget->rect.x1,widget->rect.y1);	
-	GUI_SetPenSize(2);
-	GUI_SetColor(widget->enable ? (widget->active ? 0x003fceff : 0x002f2f2f) : 0x00f0f0f0);
-	GUI_AA_DrawRoundedRect(widget->rect.x0+1,widget->rect.y0+1,widget->rect.x1-1,widget->rect.y1-1,(widget->rect.y1-widget->rect.y0-2)/2);
-	GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00f0f0f0);
-	GUI_SetBkColor(WHITE);
-	GUI_SetFont(&GUI_FontHelvetica32);	
-	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
-	GUI_DispStringAt(widget->widgetTitle,(widget->rect.x1+widget->rect.x0)/2,(widget->rect.y1+widget->rect.y0)/2);
+	if(widget->enable)
+	{
+		GUI_SetPenSize(2);
+		GUI_SetColor(widget->enable ? (widget->active ? 0x003fceff : 0x002f2f2f) : 0x00f0f0f0);
+		GUI_AA_DrawRoundedRect(widget->rect.x0+1,widget->rect.y0+1,widget->rect.x1-1,widget->rect.y1-1,(widget->rect.y1-widget->rect.y0-2)/2);
+		GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00f0f0f0);
+		GUI_SetBkColor(WHITE);
+		GUI_SetFont(&GUI_FontHelvetica32);	
+		GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
+		GUI_DispStringAt(widget->widgetTitle,(widget->rect.x1+widget->rect.x0)/2,(widget->rect.y1+widget->rect.y0)/2);
+	}
 }
 
 

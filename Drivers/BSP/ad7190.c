@@ -19,13 +19,14 @@ void AD7190_Reset(void)
 	HAL_Delay(10);
 }
 
-void AD7190_Setup()
+void AD7190_Setup(int leak)
 {
 	uint8_t mode[4] = {0x08,0x04,0x00,0x01};
 	uint8_t conf[4] = {0x10,0x00,0x40,0x00};
-	AD7190_SPI_Write(conf,4);
+	uint8_t conf_leak[4] = {0x10,0x00,0x20,0x00};
+	AD7190_SPI_Write(leak ? conf_leak : conf,4);
 	AD7190_SPI_Write(mode,4);
-	HAL_Delay(100);
+	HAL_Delay(10);
 }
 
 void AD7190_Calibration(void)

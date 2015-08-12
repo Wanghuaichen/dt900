@@ -3,17 +3,13 @@
 
 #include "stm32f4xx.h"
 
-#define R_ref 1000.0
+#define R_ref 470.0
 #define PI 3.1415926
 //#define ADCMID 0x800000
 #define DACMID 0x7fff
 #define T_DELAY 500
 #define AMPGAIN 5
 
-void step0();
-void step1();
-void step2();
-void step3();
 void geotest();
 
 struct  Geophone         //parameters of target geonphone under test
@@ -32,6 +28,7 @@ struct  Geophone         //parameters of target geonphone under test
 	uint32_t impe;
 	uint32_t minZ;
 	uint32_t maxZ;
+	float leakage;
 };
 
 struct GeoParam			//geophone parameters in the list
@@ -61,33 +58,33 @@ struct GeoParam			//geophone parameters in the list
 
 struct Settings		//test settings & system settings
 {
+	uint32_t magic;
+	
+	uint8_t filename[20];
+	uint32_t serialno;
+	
 	uint32_t totalparam;
 	uint32_t paramnum;
 	
-	uint32_t sequence;
-	uint32_t ldrate;
-	uint32_t shunt;
-	uint32_t strings;
-	
-	uint32_t serialno;
-	uint8_t filename[20];
-	uint8_t barcode[20];
-	
 	uint32_t sensormode;
 	float temperature;
+	
+	uint32_t shunt;
+	uint32_t series;
+	uint32_t parallel;
+	uint32_t lineR; 
+	uint32_t leadin;
+	uint32_t interval;
+	
+	uint32_t ldrate;
+	uint32_t polarity;
+	uint32_t constant; //1 velocity 0 excurtion
 	uint32_t iteration;
 	
 	uint32_t buzzer;
 	uint32_t backlight;
 	uint32_t sleeptime;
 	uint32_t shuttime;
-	
-	uint32_t reserved1;
-	uint32_t reserved2;
-	uint32_t reserved3;
-	uint32_t reserved4;
-	
-	uint32_t magic;
 };
 
 

@@ -48,10 +48,13 @@ void Board_Init()
 		settings.buzzer = 1;
 		settings.iteration = 1;
 		settings.serialno = 1;
-		settings.strings = 1;
+		settings.series = 1;
+		settings.parallel = 1;
+		settings.constant=1; //1 velocity 0 excurtion
 		settings.sleeptime = 5;
 		settings.shuttime = 20;
 		settings.temperature = 25;
+		sprintf(settings.filename,"DTCCSOLO");
 		FlashProgram();
 	}
 	

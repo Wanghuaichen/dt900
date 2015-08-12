@@ -882,11 +882,6 @@
               <FilePath>..\Src\UI\pEditS.c</FilePath>
             </File>
             <File>
-              <FileName>pConfig.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\UI\pConfig.c</FilePath>
-            </File>
-            <File>
               <FileName>pGeoParam.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pGeoParam.c</FilePath>
@@ -910,6 +905,16 @@
               <FileName>pTime.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pTime.c</FilePath>
+            </File>
+            <File>
+              <FileName>pString.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pString.c</FilePath>
+            </File>
+            <File>
+              <FileName>pFlow.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pFlow.c</FilePath>
             </File>
           </Files>
         </Group>

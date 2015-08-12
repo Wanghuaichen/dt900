@@ -2,16 +2,16 @@
 #include "geotest.h"
 #include "flash.h"
 
-extern struct UIPage pConfig;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
+extern struct UIPage pSetup;
 
 static void selected(struct UIWidget * widget)
 {
 	UIInfo.flagSettings = 1;
 	settings.paramnum = widget->widgetIndex;
-	PageJump(&pConfig);
+	PageJump(&pSetup);
 }
 	
 static void widgetInit(struct UIWidget * widget)
@@ -48,7 +48,7 @@ static void pageInit(struct UIPage * page)
 	
 static void pageReturn(struct UIPage * page)
 {
-	PageJump(&pConfig);
+	PageJump(&pSetup);
 }
 
 struct UIPage pGeoParam = 

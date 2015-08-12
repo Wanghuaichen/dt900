@@ -22,95 +22,90 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 Z:\GitHub\dt900\MDK-ARM\dt900.uvproj
-Project File Date:  08/01/2015
+Project File Date:  08/02/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling ccsbcs.c...
-compiling diskio.c...
-compiling syscall.c...
-compiling ff.c...
-compiling ff_gen_drv.c...
-compiling fatfs.c...
-compiling user_diskio.c...
-compiling main.c...
-..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration step0 - give arg types
-  void step0();
-..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration step1 - give arg types
-  void step1();
-..\Inc\geotest.h(15): warning:  #1295-D: Deprecated declaration step2 - give arg types
-  void step2();
-..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration step3 - give arg types
-  void step3();
-..\Inc\geotest.h(17): warning:  #1295-D: Deprecated declaration geotest - give arg types
+compiling geotest.c...
+..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration geotest - give arg types
   void geotest();
-..\Drivers\BSP\rtc.h(9): warning:  #1295-D: Deprecated declaration RTC_Set - give arg types
-  void RTC_Set();
-..\Drivers\BSP\rtc.h(10): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
-  void RTC_Get();
-..\Src\UI\ui.h(63): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
-  void UI_Init();
-..\Src\UI\ui.h(65): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
-  void UIKeyboard();
-..\Src\UI\ui.h(66): warning:  #1295-D: Deprecated declaration UITouch - give arg types
-  void UITouch();
-..\Src\UI\ui.h(67): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
-  void UIEventManager();
-..\Src\usbd_mass_storage\usb_conf.h(233): warning:  #47-D: incompatible redefinition of macro "__ALIGN_BEGIN" (declared at line 151 of "..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h")
-    #define __ALIGN_BEGIN
-..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
-  void reTemp();
-..\Inc\ostask.h(8): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\Src\main.c(132): warning:  #223-D: function "usbd_OpenMassStorage" declared implicitly
-        usbd_OpenMassStorage();
-..\Src\main.c(153): warning:  #188-D: enumerated type mixed with another type
-        osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 2048);
-..\Src\main.c: 16 warnings, 0 errors
-compiling pTest.c...
-..\Src\UI\ui.h(63): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
-  void UI_Init();
-..\Src\UI\ui.h(65): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
-  void UIKeyboard();
-..\Src\UI\ui.h(66): warning:  #1295-D: Deprecated declaration UITouch - give arg types
-  void UITouch();
-..\Src\UI\ui.h(67): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
-  void UIEventManager();
-..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration step0 - give arg types
-  void step0();
-..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration step1 - give arg types
-  void step1();
-..\Inc\geotest.h(15): warning:  #1295-D: Deprecated declaration step2 - give arg types
-  void step2();
-..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration step3 - give arg types
-  void step3();
-..\Inc\geotest.h(17): warning:  #1295-D: Deprecated declaration geotest - give arg types
-  void geotest();
+..\Drivers\BSP\ad7190.h(21): warning:  #1295-D: Deprecated declaration AD7190_PowerDown - give arg types
+  void AD7190_PowerDown();
 ..\Drivers\BSP\flash.h(10): warning:  #1295-D: Deprecated declaration FlashProgram - give arg types
   void FlashProgram();
-..\Drivers\BSP\rtc.h(9): warning:  #1295-D: Deprecated declaration RTC_Set - give arg types
-  void RTC_Set();
-..\Drivers\BSP\rtc.h(10): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
-  void RTC_Get();
+..\Src\UI\ui.h(65): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Src\UI\ui.h(67): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
+  void UIKeyboard();
+..\Src\UI\ui.h(68): warning:  #1295-D: Deprecated declaration UITouch - give arg types
+  void UITouch();
+..\Src\UI\ui.h(69): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
+  void UIEventManager();
 ..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
   void reTemp();
 ..\Inc\ostask.h(8): warning:  #1-D: last line of file ends without a newline
   #endif
-..\Src\UI\pTest.c(54): warning:  #223-D: function "strlen" declared implicitly
-        f_write(&MyFile, str, strlen(str), (void *)&wbytes);
-..\Src\UI\pTest.c(102): warning:  #144-D: a value of type "void (*)()" cannot be used to initialize an entity of type "void (*)(struct UIWidget *)"
-        {0,1,0,{20,700,219,760},"Save",0,NULL,NULL,drawButton,save},
-..\Src\UI\pTest.c(103): warning:  #144-D: a value of type "void (*)()" cannot be used to initialize an entity of type "void (*)(struct UIWidget *)"
-        {1,1,0,{260,700,459,760},"Test",0,NULL,NULL,drawButton,test},
-..\Src\UI\pTest.c(121): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
-        GUI_DispStringAt(settings.filename,0,140);
-..\Src\UI\pTest.c(108): warning:  #177-D: variable "str" was declared but never referenced
-        char str[20];
-..\Src\UI\pTest.c: 19 warnings, 0 errors
+..\Drivers\BSP\beep.h(6): warning:  #1295-D: Deprecated declaration beepon - give arg types
+  void beepon();
+..\Drivers\BSP\beep.h(7): warning:  #1295-D: Deprecated declaration beepoff - give arg types
+  void beepoff();
+..\Src\geotest.c(31): warning:  #1295-D: Deprecated declaration step0 - give arg types
+  static void step0();
+..\Src\geotest.c(32): warning:  #1295-D: Deprecated declaration step1 - give arg types
+  static void step1();
+..\Src\geotest.c(33): warning:  #1295-D: Deprecated declaration step2 - give arg types
+  static void step2();
+..\Src\geotest.c(34): warning:  #1295-D: Deprecated declaration step3 - give arg types
+  static void step3();
+..\Src\geotest.c(35): warning:  #1295-D: Deprecated declaration polarity - give arg types
+  static void polarity();
+..\Src\geotest.c(36): warning:  #1295-D: Deprecated declaration contidrive - give arg types
+  static void contidrive();
+..\Src\geotest.c(181): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S;
+..\Src\geotest.c(183): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        volt = volt*R_ref/totalResist;
+..\Src\geotest.c(184): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(volt>2.45) volt=2.45;
+..\Src\geotest.c(198): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.resi /= 1+0.004*(geophone.temp-geo->T);
+..\Src\geotest.c(219): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        volt = volt*R_ref/totalResist;
+..\Src\geotest.c(220): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(volt>2.45) volt=2.45;
+..\Src\geotest.c(257): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.sens = sqrt(2*PI*geophone.freq*geo->M*settings.series*settings.parallel*abs(a1-ADCMID)*AMPGAIN/0xffffff*5.0/(volt/R_ref)*exp(atan(t)/t));
+..\Src\geotest.c(258): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.damp /= 1-0.002*(geophone.temp-geo->T);
+..\Src\geotest.c(275): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        mag = mag*R_ref/totalZ;
+..\Src\geotest.c(276): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(mag>2.45) mag=2.45;
+..\Src\geotest.c(291): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.dist = 100.0*(Inbuff[2]+Inbuff[3])/Inbuff[1];
+..\Src\geotest.c(264): warning:  #177-D: variable "fs" was declared but never referenced
+        int fs = 4096;
+..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
+..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
+..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
+..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
+..\Src\geotest.c(345): warning:  #68-D: integer conversion resulted in a change of sign
+                                geophone.polarity=-1;
+..\Src\geotest.c(391): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        mag = mag*R_ref/totalZ;
+..\Src\geotest.c(393): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(mag>2.45) mag=2.45;
+..\Src\geotest.c(364): warning:  #177-D: variable "fs" was declared but never referenced
+        int fs = 4096;
+..\Src\geotest.c: 37 warnings, 0 errors
 linking...
-Program Size: Code=118026 RO-data=156994 RW-data=6944 ZI-data=128256  
+Program Size: Code=122194 RO-data=157058 RW-data=6552 ZI-data=128352  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 35 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 37 Warning(s).
 </pre>
 </body>
 </html>
