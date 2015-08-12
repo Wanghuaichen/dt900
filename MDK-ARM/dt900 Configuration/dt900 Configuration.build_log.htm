@@ -26,86 +26,16 @@ Project File Date:  08/02/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling geotest.c...
+compiling ds18b20.c...
 ..\Inc\geotest.h(13): warning:  #1295-D: Deprecated declaration geotest - give arg types
   void geotest();
-..\Drivers\BSP\ad7190.h(21): warning:  #1295-D: Deprecated declaration AD7190_PowerDown - give arg types
-  void AD7190_PowerDown();
-..\Drivers\BSP\flash.h(10): warning:  #1295-D: Deprecated declaration FlashProgram - give arg types
-  void FlashProgram();
-..\Src\UI\ui.h(65): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
-  void UI_Init();
-..\Src\UI\ui.h(67): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
-  void UIKeyboard();
-..\Src\UI\ui.h(68): warning:  #1295-D: Deprecated declaration UITouch - give arg types
-  void UITouch();
-..\Src\UI\ui.h(69): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
-  void UIEventManager();
-..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
-  void reTemp();
-..\Inc\ostask.h(8): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\Drivers\BSP\beep.h(6): warning:  #1295-D: Deprecated declaration beepon - give arg types
-  void beepon();
-..\Drivers\BSP\beep.h(7): warning:  #1295-D: Deprecated declaration beepoff - give arg types
-  void beepoff();
-..\Src\geotest.c(31): warning:  #1295-D: Deprecated declaration step0 - give arg types
-  static void step0();
-..\Src\geotest.c(32): warning:  #1295-D: Deprecated declaration step1 - give arg types
-  static void step1();
-..\Src\geotest.c(33): warning:  #1295-D: Deprecated declaration step2 - give arg types
-  static void step2();
-..\Src\geotest.c(34): warning:  #1295-D: Deprecated declaration step3 - give arg types
-  static void step3();
-..\Src\geotest.c(35): warning:  #1295-D: Deprecated declaration polarity - give arg types
-  static void polarity();
-..\Src\geotest.c(36): warning:  #1295-D: Deprecated declaration contidrive - give arg types
-  static void contidrive();
-..\Src\geotest.c(181): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S;
-..\Src\geotest.c(183): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        volt = volt*R_ref/totalResist;
-..\Src\geotest.c(184): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        if(volt>2.45) volt=2.45;
-..\Src\geotest.c(198): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        geophone.resi /= 1+0.004*(geophone.temp-geo->T);
-..\Src\geotest.c(219): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        volt = volt*R_ref/totalResist;
-..\Src\geotest.c(220): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        if(volt>2.45) volt=2.45;
-..\Src\geotest.c(257): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        geophone.sens = sqrt(2*PI*geophone.freq*geo->M*settings.series*settings.parallel*abs(a1-ADCMID)*AMPGAIN/0xffffff*5.0/(volt/R_ref)*exp(atan(t)/t));
-..\Src\geotest.c(258): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        geophone.damp /= 1-0.002*(geophone.temp-geo->T);
-..\Src\geotest.c(275): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        mag = mag*R_ref/totalZ;
-..\Src\geotest.c(276): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        if(mag>2.45) mag=2.45;
-..\Src\geotest.c(291): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        geophone.dist = 100.0*(Inbuff[2]+Inbuff[3])/Inbuff[1];
-..\Src\geotest.c(264): warning:  #177-D: variable "fs" was declared but never referenced
-        int fs = 4096;
-..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
-..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
-..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
-..\Src\geotest.c(340): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
-..\Src\geotest.c(345): warning:  #68-D: integer conversion resulted in a change of sign
-                                geophone.polarity=-1;
-..\Src\geotest.c(391): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        mag = mag*R_ref/totalZ;
-..\Src\geotest.c(393): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        if(mag>2.45) mag=2.45;
-..\Src\geotest.c(364): warning:  #177-D: variable "fs" was declared but never referenced
-        int fs = 4096;
-..\Src\geotest.c: 37 warnings, 0 errors
+..\Drivers\BSP\ds18b20.c(39): warning:  #188-D: enumerated type mixed with another type
+        HAL_GPIO_WritePin (GPIOA,pin,code);
+..\Drivers\BSP\ds18b20.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=122194 RO-data=157058 RW-data=6552 ZI-data=128352  
+Program Size: Code=122178 RO-data=157058 RW-data=6540 ZI-data=128348  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 37 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 2 Warning(s).
 </pre>
 </body>
 </html>

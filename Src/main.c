@@ -98,10 +98,6 @@ static void MX_TIM5_Init(void);
 static void MX_TIM3_Init(void);
 static void RTC_Init(void);
 
-
-char FIRMWARE_VERSION[]={'1','.','0','0','\0'};
-char HARDWARE_VERSION[]={'1','.','0','0','\0'};
-
 int main(void)
 {
 //	uint8_t Tx=0x33;
