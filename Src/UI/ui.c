@@ -3,6 +3,7 @@
 #include "pwr.h"
 #include "lcd.h"
 #include "geotest.h"
+#include "cyma568.h"
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
@@ -28,7 +29,7 @@ void UIKeyboard()
 	else
 	{
 		UIInfo.keyCombo++;
-		if(UIInfo.keyCombo%50==0)
+		if(UIInfo.keyCombo%500==0)
 		{
 				UIInfo.KeyEvent = UIInfo.currentKey;
 		}
@@ -38,21 +39,127 @@ void UIKeyboard()
 
 void UITouch()
 {
-	//keyCombo=0;
+	tpScan();
+	
 }
 	
 void UIEventManager()
 {
-	if(UIInfo.keyCombo>6000*settings.shuttime || (UIInfo.keyCombo==250 && UIInfo.KeyEvent==KEY_CANCEL))
+	UITouch();
+	if(UIInfo.TouchEvent==TOUCH_NONE || UIInfo.TouchEvent==TOUCH_LIFTOFF)
+		UIKeyboard();
+	
+	if(UIInfo.keyCombo>60000*settings.sleeptime && !UIInfo.insleep)
+	{
+		LCD_PWR(0);
+		UIInfo.insleep=1;
+	}
+	
+	if(UIInfo.keyCombo>60000*settings.shuttime || (UIInfo.keyCombo==2500 && UIInfo.KeyEvent==KEY_CANCEL))
 	{
 		LCD_PWR(0);
 		DP_EN(0);
 	}
 	
+	if(UIInfo.insleep)
+	{
+		if(UIInfo.TouchEvent==TOUCH_LIFTOFF || (UIInfo.KeyEvent==KEY_NONE && UIInfo.keyCombo==0))
+		{
+			UIInfo.TouchEvent=UIInfo.KeyEvent=0;
+			UIInfo.insleep = 0;
+			UIInfo.keyCombo = 0;
+			LCD_PWR(1);
+		}
+		else
+			return;
+	}
+	
+	if(UIInfo.TouchEvent!=TOUCH_NONE)
+		UIInfo.PagePtr->touch(UIInfo.PagePtr);
 	if(UIInfo.KeyEvent!=KEY_NONE)
 		UIInfo.PagePtr->keyboard(UIInfo.PagePtr);
 }
 
+void touchEvent(struct UIPage *page)
+{
+	int index;
+	
+	if(UIInfo.TouchEvent==TOUCH_TOUCHDOWN)
+	{
+		UIInfo.keyCombo = 0;
+		if(page->widgetSelected>=0)
+		{
+			page->widgetList[page->widgetSelected].active=0;
+			page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+			page->widgetSelected = -1;
+		}
+		
+		if(UIInfo.tpY<120)
+		{
+			if(page->pageReturn)
+			{
+				page->pageReturn(page);
+			}
+			return;
+		}
+		
+		for(index=0;index<page->widgetNum;index++)
+		{
+			if(UIInfo.tpX>=page->widgetList[index].rect.x0 && UIInfo.tpX<=page->widgetList[index].rect.x1 
+				&& UIInfo.tpY>=page->widgetList[index].rect.y0 && UIInfo.tpY<=page->widgetList[index].rect.y1)
+			{
+				if(page->widgetList[index].enable)
+				{
+					UIInfo.widgetactive = 1;
+					page->widgetSelected = index;
+					page->widgetList[page->widgetSelected].active=1;
+					page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+				}
+				break;
+			}
+		}
+		if(page->widgetSelected>=0 && page==&pKeyboard)
+		{
+			if(page->widgetList[page->widgetSelected].widgetAct)
+				page->widgetList[page->widgetSelected].widgetAct(&page->widgetList[page->widgetSelected]);
+		}
+	}
+	else if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.widgetactive)
+	{
+		UIInfo.keyCombo++;
+		if(page==&pKeyboard)
+		{
+			if(page->widgetList[page->widgetSelected].widgetAct)
+				page->widgetList[page->widgetSelected].widgetAct(&page->widgetList[page->widgetSelected]);
+		}
+		else if(UIInfo.keyCombo>1500)
+		{
+			page->widgetList[page->widgetSelected].active=0;
+			page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+			page->widgetSelected = -1;
+			UIInfo.widgetactive = 0;
+		}
+	}
+	else if(UIInfo.TouchEvent==TOUCH_LIFTOFF)
+	{
+		UIInfo.keyCombo=0;
+		UIInfo.TouchEvent=TOUCH_NONE;
+		if(UIInfo.widgetactive)
+		{
+			UIInfo.widgetactive = 0;
+			if(page==&pKeyboard)
+			{
+				page->widgetList[page->widgetSelected].active=0;
+				page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+				page->widgetSelected = -1;
+			}
+			else
+				page->widgetList[page->widgetSelected].widgetAct(&page->widgetList[page->widgetSelected]);
+		}
+	}
+}
+	
+	
 void keyboardEvent(struct UIPage *page)
 {
 	if(UIInfo.KeyEvent==KEY_CANCEL && UIInfo.keyCombo==0)
@@ -92,11 +199,6 @@ void keyboardEvent(struct UIPage *page)
 			page->widgetList[page->widgetSelected].widgetAct(&page->widgetList[page->widgetSelected]);
 	}
 	UIInfo.KeyEvent = KEY_NONE;
-}
-
-void touchEvent(struct UIPage *page)
-{
-	
 }
 
 void UI_Init()

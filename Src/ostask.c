@@ -7,7 +7,6 @@
 #include "beep.h"
 #include "pwr.h"
 #include "cmsis_os.h"
-#include "cyma568.h"
 #include "ds18b20.h"
 //#define _DEBUG
 
@@ -23,10 +22,7 @@ void StartDefaultTask(void const * argument)
 {
 	char str[20];
 	static unsigned int i=0;
-#ifdef _DEBUG	
-	GUI_SetColor(WHITE);
-	GUI_FillRect(0,0,479,799);
-#else
+#ifndef _DEBUG	
 	reTemp();
 #endif
 	for(;;)
@@ -69,15 +65,20 @@ void StartDefaultTask(void const * argument)
 
 void KeyTask(void const * argument)
 {
+#ifdef _DEBUG	
+	int ret;
+	GUI_SetColor(WHITE);
+	GUI_FillRect(0,0,479,799);
+	
+	GUI_SetColor(BLACK);
+	GUI_SetBkColor(WHITE);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+#endif
   for(;;)
   {
-#ifdef _DEBUG
-		touchreport();
-#endif
-		UIKeyboard();
-		UITouch();
 		UIEventManager();
-		osDelay(10);
+		osDelay(1);
   }
 }
 
@@ -106,6 +107,7 @@ void reTemp()
 			break;
 		default:
 			DS18B20_Get_Temp();
+			HAL_Delay(200);
 			curTemperature = DS18B20_Get_Temp();
 			sprintf(str,"  ] %.1f~C  ",curTemperature);
 			break;

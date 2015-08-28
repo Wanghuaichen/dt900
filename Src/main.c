@@ -587,7 +587,6 @@ void USB_MspDeInit()
     __USB_OTG_FS_CLK_DISABLE();
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11|GPIO_PIN_12);
     HAL_NVIC_DisableIRQ(OTG_FS_IRQn);
-
 }
 
 

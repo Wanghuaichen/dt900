@@ -50,3 +50,4 @@ dt900 configuration\ui.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_
 dt900 configuration\ui.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\ui.o: ..\Drivers\BSP\lcd.h
 dt900 configuration\ui.o: ..\Inc\geotest.h
+dt900 configuration\ui.o: ..\Drivers\BSP\cyma568.h

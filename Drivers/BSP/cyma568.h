@@ -5,4 +5,11 @@ void tpTest();
 void ping();
 void touchreport();
 void HidDes();
+void sysinfo();
+int CalibrateIDAC();
+int SuspendScan();
+int ResumeScan();
+int ShortTest();
+int OpenTest();
+void tpScan();
 #endif

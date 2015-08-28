@@ -19,12 +19,12 @@ static void keyPress(struct UIWidget * widget)
 	int index;
 	int len;
 	
-	len = strlen(kbInfo.kbBuff);
-	if(len>=16)
+	if(UIInfo.keyCombo%1000!=0)
 		return;
-	if(UIInfo.keyCombo==0)
+	len = strlen(kbInfo.kbBuff);
+	if(UIInfo.keyCombo==0 && len<16)
 		len++;
-	index = UIInfo.keyCombo/50%widget->widgetValue;
+	index = UIInfo.keyCombo/1000%widget->widgetValue;
 	if(index==0)
 		kbInfo.kbBuff[len-1] = *widget->widgetTitle;
 	else
@@ -43,7 +43,7 @@ static void keyDel(struct UIWidget * widget)
 	char str[30];
 	int len;
 	len = strlen(kbInfo.kbBuff);
-	if(len==0)
+	if(len==0 || UIInfo.keyCombo%300!=0)
 		return;
 	kbInfo.kbBuff[len-1] = '\0';
 	sprintf(str,"   %s_   ",kbInfo.kbBuff);

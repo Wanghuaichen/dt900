@@ -13,6 +13,11 @@
 #define KEY_DOWN 0x2
 #define KEY_OK 0x4
 
+#define TOUCH_NONE 0x0
+#define TOUCH_TOUCHDOWN 0x1
+#define TOUCH_DISPLACEMENT 0x2
+#define TOUCH_LIFTOFF 0x3
+
 struct KBInfo
 {
 struct UIPage *kbParent;
@@ -25,14 +30,18 @@ struct UIInfo
 {
 	uint8_t flagSettings;
 	uint32_t chargeflag;
+	uint8_t insleep;
 	
 	struct UIPage * PagePtr;
+	
 	uint8_t KeyEvent;
 	uint8_t currentKey;
 	uint8_t lastKey;
 	uint32_t keyCombo;
 	
 	uint8_t TouchEvent;
+	uint8_t widgetactive;
+	uint32_t touchCombo;
 	uint16_t tpX,tpY;
 };
 

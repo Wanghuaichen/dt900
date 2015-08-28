@@ -7,8 +7,7 @@ extern struct Settings settings;
 static void delay_us(int code)
 {
 	volatile int i;
-	int cycle = settings.iteration;
-	for(i=0;i<code*cycle;i++);
+	for(i=0;i<code*10;i++);
 }
 
 void DS18B20_IO_IN()
@@ -150,7 +149,7 @@ float DS18B20_Get_Temp(void)
 		DS18B20_Start();
     DS18B20_Rst();
     if(DS18B20_Check())
-			return 333;
+			return 0;
     DS18B20_Write_Byte(0xcc);// skip rom
     DS18B20_Write_Byte(0xbe);// convert	    
     TL=DS18B20_Read_Byte(); // LSB   

@@ -66,37 +66,37 @@ dbg("save 6");
 
 static void test()
 {
-	if(settings.iteration==1)
-	{
-		geotest();
-		sprintf(widgetList[1].widgetTitle,"Retest");
-		widgetList[0].enable = 1;
-	}
-	else
-	{	
-		settings.ldrate=0;
-		settings.polarity=0;
-		widgetList[1].enable = 0;
-		while(settings.iteration-->0)
-		{
-			sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
-			//GUI_SetColor(WHITE);
-			//GUI_FillRect(0,350,479,799);
-			geotest();
-			save();
-			if((GPIOA->IDR&0x7) == 0x2)
-			{
-				settings.iteration=0;
-				break;
-			}
-			osDelay(3000);
-		}
-		widgetList[1].enable = 1;
-		settings.iteration=1;
-		sprintf(widgetList[0].widgetTitle,"Save");
-	}
-	widgetList[0].widgetDraw(&widgetList[0]);
-	widgetList[1].widgetDraw(&widgetList[1]);
+//	if(settings.iteration==1)
+//	{
+//		geotest();
+//		sprintf(widgetList[1].widgetTitle,"Retest");
+//		widgetList[0].enable = 1;
+//	}
+//	else
+//	{	
+//		settings.ldrate=0;
+//		settings.polarity=0;
+//		widgetList[1].enable = 0;
+//		while(settings.iteration-->0)
+//		{
+//			sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
+//			//GUI_SetColor(WHITE);
+//			//GUI_FillRect(0,350,479,799);
+//			geotest();
+//			save();
+//			if((GPIOA->IDR&0x7) == 0x2)
+//			{
+//				settings.iteration=0;
+//				break;
+//			}
+//			osDelay(3000);
+//		}
+//		widgetList[1].enable = 1;
+//		settings.iteration=1;
+//		sprintf(widgetList[0].widgetTitle,"Save");
+//	}
+//	widgetList[0].widgetDraw(&widgetList[0]);
+//	widgetList[1].widgetDraw(&widgetList[1]);
 }
 
 static struct UIWidget widgetList[2] =

@@ -27,6 +27,7 @@ void Board_Init()
 	
 	HAL_Delay(500);
 	DP_EN(1);
+
 	beepon();
 	Sdram_Init();
 	SPI_FLASH_CS(1);
@@ -59,7 +60,11 @@ void Board_Init()
 	}
 	
   MX_FATFS_Init();
+	
+	DS18B20_Get_Temp();
+	HAL_Delay(200);
+	
+	
 	LCD_PWR(1);
-	LCD_BL(settings.backlight);
 	beepoff();
 }

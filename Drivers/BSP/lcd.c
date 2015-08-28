@@ -1,6 +1,8 @@
 #include "lcd.h"
 #include "GUI.h"
+#include "geotest.h"
 
+extern struct Settings settings;
 extern LTDC_HandleTypeDef hltdc;
 extern TIM_HandleTypeDef htim5;
 LTDC_LayerCfgTypeDef pLayerCfg1;
@@ -20,7 +22,7 @@ void LCD_PWR(int val)//1-on  0-off
 		HAL_Delay(1);
 		HAL_GPIO_WritePin (GPIOA,GPIO_PIN_15,GPIO_PIN_SET);
 		HAL_Delay(150);
-		HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+		LCD_BL(settings.backlight);
 
 	}
 	else

@@ -6,13 +6,13 @@ extern struct UIPage pSys;
 
 static void key(struct UIWidget* widget)
 {
-char str[20];	
 	switch(widget->widgetIndex)
 	{
 		case 0:
 			PageJump(&pSetup);
 			//tpTest();
 			//touchreport();
+			//sysinfo();
 			break;
 		case 1:
 			PageJump(&pSettings);
