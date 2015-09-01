@@ -76,10 +76,11 @@ TIM_HandleTypeDef htim3;
 
 SDRAM_HandleTypeDef hsdram1;
 
+IWDG_HandleTypeDef IwdgHandle;
+
 osThreadId defaultTaskHandle;
 osThreadId keyTaskHandle;
 /* USER CODE BEGIN PV */
-uint32_t dbg0,dbg1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -97,6 +98,7 @@ static void MX_SPI6_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM3_Init(void);
 static void RTC_Init(void);
+static void IWDG_Init(void);
 
 int main(void)
 {
@@ -128,6 +130,7 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM3_Init();
 	RTC_Init();
+	IWDG_Init();
 	Board_Init();
 	usbd_OpenMassStorage();
 	
@@ -217,6 +220,15 @@ void SystemClock_Config(void)
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
 
+}
+
+void IWDG_Init(void)
+{
+  IwdgHandle.Instance = IWDG;
+  IwdgHandle.Init.Prescaler = IWDG_PRESCALER_128;
+  IwdgHandle.Init.Reload    = 0xfff;
+  HAL_IWDG_Init(&IwdgHandle);
+	HAL_IWDG_Start(&IwdgHandle);
 }
 
 /* ADC1 init function */

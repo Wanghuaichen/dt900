@@ -32,6 +32,7 @@ dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_sd
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_fmc.h
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c.h
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c_ex.h
+dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_iwdg.h
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_ltdc.h
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
@@ -40,3 +41,4 @@ dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rt
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h
 dt900 configuration\beep.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
+dt900 configuration\beep.o: ..\Inc\geotest.h

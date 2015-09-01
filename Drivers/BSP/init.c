@@ -6,11 +6,31 @@
 #include "lcd.h"
 #include "spiflash.h"
 #include "GUI.h"
+#include "ui.h"
 #include "geotest.h"
 #include "flash.h"
 
 extern struct GeoParam geoparam[10];//(struct GeoParam *)PARAMADDR;
 extern struct Settings settings;//(struct Settings *)SETADDR;
+
+static void FlashReadProtection()
+{	
+	FLASH_OBProgramInitTypeDef OBInit; 
+	
+	HAL_FLASHEx_OBGetConfig(&OBInit);
+	if (OBInit.RDPLevel==RESET )
+	{
+		OBInit.OptionType = OPTIONBYTE_RDP;
+		OBInit.RDPLevel=OB_RDP_LEVEL_1 ;
+		
+		HAL_FLASH_OB_Unlock();
+		HAL_FLASH_Unlock();
+		HAL_FLASHEx_OBProgram(&OBInit); 
+		HAL_FLASH_OB_Launch();
+		HAL_FLASH_OB_Lock();
+		HAL_FLASH_Lock();
+	}
+}
 
 void Board_Init()
 {
@@ -34,10 +54,6 @@ void Board_Init()
 	HAL_GPIO_WritePin (GPIOG,GPIO_PIN_10,GPIO_PIN_SET);//spi6-dac
 	GUI_Init();
 	UI_Init();
-	if(settings.sensormode==1 || settings.sensormode==2)
-	{
-		DS18B20_Get_Temp();
-	}
 	memcpy(&settings,(struct Settings *)SETADDR,sizeof(struct Settings));
 	memcpy(geoparam,(struct GeoParam *)PARAMADDR,10*sizeof(struct GeoParam));
 	if(settings.magic!=5566)
@@ -67,4 +83,5 @@ void Board_Init()
 	
 	LCD_PWR(1);
 	beepoff();
+//	FlashReadProtection();
 }

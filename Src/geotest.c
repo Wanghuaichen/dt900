@@ -13,6 +13,7 @@
 extern void rdft(int n, int isgn, float *a);
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
+extern IWDG_HandleTypeDef IwdgHandle;
 
 uint32_t test0,test1;
 uint32_t ADCMID = 0x800000;
@@ -35,10 +36,12 @@ static void step3();
 static void polarity();
 static void contidrive();
 
-void geotest()
+int geotest()
 {
 	char str[20];
 	float portion;
+	int fault = 0;
+	int COLOR;
 	
 	geo = &geoparam[settings.paramnum];
 	if(settings.sensormode == 3)
@@ -88,11 +91,18 @@ void geotest()
 	GUI_DispStringAt(str,316,260);
 	
 	step1();
-	if(geophone.leakage>10000)
-		sprintf(str,">10000");
+	if(geophone.leakage>100)
+		sprintf(str,">100");
 	else
 		sprintf(str,"%.1f",geophone.leakage);
-	GUI_SetBkColor((geophone.leakage<100) ? 0x005a62ff : 0x005bc15b);
+	if(geophone.leakage<10)
+	{
+		fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
+	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,300);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,300);
@@ -106,38 +116,81 @@ void geotest()
 	step2();
 	sprintf(str,"%.2f",geophone.freq);
 	portion = (float)(geophone.freq-geo->F)/geo->F;
-	GUI_SetBkColor((portion>geo->Fp|portion<geo->Fn) ? 0x005a62ff : 0x005bc15b);
+	if(geophone.leakage>100)
+		sprintf(str,">100");
+	else
+		sprintf(str,"%.1f",geophone.leakage);
+	if(portion>geo->Fp||portion<geo->Fn)
+	{
+		fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
+	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,380);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,380);
 	sprintf(str,"%.3f",geophone.damp);
 	portion = (float)(geophone.damp-geo->B)/geo->B;
-	GUI_SetBkColor((portion>geo->Bp|portion<geo->Bn) ? 0x005a62ff : 0x005bc15b);
+	if(portion>geo->Bp||portion<geo->Bn)
+	{
+		fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
+	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,420);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,420);
 	sprintf(str,"%.1f",geophone.sens);
 	portion = (float)(geophone.sens-geo->S)/geo->S;
-	GUI_SetBkColor((portion>geo->Sp|portion<geo->Sn) ? 0x005a62ff : 0x005bc15b);
+	if(portion>geo->Sp||portion<geo->Sn)
+	{
+		fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
+	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,460);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,460);
+	if((portion>geo->Fp|portion<geo->Fn) || (portion>geo->Bp|portion<geo->Bn) || (portion>geo->Sp|portion<geo->Sn)) fault=1;
 	
 	step3();
 	sprintf(str,"%.3f",geophone.dist);
-	GUI_SetBkColor(geophone.dist>geo->D ? 0x005a62ff : 0x005bc15b);
+	if(geophone.dist>geo->D)
+	{
+		fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
+	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,500);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,500);
 	sprintf(str,"%d",geophone.impe);
 	portion = (float)(geophone.impe-geo->Z)/geo->Z;
-	GUI_SetBkColor((portion>geo->Zp|portion<geo->Zn) ? 0x005a62ff : 0x005bc15b);
+	if(portion>geo->Zp||portion<geo->Zn)
+	{
+		fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
+	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,540);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,540);
+	if(geophone.dist>geo->D || (portion>geo->Zp|portion<geo->Zn)) fault=1;
 	
 	if(settings.polarity)
 		polarity();
+	if(geophone.polarity==-1) fault=1;
+	
 	if(settings.ldrate)
 		contidrive();
 	
@@ -145,6 +198,7 @@ void geotest()
 	AMP_EN(0);
 	AP_EN(0);
 	MUX(0);
+	return fault;
 }
 
 static void step0()
@@ -199,12 +253,12 @@ dbg("step1 1");
 	
 	
 	AD7190_Setup(1);
+	HAL_Delay(100);
 	for(i=0;i<64;i++)
 		val2+=AD7190Read();
 	val2 /= 64;
-	geophone.leakage = (AMPGAIN*abs(val-ADCMID)*5.0/0xffffff+2.5)/(abs(val2-ADCMID)*5.0/0xffffff)*0.03-0.2;
-	if(geophone.leakage<0)
-		geophone.leakage=0;
+	geophone.leakage = val2<=0x800000 ? 200 : (AMPGAIN*abs(val-ADCMID)*5.0/0xffffff+2.5)/((val2-0x800000)*5.0/0xffffff)*0.03-0.2;
+//while(1);
 	AD7190_Setup(0);
 }
 
@@ -312,6 +366,7 @@ static void polarity()
 	GUI_DispStringAt("0",316,580);
 	while(1)
 	{
+		HAL_IWDG_Refresh(&IwdgHandle);
 		vmin=0xffffff;
 		vmax=imax=imin=0;
 		for(i=0;i<2000;i++)
@@ -396,6 +451,7 @@ static void contidrive()
   HAL_Delay(T_DELAY);
 	while(flag)
 	{
+		HAL_IWDG_Refresh(&IwdgHandle);
 		for(i=0;i<N;i++)
 		{
 			Inbuff[i] = AD7190Read();

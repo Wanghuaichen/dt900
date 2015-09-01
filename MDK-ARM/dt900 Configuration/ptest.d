@@ -32,6 +32,7 @@ dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_s
 dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_fmc.h
 dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c.h
 dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c_ex.h
+dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_iwdg.h
 dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_ltdc.h
 dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 dt900 configuration\ptest.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
@@ -70,3 +71,5 @@ dt900 configuration\ptest.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\
 dt900 configuration\ptest.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h
 dt900 configuration\ptest.o: ..\Drivers\BSP\rtc.h
 dt900 configuration\ptest.o: ..\Inc\ostask.h
+dt900 configuration\ptest.o: ..\Drivers\BSP\cyma568.h
+dt900 configuration\ptest.o: ..\Drivers\BSP\beep.h

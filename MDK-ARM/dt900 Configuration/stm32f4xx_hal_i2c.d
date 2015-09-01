@@ -31,6 +31,7 @@ dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm
 dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_fmc.h
 dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c.h
 dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c_ex.h
+dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_iwdg.h
 dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_ltdc.h
 dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 dt900 configuration\stm32f4xx_hal_i2c.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h

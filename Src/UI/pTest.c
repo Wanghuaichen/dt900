@@ -4,14 +4,16 @@
 #include "ff_gen_drv.h"
 #include "rtc.h"
 #include "ostask.h"
+#include "cyma568.h"
+#include "beep.h"
 
 extern struct UIPage pSetup;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
 extern struct Geophone geophone;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontVerdana32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
+extern struct UIInfo UIInfo;
 
 static struct UIWidget widgetList[2];
 struct UIPage pTest;
@@ -66,37 +68,44 @@ dbg("save 6");
 
 static void test()
 {
-//	if(settings.iteration==1)
-//	{
-//		geotest();
-//		sprintf(widgetList[1].widgetTitle,"Retest");
-//		widgetList[0].enable = 1;
-//	}
-//	else
-//	{	
-//		settings.ldrate=0;
-//		settings.polarity=0;
-//		widgetList[1].enable = 0;
-//		while(settings.iteration-->0)
-//		{
-//			sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
-//			//GUI_SetColor(WHITE);
-//			//GUI_FillRect(0,350,479,799);
-//			geotest();
-//			save();
-//			if((GPIOA->IDR&0x7) == 0x2)
-//			{
-//				settings.iteration=0;
-//				break;
-//			}
-//			osDelay(3000);
-//		}
-//		widgetList[1].enable = 1;
-//		settings.iteration=1;
-//		sprintf(widgetList[0].widgetTitle,"Save");
-//	}
-//	widgetList[0].widgetDraw(&widgetList[0]);
-//	widgetList[1].widgetDraw(&widgetList[1]);
+	if(settings.iteration==1)
+	{
+		if(geotest())
+			beep(1000);
+		else
+			beep(500);
+		widgetList[0].enable = 1;
+		sprintf(widgetList[1].widgetTitle,"Retest");
+	}
+	else
+	{	
+		settings.ldrate=0;
+		settings.polarity=0;
+		widgetList[1].enable = 0;
+		while(settings.iteration-->0)
+		{
+			sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
+			//GUI_SetColor(WHITE);
+			//GUI_FillRect(0,350,479,799);
+			geotest();
+			save();
+			if((GPIOA->IDR&0x7) == 0x2)
+			{
+				settings.iteration=0;
+				break;
+			}
+			osDelay(3000);
+		}
+		widgetList[1].enable = 1;
+		settings.iteration=1;
+		sprintf(widgetList[0].widgetTitle,"Save");
+		beep(500);
+	}
+	widgetList[0].widgetDraw(&widgetList[0]);
+	widgetList[1].widgetDraw(&widgetList[1]);
+	while(tpScan())
+		HAL_Delay(1);
+	UIInfo.TouchEvent = TOUCH_NONE;
 }
 
 static struct UIWidget widgetList[2] =

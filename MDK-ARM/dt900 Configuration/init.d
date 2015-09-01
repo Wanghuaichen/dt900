@@ -32,6 +32,7 @@ dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_sd
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_fmc.h
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c.h
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c_ex.h
+dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_iwdg.h
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_ltdc.h
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h
 dt900 configuration\init.o: ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h
@@ -53,5 +54,6 @@ dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_Type.h
 dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\LCD.h
 dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
+dt900 configuration\init.o: ..\Src\UI\ui.h
 dt900 configuration\init.o: ..\Inc\geotest.h
 dt900 configuration\init.o: ..\Drivers\BSP\flash.h

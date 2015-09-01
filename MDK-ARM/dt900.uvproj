@@ -551,6 +551,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rtc_ex.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_hal_iwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_iwdg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -915,6 +920,11 @@
               <FileName>pFlow.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pFlow.c</FilePath>
+            </File>
+            <File>
+              <FileName>pAbout.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pAbout.c</FilePath>
             </File>
           </Files>
         </Group>

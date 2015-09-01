@@ -3,6 +3,7 @@
 extern struct UIPage pSettings;
 extern struct UIPage pSetup;
 extern struct UIPage pSys;
+extern struct UIPage pAbout;
 
 static void key(struct UIWidget* widget)
 {
@@ -23,6 +24,7 @@ static void key(struct UIWidget* widget)
 			//HidDes();
 			break;
 		case 3:
+			PageJump(&pAbout);
 			break;
 		default:
 			break;

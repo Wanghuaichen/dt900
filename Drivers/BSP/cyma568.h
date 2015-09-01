@@ -11,5 +11,5 @@ int SuspendScan();
 int ResumeScan();
 int ShortTest();
 int OpenTest();
-void tpScan();
+int tpScan();
 #endif

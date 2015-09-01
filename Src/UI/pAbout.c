@@ -1,56 +1,60 @@
 #include "ui.h"
-#include "cyma568.h"
-extern struct UIPage pSettings;
-extern struct UIPage pSetup;
-extern struct UIPage pSys;
+#include "DTCC.c"
+extern struct UIPage pMain;
 
-static void key(struct UIWidget* widget)
+static void pageInit(struct UIPage * page)
 {
-char str[20];	
-	switch(widget->widgetIndex)
+	int i,temp;
+	char str[20];
+	char id[20];
+//	uint32_t * uid = (uint32_t*)0x1FFF7A10;
+	uint8_t * t = (uint8_t*)0x1FFF7A10;
+	GUI_SetColor(BLACK);
+	GUI_SetBkColor(WHITE);
+	
+//	sprintf(str,"%08x  %08x  %08x",uid[0],uid[1],uid[2]);
+//	GUI_DispStringAt(str,0,600);
+//	sprintf(str,"%02x %02x %02x %02x",t[0],t[1],t[2],t[3]);
+//	GUI_DispStringAt(str,0,650);
+//	sprintf(str,"%02x %02x %02x %02x",t[4],t[5],t[6],t[7]);
+//	GUI_DispStringAt(str,0,700);
+//	sprintf(str,"%02x %02x %02x %02x",t[8],t[9],t[10],t[11]);
+//	GUI_DispStringAt(str,0,750);
+	
+	for(i=0;i<4;i++)
 	{
-		case 0:
-			PageJump(&pSetup);
-			//tpTest();
-			//touchreport();
-			break;
-		case 1:
-			PageJump(&pSettings);
-			//ping();
-			break;
-		case 2:
-			PageJump(&pSys);
-			//HidDes();
-			break;
-		case 3:
-			break;
-		default:
-			break;
+		temp = (int)(t[i]>>4)+(t[i+4]>>4)+(t[i+8]>>4);
+		temp %= 36;
+		id[i*2+2] = temp>9 ? temp+55: temp+0x30;
+		temp = (int)(t[i]&0xf)+(t[i+4]&0xf)+(t[i+8]&0xf);
+		temp %= 36;
+		id[i*2+3] = temp>9 ? temp+55: temp+0x30;
 	}
+	id[0] = 'A';
+	id[1] = '1';
+	id[10] = '\0';
+	sprintf(str,"PID:%s",id);
+	GUI_JPEG_Draw(_acdtcc, sizeof(_acdtcc), 90, 280);
+	
+	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+	GUI_DispStringAt("www.dynamictech.biz",240,400);
+	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+	GUI_DispStringAt(str,240,550);
+}
+	
+static void pageReturn(struct UIPage * page)
+{
+	PageJump(&pMain);
 }
 
-static struct UIWidget widgetList[4] =
-{
-//	{0,1,0,{100,200,379,259},"Do a test",0,NULL,NULL,drawButton,key},
-//	{1,1,0,{100,300,379,359},"Geophone settings",0,NULL,NULL,drawButton,key},
-//	{2,1,0,{100,400,379,459},"Test configuration",0,NULL,NULL,drawButton,key},
-//	{3,1,0,{100,500,379,559},"System preference",0,NULL,NULL,drawButton,key},
-//	{4,1,0,{100,600,379,659},"About",0,NULL,NULL,drawButton,key},
-	{0,1,0,{100,200,379,259},"Do a test",0,NULL,NULL,drawButton,key},
-	{1,1,0,{100,330,379,389},"Geophone settings",0,NULL,NULL,drawButton,key},
-	{2,1,0,{100,460,379,519},"System preference",0,NULL,NULL,drawButton,key},
-	{3,1,0,{100,590,379,649},"About",0,NULL,NULL,drawButton,key},
-};
-
-struct UIPage pMain = 
+struct UIPage pAbout = 
 {
 	"About",
 	0,//char widgetNum;
 	-1,
-	widgetList,//struct UIWidget * widgetList;
-	NULL,
-	NULL,
+	NULL,//struct UIWidget * widgetList;
+	pageInit,
+	pageReturn,
 	keyboardEvent,
 	touchEvent,
 };
-

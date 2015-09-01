@@ -156,9 +156,9 @@ void parseReport()
 //GUI_DrawPoint(UIInfo.tpX,UIInfo.tpY);
 }
 	
-void tpScan()
+int tpScan()
 {
-	int length;
+	int length=0;
 	if(!HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8))
 	{
 		length = getReport();
@@ -166,6 +166,7 @@ void tpScan()
 			//analysis(length);
 			parseReport();
 	}
+	return length;
 }
 	
 //static const uint16_t crc_table[16] = {

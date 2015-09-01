@@ -94,7 +94,7 @@ void touchEvent(struct UIPage *page)
 			page->widgetSelected = -1;
 		}
 		
-		if(UIInfo.tpY<120)
+		if(UIInfo.tpY<120 && UIInfo.tpX<120)
 		{
 			if(page->pageReturn)
 			{
@@ -228,12 +228,16 @@ void PageJump(struct UIPage *page)
 void UIDraw(struct UIPage *page)
 {
 	uint32_t i;
+	const GUI_POINT aPoints[] ={{ 0, 10},{ 10, 20},{ 10, 0}};
 	
 	GUI_SetColor(WHITE);
 	GUI_SetBkColor(TITLECOLOR);
 	GUI_SetFont(&GUI_FontHelveticaNeueLT48);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
 	GUI_DispStringAt(page->pageTitle,240,76);
+	
+	GUI_SetColor(page==&pMain ? TITLECOLOR : WHITE);
+	GUI_FillPolygon(aPoints, GUI_COUNTOF(aPoints), 30, 70);
 	
 	for(i=0;i<page->widgetNum;i++)
 	{

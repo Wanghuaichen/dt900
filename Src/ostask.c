@@ -15,6 +15,8 @@ extern struct Settings settings;
 extern float curTemperature;
 extern struct UIInfo UIInfo;
 
+extern IWDG_HandleTypeDef IwdgHandle;
+
 static int chargeSwap = 1;
 static void batVolt();
 
@@ -59,6 +61,8 @@ void StartDefaultTask(void const * argument)
 		}
 		i++;
 #endif
+		
+	HAL_IWDG_Refresh(&IwdgHandle);
 	osDelay(1000);
   }
 }
