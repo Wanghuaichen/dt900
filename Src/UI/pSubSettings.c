@@ -67,10 +67,10 @@ static void kbCallBack()
 			geoparam[pSettings.widgetSelected].DF = atoi(kbInfo.kbBuff);
 			break;
 		case 7:
-			geoparam[pSettings.widgetSelected].X = (int)(atof(kbInfo.kbBuff)*10)/10000.0;
+			geoparam[pSettings.widgetSelected].X = (int)(atof(kbInfo.kbBuff)*100)/100000.0;
 			break;
 		case 8:
-			geoparam[pSettings.widgetSelected].M = (int)(atof(kbInfo.kbBuff)*10)/10000.0;
+			geoparam[pSettings.widgetSelected].M = (int)(atof(kbInfo.kbBuff)*100)/100000.0;
 			break;
 		case 9:
 			geoparam[pSettings.widgetSelected].T = (int)(atof(kbInfo.kbBuff)*10)/10.0;

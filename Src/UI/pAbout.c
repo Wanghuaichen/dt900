@@ -7,7 +7,7 @@ static void pageInit(struct UIPage * page)
 	int i,temp;
 	char str[20];
 	char id[20];
-//	uint32_t * uid = (uint32_t*)0x1FFF7A10;
+
 	uint8_t * t = (uint8_t*)0x1FFF7A10;
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
@@ -33,23 +33,25 @@ static void pageInit(struct UIPage * page)
 	id[0] = 'A';
 	id[1] = '1';
 	id[10] = '\0';
-	sprintf(str,"PID:%s",id);
 	GUI_JPEG_Draw(_acdtcc, sizeof(_acdtcc), 90, 280);
-	
+	sprintf(str,"PID:%s",id);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt("www.dynamictech.biz",240,400);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,240,550);
+	
+	usbd_OpenMassStorage();
 }
 	
 static void pageReturn(struct UIPage * page)
 {
+	usbd_CloseMassStorage(); 
 	PageJump(&pMain);
 }
 
 struct UIPage pAbout = 
 {
-	"About",
+	"USB Storage Mode",
 	0,//char widgetNum;
 	-1,
 	NULL,//struct UIWidget * widgetList;

@@ -36,6 +36,30 @@ static void step3();
 static void polarity();
 static void contidrive();
 
+float damp,sens;
+
+void analog(int option)
+{
+	if(option)
+	{
+		AP_EN(1);
+		AMP_EN(1);
+		DAC_SET(DACMID);
+		MUX(1);
+		HAL_Delay(100);
+		AD7190_Reset();
+		AD7190_Calibration();
+		AD7190_Setup(0);
+	}
+	else
+	{
+		AD7190_PowerDown();
+		AMP_EN(0);
+		AP_EN(0);
+		MUX(0);
+	}
+}
+
 int geotest()
 {
 	char str[20];
@@ -51,13 +75,14 @@ int geotest()
 	else
 		geophone.temp = curTemperature;
 	
+	sens = settings.shunt>0 ? geo->S*settings.shunt/(settings.shunt+geo->R) : geo->S;
+	damp = settings.shunt>0 ? geo->S*geo->S/4/3.1415926/geo->M/geo->F/(geo->R+settings.shunt)+geo->B : geo->B;
+	
 	shuntResist = settings.shunt>0 ? (float)settings.shunt*geo->R/(settings.shunt+geo->R) : geo->R;
 	stringResist = shuntResist*settings.series/settings.parallel;
 	lineResist = settings.lineR*0.001*2*((settings.series-1)*settings.interval/settings.parallel+settings.leadin);
 	totalResist = stringResist+lineResist;
 	
-	GUI_SetColor(WHITE);
-	GUI_FillRect(0,260,479,799);
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
 	GUI_SetFont(&GUI_FontHelvetica32);	
@@ -73,15 +98,8 @@ int geotest()
 	GUI_DispStringAt("Polarity",100,580);
 	GUI_DispStringAt("Low Drive",100,620);
 	
-	AP_EN(1);
-	AMP_EN(1);
-	DAC_SET(DACMID);
-	MUX(1);
-	HAL_Delay(100);
-	AD7190_Reset();
-	AD7190_Calibration();
+	analog(1);
 	
-	AD7190_Setup(0);
 	GUI_SetColor(WHITE);
 	step0();
 	sprintf(str,"%.1f",geophone.nois);
@@ -106,9 +124,17 @@ int geotest()
 	GUI_DispStringAt("              ",260,300);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,300);
-	sprintf(str,"%d",geophone.resi);
-	portion = (float)(geophone.resi-geo->R)/geo->R;
-	GUI_SetBkColor((portion>geo->Rp|portion<geo->Rn) ? 0x005a62ff : 0x005bc15b);
+	
+	sprintf(str,"%d",(int)geophone.resi);
+	portion = (float)(geophone.resi*settings.parallel/settings.series-shuntResist)/shuntResist;
+	if(portion>geo->Rp||portion<-geo->Rn)
+	{
+		fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
+	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,340);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,340);
@@ -116,11 +142,7 @@ int geotest()
 	step2();
 	sprintf(str,"%.2f",geophone.freq);
 	portion = (float)(geophone.freq-geo->F)/geo->F;
-	if(geophone.leakage>100)
-		sprintf(str,">100");
-	else
-		sprintf(str,"%.1f",geophone.leakage);
-	if(portion>geo->Fp||portion<geo->Fn)
+	if(portion>geo->Fp||portion<-geo->Fn)
 	{
 		fault=1;
 		COLOR = 0x005a62ff;
@@ -132,8 +154,8 @@ int geotest()
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,380);
 	sprintf(str,"%.3f",geophone.damp);
-	portion = (float)(geophone.damp-geo->B)/geo->B;
-	if(portion>geo->Bp||portion<geo->Bn)
+	portion = (float)(geophone.damp-damp)/damp;
+	if(portion>geo->Bp||portion<-geo->Bn)
 	{
 		fault=1;
 		COLOR = 0x005a62ff;
@@ -145,8 +167,8 @@ int geotest()
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,420);
 	sprintf(str,"%.1f",geophone.sens);
-	portion = (float)(geophone.sens-geo->S)/geo->S;
-	if(portion>geo->Sp||portion<geo->Sn)
+	portion = (float)(geophone.sens/settings.series-sens)/sens;
+	if(portion>geo->Sp||portion<-geo->Sn)
 	{
 		fault=1;
 		COLOR = 0x005a62ff;
@@ -157,7 +179,6 @@ int geotest()
 	GUI_DispStringAt("              ",260,460);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,460);
-	if((portion>geo->Fp|portion<geo->Fn) || (portion>geo->Bp|portion<geo->Bn) || (portion>geo->Sp|portion<geo->Sn)) fault=1;
 	
 	step3();
 	sprintf(str,"%.3f",geophone.dist);
@@ -172,20 +193,20 @@ int geotest()
 	GUI_DispStringAt("              ",260,500);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,500);
-	sprintf(str,"%d",geophone.impe);
-	portion = (float)(geophone.impe-geo->Z)/geo->Z;
-	if(portion>geo->Zp||portion<geo->Zn)
-	{
-		fault=1;
-		COLOR = 0x005a62ff;
-	}
-	else
-		COLOR = 0x005bc15b;
+	sprintf(str,"%d",(int)geophone.impe);
+//	portion = (float)(geophone.impe-geo->Z)/geo->Z;
+//	if(portion>geo->Zp||portion<-geo->Zn)
+//	{
+//		fault=1;
+//		COLOR = 0x005a62ff;
+//	}
+//	else
+//		COLOR = 0x005bc15b;
+	COLOR = 0x002fbeff;
 	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",260,540);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,316,540);
-	if(geophone.dist>geo->D || (portion>geo->Zp|portion<geo->Zn)) fault=1;
 	
 	if(settings.polarity)
 		polarity();
@@ -194,10 +215,7 @@ int geotest()
 	if(settings.ldrate)
 		contidrive();
 	
-	AD7190_PowerDown();
-	AMP_EN(0);
-	AP_EN(0);
-	MUX(0);
+	analog(0);
 	return fault;
 }
 
@@ -232,7 +250,7 @@ static void step1()
 	double val2=0;
 	int i;
 	unsigned short offset;
-	float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S;
+	float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens;
 	volt = volt*settings.series*totalResist/stringResist;
 	volt = volt*R_ref/totalResist;
 	if(volt>2.45) volt=2.45;
@@ -253,7 +271,6 @@ dbg("step1 1");
 	
 	
 	AD7190_Setup(1);
-	HAL_Delay(100);
 	for(i=0;i<64;i++)
 		val2+=AD7190Read();
 	val2 /= 64;
@@ -268,7 +285,7 @@ static void step2()
 	unsigned int offset;
 	unsigned int a1,a2,T,i1;
 	float t;
-	float volt = 0.35*0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S;
+	float volt = 0.35*0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens;
 	volt = volt*settings.series*totalResist/stringResist;
 	volt = volt*R_ref/totalResist;
 	if(volt>2.45) volt=2.45;
@@ -322,7 +339,7 @@ static void step3()
 	float shuntZ = settings.shunt>0 ? (float)(settings.shunt*geo->Z)/(settings.shunt+geo->Z) : geo->Z;
 	float stringZ = shuntZ*settings.series/settings.parallel;
 	float totalZ = stringZ+lineResist;
-	mag = 0.7*0.01778*geo->S;
+	mag = 0.8*0.01778*sens;
 	if(!settings.constant)
 		mag = mag*geo->DF/12;
 	mag = mag*settings.series;
@@ -390,9 +407,9 @@ static void polarity()
 				return;
 			}
 		}
-		max = abs(vmax-0x800000)*AMPGAIN*5.0/0xffffff/settings.series;
-		min = abs(0x800000-vmin)*AMPGAIN*5.0/0xffffff/settings.series;
-		if(max>0.5 && max<2.4 && min>0.5 && min<2.4)
+		max = abs(vmax-0x800000)*AMPGAIN*5.0/0xffffff;
+		min = abs(0x800000-vmin)*AMPGAIN*5.0/0xffffff;
+		if(max>0.2*settings.series && max<2.4 && min>0.2*settings.series && min<2.4)
 		{
 			if(imax<imin)
 			{
@@ -439,7 +456,7 @@ static void contidrive()
 	geophone.maxZ = 0;
 	geophone.minZ = 0xffffffff;
 	
-	mag = 0.7*0.01778*geo->S;
+	mag = 0.7*0.01778*sens;
 	if(!settings.constant)
 		mag = mag*geo->DF/12;
 	mag = mag*settings.series;
@@ -486,3 +503,26 @@ static void contidrive()
 	}
 	DAC_SWEEP(0,0,0);
 }
+
+int ztest(int freq)
+{
+	int i;
+	int N=4096;
+	float mag = 0.1;
+	int rst;
+	
+	HAL_IWDG_Refresh(&IwdgHandle);
+	DAC_SWEEP(freq,-mag,0);
+  HAL_Delay(900);
+	for(i=0;i<N;i++)
+	{
+		Inbuff[i] = AD7190Read();
+	}
+	DAC_SWEEP(0,0,0);
+	
+	rdft(N,1,Inbuff);
+	Inbuff[1] = sqrt(Inbuff[2*freq]*Inbuff[2*freq]+Inbuff[2*freq+1]*Inbuff[2*freq+1]);
+	rst =  (int)round(R_ref*AMPGAIN*Inbuff[1]/(N/2)/(mag/5*0xffffff));
+	return rst;
+}
+	

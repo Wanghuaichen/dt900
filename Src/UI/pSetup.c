@@ -34,6 +34,7 @@ static void kbCallBack()
 			break;
 		case 4:
 			settings.temperature = (int)(atof(kbInfo.kbBuff)*10)/10.0;
+			reTemp();
 			break;
 		case 5:
 			val = atoi(kbInfo.kbBuff);
@@ -140,12 +141,17 @@ static void pageReturn(struct UIPage * page)
 static void sensormode(struct UIWidget * widget)
 {
 	settings.sensormode = (settings.sensormode+1)&0x3;
+	reTemp();
+//	if(settings.sensormode==1 || settings.sensormode==2)
+//	{
+//		HAL_Delay(200);
+//	}
+//		reTemp();
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
 	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
 	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
 	UIInfo.flagSettings = 1;
-	reTemp();
 }
 
 static void constant(struct UIWidget * widget)

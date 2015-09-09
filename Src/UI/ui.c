@@ -45,9 +45,9 @@ void UITouch()
 	
 void UIEventManager()
 {
-	UITouch();
-	if(UIInfo.TouchEvent==TOUCH_NONE || UIInfo.TouchEvent==TOUCH_LIFTOFF)
-		UIKeyboard();
+	UIKeyboard();
+	if(UIInfo.KeyEvent==KEY_NONE)
+		UITouch();
 	
 	if(UIInfo.keyCombo>60000*settings.sleeptime && !UIInfo.insleep)
 	{

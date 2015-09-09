@@ -926,6 +926,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pAbout.c</FilePath>
             </File>
+            <File>
+              <FileName>pZVF.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pZVF.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

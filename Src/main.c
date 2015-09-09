@@ -132,7 +132,7 @@ int main(void)
 	RTC_Init();
 	IWDG_Init();
 	Board_Init();
-	usbd_OpenMassStorage();
+	//usbd_OpenMassStorage();
 	
 	
   /* USER CODE BEGIN 2 */ 
@@ -419,7 +419,7 @@ void MX_TIM3_Init(void)
   TIM_OC_InitTypeDef sConfigOC;
 
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 2099;
+  htim3.Init.Prescaler = 3110;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 9;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

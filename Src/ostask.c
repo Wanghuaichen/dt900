@@ -17,26 +17,42 @@ extern struct UIInfo UIInfo;
 
 extern IWDG_HandleTypeDef IwdgHandle;
 
-static int chargeSwap = 1;
+static int chargeSwap = 0;
 static void batVolt();
 
 void StartDefaultTask(void const * argument)
 {
 	char str[20];
 	static unsigned int i=0;
-#ifndef _DEBUG	
-	reTemp();
+
+#ifndef _DEBUG
+	GUI_SetColor(WHITE);
+	GUI_SetBkColor(TITLECOLOR);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_RIGHT | GUI_TA_TOP);
+	GUI_DispStringAt(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6)?"   ":"|",400,0);
 #endif
 	for(;;)
   {
 #ifndef _DEBUG	
-		RTC_Get();
-		sprintf(str,"[ %02d:%02d  ",rtcTime.Hours, rtcTime.Minutes);
 		GUI_SetColor(WHITE);
 		GUI_SetBkColor(TITLECOLOR);
 		GUI_SetFont(&GUI_FontHelvetica32);	
 		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+		
+		RTC_Get();
+		sprintf(str,"[ %02d:%02d  ",rtcTime.Hours, rtcTime.Minutes);
 		GUI_DispStringAt(str,20,0);
+			
+		if(i%120==0)
+		{
+			reTemp();
+		}
+			
+		if(i%300==0)
+		{
+			batVolt();
+		}
 		
 		if(chargeSwap)
 		{
@@ -46,19 +62,7 @@ void StartDefaultTask(void const * argument)
 			batVolt();
 			chargeSwap=0;
 		}
-			
-		if(i%120==0 && (settings.sensormode==1 || settings.sensormode==2))
-		{
-			curTemperature = DS18B20_Get_Temp();
-			sprintf(str,"  ] %.1f~C  ",curTemperature);
-			GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-			GUI_DispStringAt(str,240,0);
-		}
-			
-		if(i%300==0)
-		{
-			batVolt();
-		}
+		
 		i++;
 #endif
 		
@@ -111,7 +115,7 @@ void reTemp()
 			break;
 		default:
 			DS18B20_Get_Temp();
-			HAL_Delay(200);
+			osDelay(700);
 			curTemperature = DS18B20_Get_Temp();
 			sprintf(str,"  ] %.1f~C  ",curTemperature);
 			break;

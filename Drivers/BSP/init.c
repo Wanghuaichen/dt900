@@ -76,10 +76,7 @@ void Board_Init()
 	}
 	
   MX_FATFS_Init();
-	
-	DS18B20_Get_Temp();
 	HAL_Delay(200);
-	
 	
 	LCD_PWR(1);
 	beepoff();

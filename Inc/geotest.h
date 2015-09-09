@@ -10,7 +10,9 @@
 #define T_DELAY 500
 #define AMPGAIN 5
 
+void analog(int option);
 int geotest();
+int ztest(int freq);
 
 struct  Geophone         //parameters of target geonphone under test
 {

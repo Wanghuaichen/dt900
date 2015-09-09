@@ -95,6 +95,7 @@
 "dt900 configuration\pstring.o"
 "dt900 configuration\pflow.o"
 "dt900 configuration\pabout.o"
+"dt900 configuration\pzvf.o"
 "dt900 configuration\usbd_core.o"
 "dt900 configuration\usbd_ioreq.o"
 "dt900 configuration\usbd_req.o"

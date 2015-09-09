@@ -25,9 +25,9 @@ static void save()
 	UINT wbytes;
 	
 	sprintf(widgetList[1].widgetTitle,"Test");
-	widgetList[0].enable = 0;
+//	widgetList[0].enable = 0;
 	widgetList[0].active = 0;
-	widgetList[1].active = 1;
+//	widgetList[1].active = 1;
 	pTest.widgetSelected = 1;
 	widgetList[0].widgetDraw(&widgetList[0]);
 	widgetList[1].widgetDraw(&widgetList[1]);
@@ -68,10 +68,19 @@ dbg("save 6");
 
 static void test()
 {
+	GUI_SetColor(WHITE);
+	GUI_FillRect(0,260,479,799);
+	
 	if(settings.iteration==1)
 	{
 		if(geotest())
-			beep(1000);
+		{
+			beep(300);
+			HAL_Delay(100);
+			beep(300);
+			HAL_Delay(100);
+			beep(300);
+		}
 		else
 			beep(500);
 		widgetList[0].enable = 1;
@@ -82,11 +91,14 @@ static void test()
 		settings.ldrate=0;
 		settings.polarity=0;
 		widgetList[1].enable = 0;
+		widgetList[0].enable = 1;
+		sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
+		widgetList[0].widgetDraw(&widgetList[0]);
 		while(settings.iteration-->0)
 		{
+			GUI_SetColor(WHITE);
+			GUI_FillRect(240,260,479,799);
 			sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
-			//GUI_SetColor(WHITE);
-			//GUI_FillRect(0,350,479,799);
 			geotest();
 			save();
 			if((GPIOA->IDR&0x7) == 0x2)
@@ -96,6 +108,7 @@ static void test()
 			}
 			osDelay(3000);
 		}
+		widgetList[0].enable = 0;
 		widgetList[1].enable = 1;
 		settings.iteration=1;
 		sprintf(widgetList[0].widgetTitle,"Save");
