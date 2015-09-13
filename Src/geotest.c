@@ -508,12 +508,10 @@ int ztest(int freq)
 {
 	int i;
 	int N=4096;
-	float mag = 0.1;
-	int rst;
-	
+	float mag = 0.01;
 	HAL_IWDG_Refresh(&IwdgHandle);
 	DAC_SWEEP(freq,-mag,0);
-  HAL_Delay(900);
+  HAL_Delay(800);
 	for(i=0;i<N;i++)
 	{
 		Inbuff[i] = AD7190Read();
@@ -522,7 +520,6 @@ int ztest(int freq)
 	
 	rdft(N,1,Inbuff);
 	Inbuff[1] = sqrt(Inbuff[2*freq]*Inbuff[2*freq]+Inbuff[2*freq+1]*Inbuff[2*freq+1]);
-	rst =  (int)round(R_ref*AMPGAIN*Inbuff[1]/(N/2)/(mag/5*0xffffff));
-	return rst;
+	return (int)round(R_ref*AMPGAIN*Inbuff[1]/(N/2)/(mag/5*0xffffff));
 }
 	

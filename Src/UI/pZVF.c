@@ -1,9 +1,11 @@
 #include "ui.h"
 #include <math.h>
 #include "geotest.h"
-
+#define NUM 32
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern struct UIPage pMain;
+
+static struct UIWidget widgetList[2];
 
 static int color = 0x00f7823e;
 static int oriX=220;
@@ -12,8 +14,8 @@ static int width = 500;
 static int height = 400;
 static int yinterval = 100;
 static int xcoordinate[23] = {1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,200,300,400,500};
-static int xvalue[32] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,100,200,300,400,500};
-static int yvalue[32];
+static int xvalue[NUM] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,100,200,300,400,500};
+static int yvalue[NUM];
 static int scale=1;
 
 void drawAxis()
@@ -23,7 +25,7 @@ void drawAxis()
 	char str[20];
 	
 	GUI_SetColor(WHITE);
-	GUI_FillRect(0,120,479,739);
+	GUI_FillRect(0,120,479,789);
 	GUI_SetColor(0x00bbbbbb);
 	GUI_SetBkColor(WHITE);
 	GUI_SetFont(&GUI_FontHelvetica32);
@@ -61,12 +63,12 @@ static void plot(int index)
 	GUI_SetPenSize(2);
 	GUI_SetColor(color);
 	x = oriX+(int)(log10(xvalue[index])*185);
-	y = oriY+(int)(yvalue[index]/2000/scale*height);
+	y = oriY+(int)(yvalue[index]/2000.0/scale*height);
 	GUI_AA_FillCircle(y,x,2);
 	if(index)
 	{
 		x0 = oriX+(int)(log10(xvalue[index-1])*185);
-		y0 = oriY+(int)(yvalue[index-1]/2000/scale*height);
+		y0 = oriY+(int)(yvalue[index-1]/2000.0/scale*height);
 		GUI_AA_FillCircle(y0,x0,2);
 		GUI_AA_DrawLine(y0,x0,y,x);
 	}
@@ -82,7 +84,7 @@ void scan()
 	scale = 1;
 	drawAxis();
 	
-	for(index=0;index<32;index++)
+	for(index=0;index<NUM;index++)
 	{
 		yvalue[index] = ztest(xvalue[index]);
 		
@@ -96,22 +98,24 @@ void scan()
 				plot(j);
 			}
 		}
-			
 		plot(index);
 	}
 	
 	analog(0);
+	
+	widgetList[1].widgetDraw(&widgetList[1]);
 }
 
 void select()
 {
+	
 }
 	
 
 
 static struct UIWidget widgetList[2] =
 {
-	{0,0,0,{40,220,439,719},"",0,NULL,NULL,drawAxis,select},
+	{0,0,0,{40,170,439,719},"",0,NULL,NULL,drawAxis,select},
 	{1,1,0,{120,740,359,779},"Scan",0,NULL,NULL,drawButton,scan},
 };
 
@@ -123,7 +127,7 @@ static void pageReturn(struct UIPage * page)
 
 struct UIPage pZVF = 
 {
-	"Impedance Spectra",
+	"Impedance Spectrum",
 	2,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;

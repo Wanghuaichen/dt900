@@ -3,8 +3,8 @@
 
 TIM_HandleTypeDef htim2;
 extern SPI_HandleTypeDef hspi6;
-
-static uint16_t DataBuf[POINTS];
+int POINTS = 300;
+static uint16_t DataBuf[400];
 static uint32_t index;
 
 static void TIM2_Init(uint32_t period);
@@ -23,6 +23,7 @@ void DAC_SWEEP(uint32_t frequency,float mag,float offset)
 	else
 	{
 		index = 0;
+		//POINTS = frequency<=80 ? 300 : frequency<=200 ? 100 : 50;
 		period = 84000000.0/POINTS/frequency;
 		for(i=0;i<POINTS;i++)
 				DataBuf[i] = (uint16_t)(DACMID+offset*0xffff/5+mag/5*0xffff*sin(2*PI*i/POINTS));
