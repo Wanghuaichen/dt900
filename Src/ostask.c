@@ -14,26 +14,27 @@ extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern struct Settings settings;
 extern float curTemperature;
 extern struct UIInfo UIInfo;
+extern struct UIPage pAbout;
 
 extern IWDG_HandleTypeDef IwdgHandle;
 
-static int chargeSwap = 0;
+static int chargeSwap;
 static void batVolt();
 
 void StartDefaultTask(void const * argument)
 {
 	char str[20];
 	static unsigned int i=0;
-
-#ifndef _DEBUG
-	GUI_SetColor(WHITE);
-	GUI_SetBkColor(TITLECOLOR);
-	GUI_SetFont(&GUI_FontHelvetica32);	
-	GUI_SetTextAlign(GUI_TA_RIGHT | GUI_TA_TOP);
-	GUI_DispStringAt(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6)?"   ":"|",400,0);
-#endif
+	
 	for(;;)
   {
+		if(UIInfo.PagePtr == &pAbout)
+		{
+			i=0;
+			HAL_IWDG_Refresh(&IwdgHandle);
+			osDelay(1000);
+			continue;
+		}
 #ifndef _DEBUG	
 		GUI_SetColor(WHITE);
 		GUI_SetBkColor(TITLECOLOR);
@@ -52,6 +53,7 @@ void StartDefaultTask(void const * argument)
 		if(i%300==0)
 		{
 			batVolt();
+			chargeSwap = 1;
 		}
 		
 		if(chargeSwap)
@@ -62,12 +64,11 @@ void StartDefaultTask(void const * argument)
 			batVolt();
 			chargeSwap=0;
 		}
-		
 		i++;
-#endif
 		
-	HAL_IWDG_Refresh(&IwdgHandle);
-	osDelay(1000);
+		HAL_IWDG_Refresh(&IwdgHandle);
+		osDelay(1000);
+#endif
   }
 }
 
@@ -132,25 +133,25 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	chargeSwap = 1;
 }
 
-static void batVolt()
+static void batVolt(int renew)
 {
-	static int batLevel = 0;
+	//static int batLevel = 0;
 	int curLevel;
 	float volt;
 	volt = ADC_GetValue();
 	curLevel = (volt-3.3)/0.08;
 	if(curLevel>10)
 		curLevel = 10;
-	if(batLevel != curLevel)
-	{
-		batLevel = curLevel;
+//	if(batLevel != curLevel)
+//	{
+//		batLevel = curLevel;
 		GUI_SetColor(TITLECOLOR);
 		GUI_FillRect(413,0,459,30);
 		GUI_SetColor(WHITE);
 		GUI_AA_DrawRoundedRect(413,6,459,25,3);
 		if(curLevel>0)
-			GUI_FillRect(416,9,416+4*batLevel,22);
-	}
+			GUI_FillRect(416,9,416+4*curLevel,22);
+//	}
 	if(volt<3.3)
 	{
 		beep(100);

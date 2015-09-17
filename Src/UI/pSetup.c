@@ -30,10 +30,11 @@ static void kbCallBack()
 			break;
 		case 1:
 			val = atoi(kbInfo.kbBuff);
-			settings.serialno = val<1 ? 1 : val;
+			settings.serialno = val<1 ? 1 : val>99999 ? 99999 : val;
 			break;
 		case 4:
-			settings.temperature = (int)(atof(kbInfo.kbBuff)*10)/10.0;
+			val = (int)(atof(kbInfo.kbBuff)*10)/10.0;
+			settings.temperature = val>99 ? 99 : val<-99 ? -99 : val;
 			reTemp();
 			break;
 		case 5:
@@ -47,13 +48,16 @@ static void kbCallBack()
 		default:
 			break;
 	}
-	UIInfo.flagSettings = 1;
+	UIInfo.flagSettings |= 0x1;
 }
 
 static void goSubSettings(struct UIWidget * widget)
 {
 	kbInfo.kbParent = &pSetup;
-	strcpy(kbInfo.kbTitle,widget->widgetTitle);
+	if(widget->widgetIndex==5)
+		sprintf(kbInfo.kbTitle,"Shunt");
+	else
+		strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
 	PageJump(&pKeyboard);
@@ -65,18 +69,20 @@ static void goSubPage(struct UIWidget * widget)
 	{
 		case 2:
 			PageJump(&pGeoParam);
+			UIInfo.flagSettings |= 0x1;
 			break;
 		case 6:
 			PageJump(&pString);
+			UIInfo.flagSettings |= 0x1;
 			break;
 		case 7:
 			PageJump(&pFlow);
+			UIInfo.flagSettings |= 0x1;
 			break;
 		default:
 			PageJump(&pTest);
 			break;
 	}
-	UIInfo.flagSettings = 1;
 }
 
 
@@ -142,16 +148,11 @@ static void sensormode(struct UIWidget * widget)
 {
 	settings.sensormode = (settings.sensormode+1)&0x3;
 	reTemp();
-//	if(settings.sensormode==1 || settings.sensormode==2)
-//	{
-//		HAL_Delay(200);
-//	}
-//		reTemp();
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
 	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
 	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
-	UIInfo.flagSettings = 1;
+	UIInfo.flagSettings |= 0x1;
 }
 
 static void constant(struct UIWidget * widget)
@@ -159,7 +160,7 @@ static void constant(struct UIWidget * widget)
 	settings.constant = settings.constant ? 0 : 1;
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
-	UIInfo.flagSettings = 1;
+	UIInfo.flagSettings |= 0x1;
 }
 
 static struct UIWidget widgetList[11] =
@@ -169,7 +170,7 @@ static struct UIWidget widgetList[11] =
 	{2,1,0,{0,240,479,299},"Geo Spec.",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
 	{3,1,0,{0,300,479,359},"Sensor Mode",0,StringArray[3],widgetInit,drawSLabel,sensormode},
 	{4,0,0,{0,360,479,419},"Temperature",0,StringArray[4],widgetInit,drawSLabel,goSubSettings},
-	{5,1,0,{0,420,479,479},"Shunt(})",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
+	{5,1,0,{0,420,479,479},"Shunt(})  0=no shunt",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
 	{6,1,0,{0,480,479,539},"String",0,StringArray[6],widgetInit,drawSLabel,goSubPage},
 	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,goSubPage},
 	{8,1,0,{0,600,479,659},"@Constant",0,StringArray[8],widgetInit,drawSLabel,constant},
@@ -179,7 +180,7 @@ static struct UIWidget widgetList[11] =
 
 struct UIPage pSetup = 
 {
-	"Test",
+	"Test Setup",
 	11,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;

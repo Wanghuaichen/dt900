@@ -26,7 +26,15 @@ Project File Date:  09/09/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling pZVF.c...
+compiling ostask.c...
+..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
+  void reTemp();
+..\Inc\ostask.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Drivers\BSP\rtc.h(9): warning:  #1295-D: Deprecated declaration RTC_Set - give arg types
+  void RTC_Set();
+..\Drivers\BSP\rtc.h(10): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
+  void RTC_Get();
 ..\Src\UI\ui.h(74): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
   void UI_Init();
 ..\Src\UI\ui.h(76): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
@@ -35,25 +43,27 @@ compiling pZVF.c...
   void UITouch();
 ..\Src\UI\ui.h(78): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
   void UIEventManager();
+..\Src\UI\ui.h(88): warning:  #1295-D: Deprecated declaration getUIInfo - give arg types
+  struct UIInfo * getUIInfo();
 ..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
   int geotest();
-..\Src\UI\pZVF.c(41): warning:  #223-D: function "strlen" declared implicitly
-                GUI_DispStringInRectEx(str,&Rect,GUI_TA_RIGHT|GUI_TA_VCENTER,strlen(str),GUI_ROTATE_CW);
-..\Src\UI\pZVF.c(54): warning:  #223-D: function "strlen" declared implicitly
-                        GUI_DispStringInRectEx(str,&Rect,GUI_TA_HCENTER|GUI_TA_BOTTOM,strlen(str),GUI_ROTATE_CW);
-..\Src\UI\pZVF.c(23): warning:  #177-D: variable "x" was declared but never referenced
-        int index,x;
-..\Src\UI\pZVF.c(117): warning:  #144-D: a value of type "void (*)()" cannot be used to initialize an entity of type "void (*)(struct UIWidget *)"
-        {0,0,0,{40,170,439,719},"",0,NULL,NULL,drawAxis,select},
-..\Src\UI\pZVF.c(117): warning:  #144-D: a value of type "void (*)()" cannot be used to initialize an entity of type "void (*)(struct UIWidget *)"
-        {0,0,0,{40,170,439,719},"",0,NULL,NULL,drawAxis,select},
-..\Src\UI\pZVF.c(118): warning:  #144-D: a value of type "void (*)()" cannot be used to initialize an entity of type "void (*)(struct UIWidget *)"
-        {1,1,0,{120,740,359,779},"Scan",0,NULL,NULL,drawButton,scan},
-..\Src\UI\pZVF.c: 11 warnings, 0 errors
+..\Drivers\BSP\beep.h(6): warning:  #1295-D: Deprecated declaration beepon - give arg types
+  void beepon();
+..\Drivers\BSP\beep.h(7): warning:  #1295-D: Deprecated declaration beepoff - give arg types
+  void beepoff();
+..\Src\ostask.c(22): warning:  #1295-D: Deprecated declaration batVolt - give arg types
+  static void batVolt();
+..\Src\ostask.c(149): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        curLevel = (volt-3.3)/0.08;
+..\Src\ostask.c(162): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(volt<3.3)
+..\Src\ostask.c(169): warning:  #223-D: function "LCD_PWR" declared implicitly
+                LCD_PWR(0);
+..\Src\ostask.c: 16 warnings, 0 errors
 linking...
-Program Size: Code=144282 RO-data=173386 RW-data=7060 ZI-data=166412  
+Program Size: Code=145890 RO-data=173550 RW-data=7060 ZI-data=166412  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 11 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 16 Warning(s).
 </pre>
 </body>
 </html>

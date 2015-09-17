@@ -17,6 +17,7 @@ static int xcoordinate[23] = {1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,2
 static int xvalue[NUM] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,100,200,300,400,500};
 static int yvalue[NUM];
 static int scale=1;
+static int target = -1;
 
 void drawAxis()
 {
@@ -79,8 +80,8 @@ void scan()
 	int index;
 	int j;
 	
+	target = -1;
 	analog(1);
-	
 	scale = 1;
 	drawAxis();
 	
@@ -90,7 +91,7 @@ void scan()
 		
 		if(yvalue[index]>2000*scale)
 		{
-			while(yvalue[index]>2000*scale && scale<32)
+			while(yvalue[index]>2000*scale && scale<128)
 				scale *= 2;
 			drawAxis();
 			for(j=0;j<index;j++)
@@ -100,34 +101,58 @@ void scan()
 		}
 		plot(index);
 	}
-	
 	analog(0);
-	
 	widgetList[1].widgetDraw(&widgetList[1]);
 }
 
 void select()
 {
+	int index;
+	int x,y;
+	char str[30];
+	GUI_RECT Rect={479-32,0,479,799};
 	
+	for(index=0;index<NUM;index++)
+	{
+		if(getUIInfo()->tpY<=oriX+(int)(log10(xvalue[index])*185))
+		{
+			if(target>=0 && target!=index)
+			{
+				GUI_SetColor(0x00bbbbbb);
+				x = oriX+(int)(log10(xvalue[target])*185);
+				y = oriY+(int)(yvalue[target]/2000.0/scale*height);
+				GUI_AA_FillCircle(y,x,2);
+			}
+			GUI_SetColor(0x00ed412d);
+			x = oriX+(int)(log10(xvalue[index])*185);
+			y = oriY+(int)(yvalue[index]/2000.0/scale*height);
+			GUI_AA_FillCircle(y,x,2);
+			sprintf(str,"     %dHz : %d}     ",xvalue[index],yvalue[index]);
+			GUI_DispStringInRectEx(str,&Rect,GUI_TA_HCENTER,strlen(str),GUI_ROTATE_CW);
+			target = index;
+			break;
+		}
+	}
 }
 	
 
 
 static struct UIWidget widgetList[2] =
 {
-	{0,0,0,{40,170,439,719},"",0,NULL,NULL,drawAxis,select},
+	{0,1,1,{40,170,439,719},"",0,NULL,NULL,drawAxis,select},
 	{1,1,0,{120,740,359,779},"Scan",0,NULL,NULL,drawButton,scan},
 };
 
 static void pageReturn(struct UIPage * page)
 {
+	target = -1;
 	scale = 1;
 	PageJump(&pMain);
 }
 
 struct UIPage pZVF = 
 {
-	"Impedance Spectrum",
+	"Impedance Plot",
 	2,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;

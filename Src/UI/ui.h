@@ -85,4 +85,6 @@ void UIDraw(struct UIPage *page);
 void drawButton(struct UIWidget* widget);
 void drawLabel(struct UIWidget* widget);
 void drawSLabel(struct UIWidget* widget);
+struct UIInfo * getUIInfo();
+void UIFont(int mode);
 #endif

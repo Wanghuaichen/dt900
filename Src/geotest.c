@@ -29,6 +29,7 @@ float stringResist;
 float lineResist;
 float totalResist;
 
+static int openshort();
 static void step0();
 static void step1();
 static void step2();
@@ -66,7 +67,9 @@ int geotest()
 	float portion;
 	int fault = 0;
 	int COLOR;
+	int openshorttest;
 	
+	memset(&geophone,0,sizeof(geophone));
 	geo = &geoparam[settings.paramnum];
 	if(settings.sensormode == 3)
 		geophone.temp = settings.temperature;
@@ -87,26 +90,38 @@ int geotest()
 	GUI_SetBkColor(WHITE);
 	GUI_SetFont(&GUI_FontHelvetica32);	
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-	GUI_DispStringAt("Noise",100,260);
-	GUI_DispStringAt("Leakage",100,300);
-	GUI_DispStringAt("Resistance",100,340);
-	GUI_DispStringAt("Frequency",100,380);
-	GUI_DispStringAt("Damping",100,420);
-	GUI_DispStringAt("Sensitivity",100,460);
-	GUI_DispStringAt("Distortion",100,500);
-	GUI_DispStringAt("Impedance",100,540);
-	GUI_DispStringAt("Polarity",100,580);
-	GUI_DispStringAt("Low Drive",100,620);
+	GUI_DispStringAt("Noise(mV)",60,260);
+	GUI_DispStringAt("Leakage(M})",60,300);
+	GUI_DispStringAt("Resistance(})",60,340);
+	GUI_DispStringAt("Frequency(Hz)",60,380);
+	GUI_DispStringAt("Damping",60,420);
+	GUI_DispStringAt("Sensitivity(V/m/s)",60,460);
+	GUI_DispStringAt("Distortion(%)",60,500);
+	GUI_DispStringAt("Impedance(})",60,540);
+	GUI_DispStringAt("Polarity",60,580);
+	GUI_DispStringAt("Low Drive(})",60,620);
 	
 	analog(1);
-	
 	GUI_SetColor(WHITE);
+	
+	openshorttest = openshort();
+	if(openshorttest!=0)
+	{
+		sprintf(str,openshorttest==1 ? "OPEN" : "SHORT");
+		GUI_SetBkColor(0x005a62ff);
+		GUI_DispStringAt("              ",300,220);
+		GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+		GUI_DispStringAt(str,356,220);
+		fault = -1;
+		return fault;
+	}
+	
 	step0();
 	sprintf(str,"%.1f",geophone.nois);
 	GUI_SetBkColor(geophone.nois>10 ? 0x005a62ff : 0x005bc15b);
-	GUI_DispStringAt("              ",260,260);
+	GUI_DispStringAt("              ",300,260);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,260);
+	GUI_DispStringAt(str,356,260);
 	
 	step1();
 	if(geophone.leakage>100)
@@ -121,9 +136,9 @@ int geotest()
 	else
 		COLOR = 0x005bc15b;
 	GUI_SetBkColor(COLOR);
-	GUI_DispStringAt("              ",260,300);
+	GUI_DispStringAt("              ",300,300);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,300);
+	GUI_DispStringAt(str,356,300);
 	
 	sprintf(str,"%d",(int)geophone.resi);
 	portion = (float)(geophone.resi*settings.parallel/settings.series-shuntResist)/shuntResist;
@@ -135,9 +150,9 @@ int geotest()
 	else
 		COLOR = 0x005bc15b;
 	GUI_SetBkColor(COLOR);
-	GUI_DispStringAt("              ",260,340);
+	GUI_DispStringAt("              ",300,340);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,340);
+	GUI_DispStringAt(str,356,340);
 	
 	step2();
 	sprintf(str,"%.2f",geophone.freq);
@@ -150,9 +165,9 @@ int geotest()
 	else
 		COLOR = 0x005bc15b;
 	GUI_SetBkColor(COLOR);
-	GUI_DispStringAt("              ",260,380);
+	GUI_DispStringAt("              ",300,380);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,380);
+	GUI_DispStringAt(str,356,380);
 	sprintf(str,"%.3f",geophone.damp);
 	portion = (float)(geophone.damp-damp)/damp;
 	if(portion>geo->Bp||portion<-geo->Bn)
@@ -163,9 +178,9 @@ int geotest()
 	else
 		COLOR = 0x005bc15b;
 	GUI_SetBkColor(COLOR);
-	GUI_DispStringAt("              ",260,420);
+	GUI_DispStringAt("              ",300,420);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,420);
+	GUI_DispStringAt(str,356,420);
 	sprintf(str,"%.1f",geophone.sens);
 	portion = (float)(geophone.sens/settings.series-sens)/sens;
 	if(portion>geo->Sp||portion<-geo->Sn)
@@ -176,9 +191,9 @@ int geotest()
 	else
 		COLOR = 0x005bc15b;
 	GUI_SetBkColor(COLOR);
-	GUI_DispStringAt("              ",260,460);
+	GUI_DispStringAt("              ",300,460);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,460);
+	GUI_DispStringAt(str,356,460);
 	
 	step3();
 	sprintf(str,"%.3f",geophone.dist);
@@ -190,9 +205,9 @@ int geotest()
 	else
 		COLOR = 0x005bc15b;
 	GUI_SetBkColor(COLOR);
-	GUI_DispStringAt("              ",260,500);
+	GUI_DispStringAt("              ",300,500);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,500);
+	GUI_DispStringAt(str,356,500);
 	sprintf(str,"%d",(int)geophone.impe);
 //	portion = (float)(geophone.impe-geo->Z)/geo->Z;
 //	if(portion>geo->Zp||portion<-geo->Zn)
@@ -204,9 +219,9 @@ int geotest()
 //		COLOR = 0x005bc15b;
 	COLOR = 0x002fbeff;
 	GUI_SetBkColor(COLOR);
-	GUI_DispStringAt("              ",260,540);
+	GUI_DispStringAt("              ",300,540);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,316,540);
+	GUI_DispStringAt(str,356,540);
 	
 	if(settings.polarity)
 		polarity();
@@ -217,6 +232,40 @@ int geotest()
 	
 	analog(0);
 	return fault;
+}
+
+static int openshort()
+{
+	double val=0;
+	int i,ret;
+	unsigned short offset;
+	float volt;
+	
+	volt =0.04;
+	offset =(unsigned short)(volt/5*0xffff);
+	DAC_SET(DACMID+offset);
+	HAL_Delay(100);
+	for(i=0;i<64;i++)
+		val+=AD7190Read();
+	val /= 64;
+	val = R_ref*AMPGAIN*abs(val-0x800000)/(volt/5*0xffffff);
+	
+	return val>100000 ? 1 : val<5 ? -1 : 0;
+//	if(val>400000)
+//		return 1;
+	
+//	volt =0.2;
+//	offset =(unsigned short)(volt/5*0xffff);
+//	DAC_SET(DACMID+offset);
+//	HAL_Delay(100);
+//	for(i=0;i<64;i++)
+//		val+=AD7190Read();
+//	val /= 64;
+//	val = R_ref*AMPGAIN*abs(val-0x800000)/(volt/5*0xffffff);
+//	if(val<1)
+//		return -1;
+//	
+//	return 0;
 }
 
 static void step0()
@@ -274,7 +323,7 @@ dbg("step1 1");
 	for(i=0;i<64;i++)
 		val2+=AD7190Read();
 	val2 /= 64;
-	geophone.leakage = val2<=0x800000 ? 200 : (AMPGAIN*abs(val-ADCMID)*5.0/0xffffff+2.5)/((val2-0x800000)*5.0/0xffffff)*0.03-0.2;
+	geophone.leakage = val2<=0x800000 ? 100.001 : (AMPGAIN*abs(val-ADCMID)*5.0/0xffffff+2.5)/((val2-0x800000)*5.0/0xffffff)*0.03-0.2;
 //while(1);
 	AD7190_Setup(0);
 }
@@ -380,7 +429,7 @@ static void polarity()
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
 	GUI_DispStringAt("              ",260,580);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt("0",316,580);
+	GUI_DispStringAt("0",356,580);
 	while(1)
 	{
 		HAL_IWDG_Refresh(&IwdgHandle);
@@ -403,7 +452,6 @@ static void polarity()
 			{
 				next.enable = 0;
 				drawButton(&next);
-				beep(200);
 				return;
 			}
 		}
@@ -425,7 +473,7 @@ static void polarity()
 			GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
 			GUI_DispStringAt("              ",260,580);
 			GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-			GUI_DispStringAt(str,316,580);
+			GUI_DispStringAt(str,356,580);
 		}
 	}
 }
@@ -449,9 +497,9 @@ static void contidrive()
 	GUI_SetColor(WHITE);
 	GUI_SetBkColor(0x002fbeff);
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-	GUI_DispStringAt("              ",260,620);
+	GUI_DispStringAt("              ",300,620);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt("0-0",316,620);
+	GUI_DispStringAt("0-0",356,620);
 	
 	geophone.maxZ = 0;
 	geophone.minZ = 0xffffffff;
@@ -476,7 +524,6 @@ static void contidrive()
 			{
 				next.enable =0;
 				drawButton(&next);
-				beep(200);
 				flag = 0;
 				break;
 			}
@@ -496,7 +543,7 @@ static void contidrive()
 			GUI_SetColor(WHITE);
 			GUI_SetBkColor(0x002fbeff);
 			GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-			GUI_DispStringAt(str,260,620);
+			GUI_DispStringAt(str,300,620);
 			GUI_SetBkColor(WHITE);
 			GUI_DispCEOL();
 		}

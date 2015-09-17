@@ -32,11 +32,11 @@ static void key(struct UIWidget* widget)
 
 static struct UIWidget widgetList[5] =
 {
-	{0,1,0,{100,200,379,259},"Do a test",0,NULL,NULL,drawButton,key},
-	{1,1,0,{100,300,379,359},"Impedance spectrum",0,NULL,NULL,drawButton,key},
-	{2,1,0,{100,400,379,459},"Geophone settings",0,NULL,NULL,drawButton,key},
-	{3,1,0,{100,500,379,559},"System preference",0,NULL,NULL,drawButton,key},
-	{4,1,0,{100,600,379,659},"USB storage",0,NULL,NULL,drawButton,key},
+	{0,1,0,{100,200,379,259},"Geophone Test",0,NULL,NULL,drawButton,key},
+	{1,1,0,{100,300,379,359},"Impedance Plot",0,NULL,NULL,drawButton,key},
+	{2,1,0,{100,400,379,459},"Geophone Settings",0,NULL,NULL,drawButton,key},
+	{3,1,0,{100,500,379,559},"System Preference",0,NULL,NULL,drawButton,key},
+	{4,1,0,{100,600,379,659},"USB Drive",0,NULL,NULL,drawButton,key},
 //	{0,1,0,{100,200,379,259},"Do a test",0,NULL,NULL,drawButton,key},
 //	{1,1,0,{100,330,379,389},"Geophone settings",0,NULL,NULL,drawButton,key},
 //	{2,1,0,{100,460,379,519},"System preference",0,NULL,NULL,drawButton,key},

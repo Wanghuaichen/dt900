@@ -18,6 +18,16 @@ extern struct UIInfo UIInfo;
 static struct UIWidget widgetList[2];
 struct UIPage pTest;
 
+static void header(FIL* pMyFile,char* str,UINT* pwbytes)
+{
+	if(UIInfo.flagSettings>1)
+		return;
+	sprintf(str,"\r\nSerial No.\tType\tDate\tTime\tTemperature(⊥)\t");
+	f_write(pMyFile, str, strlen(str),pwbytes);
+	sprintf(str,"Noise(mV)\tLeakage(M次)\tResistance(次)\tFrequency(Hz)\tDamping\tSensitivity(V/m/s)\tDistortion(%%)\tImpedance(次)\tPolarity\tLD_Min(次)\tLD_Max(次)\r\n");
+	f_write(pMyFile, str, strlen(str),pwbytes);
+}
+	
 static void save()
 {
 	FIL MyFile;
@@ -25,9 +35,9 @@ static void save()
 	UINT wbytes;
 	
 	sprintf(widgetList[1].widgetTitle,"Test");
-//	widgetList[0].enable = 0;
+	widgetList[0].enable = 0;
 	widgetList[0].active = 0;
-//	widgetList[1].active = 1;
+	widgetList[1].active = 1;
 	pTest.widgetSelected = 1;
 	widgetList[0].widgetDraw(&widgetList[0]);
 	widgetList[1].widgetDraw(&widgetList[1]);
@@ -38,19 +48,24 @@ dbg("save 1");
 		return;
 dbg("save 2");	
   f_lseek(&MyFile,MyFile.fsize); 
-dbg("save 3");	
-  sprintf(str,"%06d\t%s\t%02d-%02d-%02d\t%02d:%02d:%02d\t%.1f\t%.2f\t%d\t%.2f\t%5.3f\t%.1f\t%.3f\t%d\r\n",
+dbg("save 3");
+	header(&MyFile,str,&wbytes);
+  sprintf(str,"%05d\t%s\t%02d-%02d-%02d\t%02d:%02d:%02d\t%.1f\t%.2f\t%.1f\t%d\t%.2f\t%5.3f\t%.1f\t%.3f\t%d\t%d\t%d\t%d\r\n",
 	settings.serialno,
 	geoparam[settings.paramnum].type,
-	rtcDate.Year,rtcDate.Month,rtcDate.Date,rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
+	rtcDate.Date,rtcDate.Month,rtcDate.Year,rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
 	geophone.temp,
 	geophone.nois,
+	geophone.leakage,
 	(int)geophone.resi,
 	geophone.freq,
 	geophone.damp,
 	geophone.sens,
 	geophone.dist,
-	(int)geophone.impe
+	(int)geophone.impe,
+	geophone.polarity,
+	geophone.minZ,
+	geophone.maxZ
 	);
 dbg("save 4");		
 	f_write(&MyFile, str, strlen(str), (void *)&wbytes);
@@ -58,33 +73,41 @@ dbg("save 5");
   f_close(&MyFile);
 dbg("save 6");	
 	
-		GUI_SetColor(BLACK);
-		GUI_SetBkColor(WHITE);
-		GUI_SetFont(&GUI_FontHelvetica32);	
-		GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_BOTTOM);
-		sprintf(str,"No.:%05d",++settings.serialno);
-		GUI_DispStringAt(str,0,210);
+	GUI_SetColor(BLACK);
+	GUI_SetBkColor(WHITE);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_BOTTOM);
+	if(++settings.serialno>99999)
+		settings.serialno = 1;
+	sprintf(str,"No.:%05d",settings.serialno);
+	UIInfo.flagSettings |= 0x2;
+	GUI_DispStringAt(str,0,210);
 }
 
 static void test()
 {
+	int ret;
 	GUI_SetColor(WHITE);
-	GUI_FillRect(0,260,479,799);
+	GUI_FillRect(0,220,479,799);
+	widgetList[0].enable = 0;
 	
 	if(settings.iteration==1)
 	{
-		if(geotest())
-		{
-			beep(300);
-			HAL_Delay(100);
-			beep(300);
-			HAL_Delay(100);
-			beep(300);
-		}
-		else
-			beep(500);
-		widgetList[0].enable = 1;
+		ret = geotest();
 		sprintf(widgetList[1].widgetTitle,"Retest");
+		
+		if(ret==0)
+			beep(500);
+		else
+		{
+			beep(100);
+			HAL_Delay(100);
+			beep(100);
+			HAL_Delay(100);
+			beep(100);
+		}
+		if(ret>=0)
+			widgetList[0].enable = 1;
 	}
 	else
 	{	
@@ -97,7 +120,7 @@ static void test()
 		while(settings.iteration-->0)
 		{
 			GUI_SetColor(WHITE);
-			GUI_FillRect(240,260,479,799);
+			GUI_FillRect(300,220,479,799);
 			sprintf(widgetList[0].widgetTitle,"%d",settings.iteration);
 			geotest();
 			save();

@@ -9,13 +9,19 @@ extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
 extern struct UIPage pMain;
+extern struct UIPage pAbout;
 extern struct UIPage pKeyboard;
+extern struct UIPage pZVF;
 
 extern struct Settings settings;
 
 struct UIInfo UIInfo;
 
 
+struct UIInfo * getUIInfo()
+{
+	return &UIInfo;
+}
 
 void UIKeyboard()
 {
@@ -127,7 +133,7 @@ void touchEvent(struct UIPage *page)
 	else if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.widgetactive)
 	{
 		UIInfo.keyCombo++;
-		if(page==&pKeyboard)
+		if(page==&pKeyboard || (page==&pZVF && page->widgetSelected==0))
 		{
 			if(page->widgetList[page->widgetSelected].widgetAct)
 				page->widgetList[page->widgetSelected].widgetAct(&page->widgetList[page->widgetSelected]);
@@ -184,7 +190,7 @@ void keyboardEvent(struct UIPage *page)
 		}
 		do
 		page->widgetSelected = page->widgetSelected == page->widgetNum-1 ? 0 : page->widgetSelected+1;
-		while(!page->widgetList[page->widgetSelected].enable);
+		while(!page->widgetList[page->widgetSelected].enable || page->widgetList[page->widgetSelected].active);
 		page->widgetList[page->widgetSelected].active=1;
 		page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 	}
@@ -204,6 +210,7 @@ void keyboardEvent(struct UIPage *page)
 void UI_Init()
 {
 	memset(&UIInfo,0,sizeof(UIInfo));
+	//UIInfo.flagSettings = 2;
 	GUI_SetBkColor(WHITE);
 	GUI_Clear();
 	GUI_SetColor(TITLECOLOR);
@@ -225,6 +232,15 @@ void PageJump(struct UIPage *page)
 	UIDraw(page);
 }
 
+void UIFont(int mode)
+{
+	if(mode)
+		GUI_SetFont(&GUI_FontHelveticaNeueLT48);
+	else
+		GUI_SetFont(&GUI_FontHelvetica32);
+		
+}
+
 void UIDraw(struct UIPage *page)
 {
 	uint32_t i;
@@ -236,7 +252,7 @@ void UIDraw(struct UIPage *page)
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
 	GUI_DispStringAt(page->pageTitle,240,76);
 	
-	GUI_SetColor(page==&pMain ? TITLECOLOR : WHITE);
+	GUI_SetColor((page==&pMain || page==&pAbout) ? TITLECOLOR : WHITE);
 	GUI_FillPolygon(aPoints, GUI_COUNTOF(aPoints), 30, 70);
 	
 	for(i=0;i<page->widgetNum;i++)
@@ -256,9 +272,9 @@ void drawButton(struct UIWidget* widget)
 	if(widget->enable)
 	{
 		GUI_SetPenSize(2);
-		GUI_SetColor(widget->enable ? (widget->active ? 0x003fceff : 0x002f2f2f) : 0x00f0f0f0);
+		GUI_SetColor(widget->active ? 0x003fceff : 0x002f2f2f);
 		GUI_AA_DrawRoundedRect(widget->rect.x0+1,widget->rect.y0+1,widget->rect.x1-1,widget->rect.y1-1,(widget->rect.y1-widget->rect.y0-2)/2);
-		GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00f0f0f0);
+		GUI_SetColor(widget->active ? 0x002fbeff : BLACK);
 		GUI_SetBkColor(WHITE);
 		GUI_SetFont(&GUI_FontHelvetica32);	
 		GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -269,8 +285,8 @@ void drawButton(struct UIWidget* widget)
 
 void drawLabel(struct UIWidget* widget)
 {
-	if(!widget->enable)
-			return;
+//	if(!widget->enable)
+//			return;
 	GUI_SetColor(WHITE);
 	GUI_FillRect(widget->rect.x0,widget->rect.y0,widget->rect.x1,widget->rect.y1);
 	GUI_SetColor(widget->active ? 0x002fbeff : BLACK);
