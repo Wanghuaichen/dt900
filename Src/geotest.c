@@ -14,6 +14,7 @@ extern void rdft(int n, int isgn, float *a);
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 extern IWDG_HandleTypeDef IwdgHandle;
+extern struct UIInfo UIInfo;
 
 uint32_t test0,test1;
 uint32_t ADCMID = 0x800000;
@@ -65,7 +66,6 @@ int geotest()
 {
 	char str[20];
 	float portion;
-	int fault = 0;
 	int COLOR;
 	int openshorttest;
 	
@@ -107,13 +107,14 @@ int geotest()
 	openshorttest = openshort();
 	if(openshorttest!=0)
 	{
+		analog(0);
 		sprintf(str,openshorttest==1 ? "OPEN" : "SHORT");
 		GUI_SetBkColor(0x005a62ff);
 		GUI_DispStringAt("              ",300,220);
 		GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 		GUI_DispStringAt(str,356,220);
-		fault = -1;
-		return fault;
+		geophone.fault = openshorttest==1 ? -1 : -2;
+		return geophone.fault;
 	}
 	
 	step0();
@@ -130,7 +131,7 @@ int geotest()
 		sprintf(str,"%.1f",geophone.leakage);
 	if(geophone.leakage<10)
 	{
-		fault=1;
+		geophone.fault=1;
 		COLOR = 0x005a62ff;
 	}
 	else
@@ -144,7 +145,7 @@ int geotest()
 	portion = (float)(geophone.resi*settings.parallel/settings.series-shuntResist)/shuntResist;
 	if(portion>geo->Rp||portion<-geo->Rn)
 	{
-		fault=1;
+		geophone.fault=1;
 		COLOR = 0x005a62ff;
 	}
 	else
@@ -159,7 +160,7 @@ int geotest()
 	portion = (float)(geophone.freq-geo->F)/geo->F;
 	if(portion>geo->Fp||portion<-geo->Fn)
 	{
-		fault=1;
+		geophone.fault=1;
 		COLOR = 0x005a62ff;
 	}
 	else
@@ -172,7 +173,7 @@ int geotest()
 	portion = (float)(geophone.damp-damp)/damp;
 	if(portion>geo->Bp||portion<-geo->Bn)
 	{
-		fault=1;
+		geophone.fault=1;
 		COLOR = 0x005a62ff;
 	}
 	else
@@ -185,7 +186,7 @@ int geotest()
 	portion = (float)(geophone.sens/settings.series-sens)/sens;
 	if(portion>geo->Sp||portion<-geo->Sn)
 	{
-		fault=1;
+		geophone.fault=1;
 		COLOR = 0x005a62ff;
 	}
 	else
@@ -199,7 +200,7 @@ int geotest()
 	sprintf(str,"%.3f",geophone.dist);
 	if(geophone.dist>geo->D)
 	{
-		fault=1;
+		geophone.fault=1;
 		COLOR = 0x005a62ff;
 	}
 	else
@@ -212,7 +213,7 @@ int geotest()
 //	portion = (float)(geophone.impe-geo->Z)/geo->Z;
 //	if(portion>geo->Zp||portion<-geo->Zn)
 //	{
-//		fault=1;
+//		geophone.fault=1;
 //		COLOR = 0x005a62ff;
 //	}
 //	else
@@ -225,13 +226,13 @@ int geotest()
 	
 	if(settings.polarity)
 		polarity();
-	if(geophone.polarity==-1) fault=1;
+	if(geophone.polarity==-1) geophone.fault=1;
 	
 	if(settings.ldrate)
 		contidrive();
 	
 	analog(0);
-	return fault;
+	return geophone.fault;
 }
 
 static int openshort()
@@ -241,31 +242,16 @@ static int openshort()
 	unsigned short offset;
 	float volt;
 	
-	volt =0.04;
+	volt =0.05;
 	offset =(unsigned short)(volt/5*0xffff);
 	DAC_SET(DACMID+offset);
 	HAL_Delay(100);
 	for(i=0;i<64;i++)
 		val+=AD7190Read();
 	val /= 64;
-	val = R_ref*AMPGAIN*abs(val-0x800000)/(volt/5*0xffffff);
+	val = R_ref*AMPGAIN*abs(val-0x800000)/(volt/5*0xffffff)-0.25;
 	
-	return val>100000 ? 1 : val<5 ? -1 : 0;
-//	if(val>400000)
-//		return 1;
-	
-//	volt =0.2;
-//	offset =(unsigned short)(volt/5*0xffff);
-//	DAC_SET(DACMID+offset);
-//	HAL_Delay(100);
-//	for(i=0;i<64;i++)
-//		val+=AD7190Read();
-//	val /= 64;
-//	val = R_ref*AMPGAIN*abs(val-0x800000)/(volt/5*0xffffff);
-//	if(val<1)
-//		return -1;
-//	
-//	return 0;
+	return val>50000 ? 1 : val<5 ? -1 : 0;
 }
 
 static void step0()
@@ -301,6 +287,7 @@ static void step1()
 	unsigned short offset;
 	float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens;
 	volt = volt*settings.series*totalResist/stringResist;
+	if(volt>9) volt=9;
 	volt = volt*R_ref/totalResist;
 	if(volt>2.45) volt=2.45;
 	
@@ -314,7 +301,7 @@ dbg("step1 0");
 		val+=AD7190Read();
 dbg("step1 1");
 	val /= 64;
-	geophone.resi = (uint32_t)round(R_ref*AMPGAIN*abs(val-ADCMID)/(volt/5*0xffffff));
+	geophone.resi = (uint32_t)round(R_ref*AMPGAIN*abs(val-ADCMID)/(volt/5*0xffffff)-0.25);
 	geophone.resi = geophone.resi-lineResist;
 	geophone.resi /= 1+0.004*(geophone.temp-geo->T);
 	
@@ -325,6 +312,8 @@ dbg("step1 1");
 	val2 /= 64;
 	geophone.leakage = val2<=0x800000 ? 100.001 : (AMPGAIN*abs(val-ADCMID)*5.0/0xffffff+2.5)/((val2-0x800000)*5.0/0xffffff)*0.03-0.2;
 //while(1);
+	if(geophone.leakage>100)
+		geophone.leakage = 100.001;
 	AD7190_Setup(0);
 }
 
@@ -336,9 +325,9 @@ static void step2()
 	float t;
 	float volt = 0.35*0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens;
 	volt = volt*settings.series*totalResist/stringResist;
+	if(volt>9) volt=9;
 	volt = volt*R_ref/totalResist;
 	if(volt>2.45) volt=2.45;
-	
 	offset= volt/5*0xffff;
 	i1=0;
 	a1=a2=ADCMID;
@@ -364,14 +353,14 @@ dbg("step2 1");
 	}
 	i=i1;
 dbg("step2 2");
-	while(Inbuff[i]>=ADCMID && i<4096)
+	while(Inbuff[i]>ADCMID && i<4096)
 		i++;
 dbg("step2 3");
-	T = i-2;
+	T = i;
 	t = log((float)abs(a1-ADCMID)/abs(ADCMID-a2));
 	geophone.damp = t/sqrt(PI*PI+t*t);
 	if(geophone.damp<0) geophone.damp = 0;
-	t = (float)T/4096;
+	t = T/4096.0;
 	geophone.freq = 1.0/(2*t*sqrt(1-geophone.damp*geophone.damp));
 	t = sqrt(1-geophone.damp*geophone.damp)/geophone.damp;
 	geophone.sens = sqrt(2*PI*geophone.freq*geo->M*settings.series*settings.parallel*abs(a1-ADCMID)*AMPGAIN/0xffffff*5.0/(volt/R_ref)*exp(atan(t)/t));
@@ -392,6 +381,7 @@ static void step3()
 	if(!settings.constant)
 		mag = mag*geo->DF/12;
 	mag = mag*settings.series;
+	if(mag>9) mag=9;
 	mag = mag*R_ref/totalZ;
 	if(mag>2.45) mag=2.45;
 	
@@ -415,11 +405,14 @@ struct UIWidget next = {0,1,1,{260,700,459,760},"Next",0,NULL,NULL,drawButton,NU
 static void polarity()
 {
 	int i;
-	unsigned int temp;
-	unsigned int vmin,vmax,imax,imin;
+	int temp;
+	int vmin,vmax,imax,imin;
 	float max,min;
 	char str[20];
 	
+	float volt = 0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens*settings.series;
+	
+	UITouchClear();
 	next.enable =1;
 	drawButton(&next);
 	
@@ -427,54 +420,52 @@ static void polarity()
 	GUI_SetColor(WHITE);
 	GUI_SetBkColor(0x002fbeff);
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-	GUI_DispStringAt("              ",260,580);
+	GUI_DispStringAt("              ",300,580);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt("0",356,580);
 	while(1)
 	{
-		HAL_IWDG_Refresh(&IwdgHandle);
-		vmin=0xffffff;
-		vmax=imax=imin=0;
-		for(i=0;i<2000;i++)
-		{
-			temp = AD7190Read();
-			if(temp>vmax)
-			{
-				vmax=temp;
-				imax=i;
-			}
-			if(temp<vmin)
-			{
-				vmin=temp;
-				imin=i;
-			}
-			if((GPIOA->IDR&0x7) == 0x4)
-			{
-				next.enable = 0;
-				drawButton(&next);
-				return;
-			}
-		}
-		max = abs(vmax-0x800000)*AMPGAIN*5.0/0xffffff;
-		min = abs(0x800000-vmin)*AMPGAIN*5.0/0xffffff;
-		if(max>0.2*settings.series && max<2.4 && min>0.2*settings.series && min<2.4)
-		{
-			if(imax<imin)
-			{
-				beep(50);HAL_Delay(50);beep(50);HAL_Delay(50);beep(50);
-				geophone.polarity=-1;
-			}
-			else if(imax>imin)
-			{
-				beep(250);
-				geophone.polarity=1;
-			}
-			sprintf(str,"%d",geophone.polarity);
-			GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
-			GUI_DispStringAt("              ",260,580);
-			GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-			GUI_DispStringAt(str,356,580);
-		}
+HAL_IWDG_Refresh(&IwdgHandle);
+vmax=0;
+for(i=0;i<2000;i++)
+{
+	temp = AD7190Read()-ADCMID;
+	if(abs(temp)>abs(vmax))
+		vmax = temp;
+	
+	tpScan();
+	if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.tpX<=459 && UIInfo.tpX>=260 && UIInfo.tpY<=760 && UIInfo.tpY>=700)
+	{
+		next.enable = 0;
+		drawButton(&next);
+		return;
+	}	
+	if((GPIOA->IDR&0x7) == 0x4)
+	{
+		next.enable = 0;
+		drawButton(&next);
+		return;
+	}
+}
+max = abs(vmax*AMPGAIN*5.0/0xffffff);
+if(max>0.1 && max<8)
+{
+	if(vmax<0)
+	{
+		beep(50);HAL_Delay(50);beep(50);HAL_Delay(50);beep(50);
+		geophone.polarity=-1;
+	}
+	else
+	{
+		beep(250);
+		geophone.polarity=1;
+	}
+	sprintf(str,"%d",geophone.polarity);
+	GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
+	GUI_DispStringAt("              ",300,580);
+	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+	GUI_DispStringAt(str,356,580);
+}
 	}
 }
 
@@ -492,8 +483,10 @@ static void contidrive()
 	int flag = 1;
 	char str[20];
 	
+	UITouchClear();
 	next.enable =1;
 	drawButton(&next);
+	
 	GUI_SetColor(WHITE);
 	GUI_SetBkColor(0x002fbeff);
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
@@ -508,6 +501,7 @@ static void contidrive()
 	if(!settings.constant)
 		mag = mag*geo->DF/12;
 	mag = mag*settings.series;
+	if(mag>9) mag=9;
 	mag = mag*R_ref/totalZ;
 	mag = mag*settings.ldrate/100;
 	if(mag>2.45) mag=2.45;
@@ -520,6 +514,14 @@ static void contidrive()
 		for(i=0;i<N;i++)
 		{
 			Inbuff[i] = AD7190Read();
+			tpScan();
+			if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.tpX<=459 && UIInfo.tpX>=260 && UIInfo.tpY<=760 && UIInfo.tpY>=700)
+			{
+				next.enable = 0;
+				drawButton(&next);
+				flag = 0;
+				break;
+			}	
 			if((GPIOA->IDR&0x7) == 0x4)
 			{
 				next.enable =0;

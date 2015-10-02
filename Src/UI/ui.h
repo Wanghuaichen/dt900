@@ -43,6 +43,8 @@ struct UIInfo
 	uint8_t widgetactive;
 	uint32_t touchCombo;
 	uint16_t tpX,tpY;
+	
+	char uid[10];
 };
 
 struct UIWidget
@@ -87,4 +89,6 @@ void drawLabel(struct UIWidget* widget);
 void drawSLabel(struct UIWidget* widget);
 struct UIInfo * getUIInfo();
 void UIFont(int mode);
+void getuid();
+void UITouchClear();
 #endif

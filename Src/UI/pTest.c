@@ -22,9 +22,17 @@ static void header(FIL* pMyFile,char* str,UINT* pwbytes)
 {
 	if(UIInfo.flagSettings>1)
 		return;
-	sprintf(str,"\r\nSerial No.\tType\tDate\tTime\tTemperature(⊥)\t");
+	sprintf(str,"*****************************************************************************************************************************\r\n");
 	f_write(pMyFile, str, strlen(str),pwbytes);
-	sprintf(str,"Noise(mV)\tLeakage(M次)\tResistance(次)\tFrequency(Hz)\tDamping\tSensitivity(V/m/s)\tDistortion(%%)\tImpedance(次)\tPolarity\tLD_Min(次)\tLD_Max(次)\r\n");
+	sprintf(str,"Device\tDT900\tPID\t%s\tSetup\t%s\r\n",UIInfo.uid,geoparam[settings.paramnum].type);
+	f_write(pMyFile, str, strlen(str),pwbytes);
+	sprintf(str,"Shunt\t%d\tSeries\t%d\tParallel\t%d\r\n",settings.shunt,settings.series,settings.parallel);
+	f_write(pMyFile, str, strlen(str),pwbytes);
+//	sprintf(str,"Line Resistance\t%d\tLead-in\t%d\tInterval\t%d\r\n",settings.lineR,settings.leadin,settings.interval);
+//	f_write(pMyFile, str, strlen(str),pwbytes);
+	sprintf(str,"Temp. Correct.\t%s\t@Constant\t%s\r\n\r\n",settings.sensormode==0 ? "OFF" : settings.sensormode==1 ? "INNER" : settings.sensormode==2 ? "OUTTER" : "MANUAL",settings.constant ? "VELOCITY" : "EXCURTION");
+	f_write(pMyFile, str, strlen(str),pwbytes);
+	sprintf(str,"No.\tDate\tTime\tTemperature(C)\tNoise(mV)\tLeakage(Mohm)\tResistance(ohm)\tFrequency(Hz)\tDamping(-)\tSensitivity(V/m/s)\tDistortion(%%)\tImpedance(ohm)\tPolarity\tDescription\r\n");
 	f_write(pMyFile, str, strlen(str),pwbytes);
 }
 	
@@ -50,10 +58,10 @@ dbg("save 2");
   f_lseek(&MyFile,MyFile.fsize); 
 dbg("save 3");
 	header(&MyFile,str,&wbytes);
-  sprintf(str,"%05d\t%s\t%02d-%02d-%02d\t%02d:%02d:%02d\t%.1f\t%.2f\t%.1f\t%d\t%.2f\t%5.3f\t%.1f\t%.3f\t%d\t%d\t%d\t%d\r\n",
+  sprintf(str,"%05d\t%02d-%02d-%02d\t%02d:%02d:%02d\t%.1f\t%.1f\t%.1f\t%d\t%.2f\t%.3f\t%.1f\t%.3f\t%d\t%d\t%s\r\n",
 	settings.serialno,
-	geoparam[settings.paramnum].type,
-	rtcDate.Date,rtcDate.Month,rtcDate.Year,rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
+	rtcDate.Year,rtcDate.Month,rtcDate.Date,
+	rtcTime.Hours, rtcTime.Minutes, rtcTime.Seconds,
 	geophone.temp,
 	geophone.nois,
 	geophone.leakage,
@@ -64,8 +72,7 @@ dbg("save 3");
 	geophone.dist,
 	(int)geophone.impe,
 	geophone.polarity,
-	geophone.minZ,
-	geophone.maxZ
+	geophone.fault ==-1 ? "OPEN" : geophone.fault==-2 ? "SHORT" : geophone.fault==1 ?  "NG" : "OK"
 	);
 dbg("save 4");		
 	f_write(&MyFile, str, strlen(str), (void *)&wbytes);
@@ -139,9 +146,7 @@ static void test()
 	}
 	widgetList[0].widgetDraw(&widgetList[0]);
 	widgetList[1].widgetDraw(&widgetList[1]);
-	while(tpScan())
-		HAL_Delay(1);
-	UIInfo.TouchEvent = TOUCH_NONE;
+	UITouchClear();
 }
 
 static struct UIWidget widgetList[2] =

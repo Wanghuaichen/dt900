@@ -80,5 +80,6 @@ void Board_Init()
 	
 	LCD_PWR(1);
 	beepoff();
+	getuid();
 //	FlashReadProtection();
 }

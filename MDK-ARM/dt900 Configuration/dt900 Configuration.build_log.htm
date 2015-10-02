@@ -26,44 +26,110 @@ Project File Date:  09/09/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling ostask.c...
+compiling geotest.c...
+..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
+  int geotest();
+..\Drivers\BSP\ad7190.h(21): warning:  #1295-D: Deprecated declaration AD7190_PowerDown - give arg types
+  void AD7190_PowerDown();
+..\Drivers\BSP\flash.h(10): warning:  #1295-D: Deprecated declaration FlashProgram - give arg types
+  void FlashProgram();
+..\Src\UI\ui.h(76): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Src\UI\ui.h(78): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
+  void UIKeyboard();
+..\Src\UI\ui.h(79): warning:  #1295-D: Deprecated declaration UITouch - give arg types
+  void UITouch();
+..\Src\UI\ui.h(80): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
+  void UIEventManager();
+..\Src\UI\ui.h(90): warning:  #1295-D: Deprecated declaration getUIInfo - give arg types
+  struct UIInfo * getUIInfo();
+..\Src\UI\ui.h(92): warning:  #1295-D: Deprecated declaration getuid - give arg types
+  void getuid();
+..\Src\UI\ui.h(93): warning:  #1295-D: Deprecated declaration UITouchClear - give arg types
+  void UITouchClear();
 ..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
   void reTemp();
 ..\Inc\ostask.h(8): warning:  #1-D: last line of file ends without a newline
   #endif
-..\Drivers\BSP\rtc.h(9): warning:  #1295-D: Deprecated declaration RTC_Set - give arg types
-  void RTC_Set();
-..\Drivers\BSP\rtc.h(10): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
-  void RTC_Get();
-..\Src\UI\ui.h(74): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
-  void UI_Init();
-..\Src\UI\ui.h(76): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
-  void UIKeyboard();
-..\Src\UI\ui.h(77): warning:  #1295-D: Deprecated declaration UITouch - give arg types
-  void UITouch();
-..\Src\UI\ui.h(78): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
-  void UIEventManager();
-..\Src\UI\ui.h(88): warning:  #1295-D: Deprecated declaration getUIInfo - give arg types
-  struct UIInfo * getUIInfo();
-..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
-  int geotest();
 ..\Drivers\BSP\beep.h(6): warning:  #1295-D: Deprecated declaration beepon - give arg types
   void beepon();
 ..\Drivers\BSP\beep.h(7): warning:  #1295-D: Deprecated declaration beepoff - give arg types
   void beepoff();
-..\Src\ostask.c(22): warning:  #1295-D: Deprecated declaration batVolt - give arg types
-  static void batVolt();
-..\Src\ostask.c(149): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        curLevel = (volt-3.3)/0.08;
-..\Src\ostask.c(162): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        if(volt<3.3)
-..\Src\ostask.c(169): warning:  #223-D: function "LCD_PWR" declared implicitly
-                LCD_PWR(0);
-..\Src\ostask.c: 16 warnings, 0 errors
+..\Src\geotest.c(33): warning:  #1295-D: Deprecated declaration openshort - give arg types
+  static int openshort();
+..\Src\geotest.c(34): warning:  #1295-D: Deprecated declaration step0 - give arg types
+  static void step0();
+..\Src\geotest.c(35): warning:  #1295-D: Deprecated declaration step1 - give arg types
+  static void step1();
+..\Src\geotest.c(36): warning:  #1295-D: Deprecated declaration step2 - give arg types
+  static void step2();
+..\Src\geotest.c(37): warning:  #1295-D: Deprecated declaration step3 - give arg types
+  static void step3();
+..\Src\geotest.c(38): warning:  #1295-D: Deprecated declaration polarity - give arg types
+  static void polarity();
+..\Src\geotest.c(39): warning:  #1295-D: Deprecated declaration contidrive - give arg types
+  static void contidrive();
+..\Src\geotest.c(72): warning:  #223-D: function "memset" declared implicitly
+        memset(&geophone,0,sizeof(geophone));
+..\Src\geotest.c(82): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        damp = settings.shunt>0 ? geo->S*geo->S/4/3.1415926/geo->M/geo->F/(geo->R+settings.shunt)+geo->B : geo->B;
+..\Src\geotest.c(229): warning:  #68-D: integer conversion resulted in a change of sign
+        if(geophone.polarity==-1) geophone.fault=1;
+..\Src\geotest.c(241): warning:  #177-D: variable "ret" was declared but never referenced
+        int i,ret;
+..\Src\geotest.c(288): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens;
+..\Src\geotest.c(291): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        volt = volt*R_ref/totalResist;
+..\Src\geotest.c(292): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(volt>2.45) volt=2.45;
+..\Src\geotest.c(306): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.resi /= 1+0.004*(geophone.temp-geo->T);
+..\Src\geotest.c(329): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        volt = volt*R_ref/totalResist;
+..\Src\geotest.c(330): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(volt>2.45) volt=2.45;
+..\Src\geotest.c(366): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.sens = sqrt(2*PI*geophone.freq*geo->M*settings.series*settings.parallel*abs(a1-ADCMID)*AMPGAIN/0xffffff*5.0/(volt/R_ref)*exp(atan(t)/t));
+..\Src\geotest.c(367): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.damp /= 1-0.002*(geophone.temp-geo->T);
+..\Src\geotest.c(385): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        mag = mag*R_ref/totalZ;
+..\Src\geotest.c(386): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(mag>2.45) mag=2.45;
+..\Src\geotest.c(401): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        geophone.dist = 100.0*(Inbuff[2]+Inbuff[3])/Inbuff[1];
+..\Src\geotest.c(373): warning:  #177-D: variable "fs" was declared but never referenced
+        int fs = 4096;
+..\Src\geotest.c(413): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        float volt = 0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens*settings.series;
+..\Src\geotest.c(436): warning:  #223-D: function "tpScan" declared implicitly
+        tpScan();
+..\Src\geotest.c(451): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  if(max>0.1 && max<8)
+..\Src\geotest.c(456): warning:  #68-D: integer conversion resulted in a change of sign
+                geophone.polarity=-1;
+..\Src\geotest.c(409): warning:  #177-D: variable "vmin" was declared but never referenced
+        int vmin,vmax,imax,imin;
+..\Src\geotest.c(409): warning:  #177-D: variable "imax" was declared but never referenced
+        int vmin,vmax,imax,imin;
+..\Src\geotest.c(409): warning:  #177-D: variable "imin" was declared but never referenced
+        int vmin,vmax,imax,imin;
+..\Src\geotest.c(410): warning:  #177-D: variable "min" was declared but never referenced
+        float max,min;
+..\Src\geotest.c(505): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        mag = mag*R_ref/totalZ;
+..\Src\geotest.c(507): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        if(mag>2.45) mag=2.45;
+..\Src\geotest.c(517): warning:  #223-D: function "tpScan" declared implicitly
+                        tpScan();
+..\Src\geotest.c(475): warning:  #177-D: variable "fs" was declared but never referenced
+        int fs = 4096;
+..\Src\geotest.c: 49 warnings, 0 errors
 linking...
-Program Size: Code=145890 RO-data=173550 RW-data=7060 ZI-data=166412  
+Program Size: Code=146610 RO-data=173654 RW-data=7060 ZI-data=166428  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 16 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 49 Warning(s).
 </pre>
 </body>
 </html>

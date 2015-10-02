@@ -1,14 +1,12 @@
 #include "ui.h"
 #include "DTCC.c"
 extern struct UIPage pMain;
+extern struct UIInfo UIInfo;
 
 static void pageInit(struct UIPage * page)
 {
-	int i,temp;
 	char str[20];
-	char id[20];
 
-	uint8_t * t = (uint8_t*)0x1FFF7A10;
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
 	GUI_Clear();
@@ -21,27 +19,15 @@ static void pageInit(struct UIPage * page)
 //	sprintf(str,"%02x %02x %02x %02x",t[8],t[9],t[10],t[11]);
 //	GUI_DispStringAt(str,0,750);
 	
-	for(i=0;i<4;i++)
-	{
-		temp = (int)(t[i]>>4)+(t[i+4]>>4)+(t[i+8]>>4);
-		temp %= 36;
-		id[i*2+2] = temp>9 ? temp+55: temp+0x30;
-		temp = (int)(t[i]&0xf)+(t[i+4]&0xf)+(t[i+8]&0xf);
-		temp %= 36;
-		id[i*2+3] = temp>9 ? temp+55: temp+0x30;
-	}
-	id[0] = 'A';
-	id[1] = '1';
-	id[10] = '\0';
 	UIFont(1);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_VCENTER);
 	GUI_DispStringAt("USB Drive Mode",240,76);
 	GUI_JPEG_Draw(_acdtcc, sizeof(_acdtcc), 90, 280);
-	sprintf(str,"PID:%s",id);
 	UIFont(0);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt("www.dynamictech.biz",240,400);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+	sprintf(str,"PID:%s",UIInfo.uid);
 	GUI_DispStringAt(str,240,550);
 	
 	usbd_OpenMassStorage();

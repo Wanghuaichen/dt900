@@ -53,7 +53,7 @@ void StartDefaultTask(void const * argument)
 		if(i%300==0)
 		{
 			batVolt();
-			chargeSwap = 1;
+			//chargeSwap = 1;
 		}
 		
 		if(chargeSwap)
@@ -135,23 +135,18 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 static void batVolt(int renew)
 {
-	//static int batLevel = 0;
 	int curLevel;
 	float volt;
 	volt = ADC_GetValue();
 	curLevel = (volt-3.3)/0.08;
 	if(curLevel>10)
 		curLevel = 10;
-//	if(batLevel != curLevel)
-//	{
-//		batLevel = curLevel;
 		GUI_SetColor(TITLECOLOR);
 		GUI_FillRect(413,0,459,30);
 		GUI_SetColor(WHITE);
 		GUI_AA_DrawRoundedRect(413,6,459,25,3);
 		if(curLevel>0)
 			GUI_FillRect(416,9,416+4*curLevel,22);
-//	}
 	if(volt<3.3)
 	{
 		beep(100);

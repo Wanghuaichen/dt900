@@ -170,7 +170,7 @@ static struct UIWidget widgetList[11] =
 	{2,1,0,{0,240,479,299},"Geo Spec.",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
 	{3,1,0,{0,300,479,359},"Sensor Mode",0,StringArray[3],widgetInit,drawSLabel,sensormode},
 	{4,0,0,{0,360,479,419},"Temperature",0,StringArray[4],widgetInit,drawSLabel,goSubSettings},
-	{5,1,0,{0,420,479,479},"Shunt(})  0=no shunt",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
+	{5,1,0,{0,420,479,479},"Shunt(})  0=none",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
 	{6,1,0,{0,480,479,539},"String",0,StringArray[6],widgetInit,drawSLabel,goSubPage},
 	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,goSubPage},
 	{8,1,0,{0,600,479,659},"@Constant",0,StringArray[8],widgetInit,drawSLabel,constant},

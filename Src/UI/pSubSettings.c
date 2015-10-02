@@ -21,6 +21,7 @@ static void impedence()
 {
 	float a,b,c,d,re,im;
 	float w,w0,s,m,bt,r;
+	char str[30];
 	
 	w = geoparam[pSettings.widgetSelected].DF*2*PI;
 	w0 = geoparam[pSettings.widgetSelected].F*2*PI;
@@ -37,7 +38,8 @@ static void impedence()
 	im = a*b/d;
 	geoparam[pSettings.widgetSelected].Z = round(sqrt(re*re+im*im));
 	
-	GUI_DispDecAt((int)geoparam[pSettings.widgetSelected].Z,0,750,6);
+	sprintf(str,"Impedance:%d   ",(int)geoparam[pSettings.widgetSelected].Z);
+	GUI_DispStringAt(str,40,760);
 }
 
 static void kbCallBack()
@@ -185,7 +187,7 @@ static struct UIWidget widgetList[11] =
 	{7,1,0,{0,540,479,599},"Excurtion(mm)",0,StringArray[7],widgetInit,drawSLabel,goSubSettings},
 	{8,1,0,{0,600,479,659},"Mass(g)",0,StringArray[8],widgetInit,drawSLabel,goSubSettings},
 	{9,1,0,{0,660,479,719},"Spec. temp(~C)",0,StringArray[9],widgetInit,drawSLabel,goSubSettings},
-	{10,1,0,{120,740,359,779},"Delete",0,NULL,NULL,drawButton,del},
+	{10,1,0,{280,740,439,779},"Delete",0,NULL,NULL,drawButton,del},
 };
 
 struct UIPage pSubSettings = 

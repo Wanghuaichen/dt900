@@ -31,6 +31,7 @@ struct  Geophone         //parameters of target geonphone under test
 	uint32_t minZ;
 	uint32_t maxZ;
 	float leakage;
+	int32_t fault;
 };
 
 struct GeoParam			//geophone parameters in the list

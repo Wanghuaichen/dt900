@@ -17,6 +17,22 @@ extern struct Settings settings;
 
 struct UIInfo UIInfo;
 
+void getuid()
+{
+	uint8_t * t = (uint8_t*)0x1FFF7A10-0x41;
+	int i,temp;
+	
+	for(i=0;i<4;i++)
+	{
+		temp = (int)(t[0x41+i]>>4)+(t[0x41+i+4]>>4)+(t[0x41+i+8]>>4);
+		temp %= 36;
+		UIInfo.uid[i*2] = temp>9 ? temp+55: temp+0x30;
+		temp = (int)(t[0x41+i]&0xf)+(t[0x41+i+4]&0xf)+(t[0x41+i+8]&0xf);
+		temp %= 36;
+		UIInfo.uid[i*2+1] = temp>9 ? temp+55: temp+0x30;
+	}
+	UIInfo.uid[8] = '\0';
+}
 
 struct UIInfo * getUIInfo()
 {
@@ -41,6 +57,13 @@ void UIKeyboard()
 		}
 	}
 	UIInfo.lastKey = UIInfo.currentKey;
+}
+
+void UITouchClear()
+{
+	while(tpScan())
+		HAL_Delay(1);
+	UIInfo.TouchEvent = TOUCH_NONE;
 }
 
 void UITouch()
