@@ -57,3 +57,4 @@ dt900 configuration\init.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
 dt900 configuration\init.o: ..\Src\UI\ui.h
 dt900 configuration\init.o: ..\Inc\geotest.h
 dt900 configuration\init.o: ..\Drivers\BSP\flash.h
+dt900 configuration\init.o: ..\Inc\ostask.h

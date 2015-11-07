@@ -2,6 +2,7 @@
 #include "geotest.h"
 #include <stdlib.h>
 #include "lcd.h"
+#include "ostask.h"
 
 extern struct UIPage pMain;
 extern struct UIPage pKeyboard;
@@ -10,9 +11,9 @@ extern struct KBInfo kbInfo;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
-static char StringArray[5][20];
+static char StringArray[6][20];
 struct UIPage pSys;
-static struct UIWidget widgetList[5];
+static struct UIWidget widgetList[6];
 
 static void kbCallBack()
 {
@@ -36,7 +37,7 @@ static void kbCallBack()
 		default:
 			break;
 	}
-	UIInfo.flagSettings = 1;
+	UIInfo.flagSettings |= 0x1;
 }
 
 static void goSubSettings(struct UIWidget * widget)
@@ -45,6 +46,7 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	kbInfo.strlength = 4;
 	PageJump(&pKeyboard);
 }
 
@@ -73,6 +75,9 @@ static void widgetInit(struct UIWidget * widget)
 		case 4:
 			sprintf(widget->widgetPtr,"%d",settings.shuttime);
 			break;
+		case 5:
+			sprintf(widget->widgetPtr,settings.units ? "Imperial" : "Metric");
+			break;
 		default:
 			break;
 	}
@@ -85,24 +90,35 @@ static void buzz(struct UIWidget * widget)
 	widget->widgetDraw(widget);
 }
 
+static void unit(struct UIWidget * widget)
+{
+	settings.units = settings.units ? 0 : 1;
+	widget->widgetInit(widget);
+	widget->widgetDraw(widget);
+	reTemp();
+	UIInfo.flagSettings |= 0x1;
+}
+
+
 static void pageReturn(struct UIPage * page)
 {
 	PageJump(&pMain);
 }
 
-static struct UIWidget widgetList[5] =
+static struct UIWidget widgetList[6] =
 {
 	{0,1,0,{0,120,479,179},"Date & Time",0,StringArray[0],widgetInit,drawSLabel,goSubPage},
 	{1,1,0,{0,180,479,239},"Buzzer",0,StringArray[1],widgetInit,drawSLabel,buzz},
 	{2,1,0,{0,240,479,299},"Backlight(%)",0,StringArray[2],widgetInit,drawSLabel,goSubSettings},
 	{3,1,0,{0,300,479,359},"Sleep Time(Mins)",0,StringArray[3],widgetInit,drawSLabel,goSubSettings},
 	{4,1,0,{0,360,479,419},"Shutdown Time(Mins)",0,StringArray[4],widgetInit,drawSLabel,goSubSettings},
+	{5,1,0,{0,420,479,479},"Units",0,StringArray[5],widgetInit,drawSLabel,unit},
 };
 
 struct UIPage pSys = 
 {
 	"System Preference",
-	5,//char widgetNum;
+	6,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
 	NULL,

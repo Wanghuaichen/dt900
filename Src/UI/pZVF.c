@@ -26,7 +26,7 @@ void drawAxis()
 	char str[20];
 	
 	GUI_SetColor(WHITE);
-	GUI_FillRect(0,120,479,789);
+	GUI_FillRect(0,120,479,799);
 	GUI_SetColor(0x00bbbbbb);
 	GUI_SetBkColor(WHITE);
 	GUI_SetFont(&GUI_FontHelvetica32);
@@ -102,6 +102,7 @@ void scan()
 		plot(index);
 	}
 	analog(0);
+	UITouchClear();
 	widgetList[1].widgetDraw(&widgetList[1]);
 }
 
@@ -116,18 +117,19 @@ void select()
 	{
 		if(getUIInfo()->tpY<=oriX+(int)(log10(xvalue[index])*185))
 		{
-			if(target>=0 && target!=index)
-			{
-				GUI_SetColor(0x00bbbbbb);
-				x = oriX+(int)(log10(xvalue[target])*185);
-				y = oriY+(int)(yvalue[target]/2000.0/scale*height);
-				GUI_AA_FillCircle(y,x,2);
-			}
-			GUI_SetColor(0x00ed412d);
-			x = oriX+(int)(log10(xvalue[index])*185);
-			y = oriY+(int)(yvalue[index]/2000.0/scale*height);
-			GUI_AA_FillCircle(y,x,2);
+//			if(target>=0 && target!=index)
+//			{
+//				GUI_SetColor(color);
+//				x = oriX+(int)(log10(xvalue[target])*185);
+//				y = oriY+(int)(yvalue[target]/2000.0/scale*height);
+//				GUI_AA_FillCircle(y,x,2);
+//			}
+//			GUI_SetColor(0xe4);
+//			x = oriX+(int)(log10(xvalue[index])*185);
+//			y = oriY+(int)(yvalue[index]/2000.0/scale*height);
+//			GUI_AA_FillCircle(y,x,2);
 			sprintf(str,"     %dHz : %d}     ",xvalue[index],yvalue[index]);
+			GUI_SetColor(color);
 			GUI_DispStringInRectEx(str,&Rect,GUI_TA_HCENTER,strlen(str),GUI_ROTATE_CW);
 			target = index;
 			break;
@@ -139,14 +141,19 @@ void select()
 
 static struct UIWidget widgetList[2] =
 {
-	{0,1,1,{40,170,439,719},"",0,NULL,NULL,drawAxis,select},
+	{0,1,1,{40,170,439,719},"",0,NULL,NULL,NULL,select},
 	{1,1,0,{120,740,359,779},"Scan",0,NULL,NULL,drawButton,scan},
 };
 
+static void pageInit(struct UIPage * page)
+{
+	memset(yvalue,0,4*NUM);
+	scale = 1;
+	drawAxis();
+}
 static void pageReturn(struct UIPage * page)
 {
 	target = -1;
-	scale = 1;
 	PageJump(&pMain);
 }
 
@@ -156,7 +163,7 @@ struct UIPage pZVF =
 	2,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
-	NULL,
+	pageInit,
 	pageReturn,
 	keyboardEvent,
 	touchEvent,

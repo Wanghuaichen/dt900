@@ -14,6 +14,8 @@ extern struct Geophone geophone;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 extern struct UIInfo UIInfo;
+extern RTC_DateTypeDef rtcDate;
+extern RTC_TimeTypeDef rtcTime;
 
 static struct UIWidget widgetList[2];
 struct UIPage pTest;
@@ -24,13 +26,13 @@ static void header(FIL* pMyFile,char* str,UINT* pwbytes)
 		return;
 	sprintf(str,"*****************************************************************************************************************************\r\n");
 	f_write(pMyFile, str, strlen(str),pwbytes);
-	sprintf(str,"Device\tDT900\tPID\t%s\tSetup\t%s\r\n",UIInfo.uid,geoparam[settings.paramnum].type);
+	sprintf(str,"Device\tSCG900\tPID\t%s\tSetup\t%s\r\n",UIInfo.uid,geoparam[settings.paramnum].type);
 	f_write(pMyFile, str, strlen(str),pwbytes);
 	sprintf(str,"Shunt\t%d\tSeries\t%d\tParallel\t%d\r\n",settings.shunt,settings.series,settings.parallel);
 	f_write(pMyFile, str, strlen(str),pwbytes);
 //	sprintf(str,"Line Resistance\t%d\tLead-in\t%d\tInterval\t%d\r\n",settings.lineR,settings.leadin,settings.interval);
 //	f_write(pMyFile, str, strlen(str),pwbytes);
-	sprintf(str,"Temp. Correct.\t%s\t@Constant\t%s\r\n\r\n",settings.sensormode==0 ? "OFF" : settings.sensormode==1 ? "INNER" : settings.sensormode==2 ? "OUTTER" : "MANUAL",settings.constant ? "VELOCITY" : "EXCURTION");
+	sprintf(str,"Temp. Correct.\t%s\t@Constant\t%s\r\n\r\n",settings.sensormode==0 ? "OFF" : settings.sensormode==1 ? "INNER" : settings.sensormode==2 ? "OUTTER" : "MANUAL",settings.constant ? "VELOCITY" : "EXCURSION");
 	f_write(pMyFile, str, strlen(str),pwbytes);
 	sprintf(str,"No.\tDate\tTime\tTemperature(C)\tNoise(mV)\tLeakage(Mohm)\tResistance(ohm)\tFrequency(Hz)\tDamping(-)\tSensitivity(V/m/s)\tDistortion(%%)\tImpedance(ohm)\tPolarity\tDescription\r\n");
 	f_write(pMyFile, str, strlen(str),pwbytes);
@@ -144,9 +146,9 @@ static void test()
 		sprintf(widgetList[0].widgetTitle,"Save");
 		beep(500);
 	}
+	UITouchClear();
 	widgetList[0].widgetDraw(&widgetList[0]);
 	widgetList[1].widgetDraw(&widgetList[1]);
-	UITouchClear();
 }
 
 static struct UIWidget widgetList[2] =

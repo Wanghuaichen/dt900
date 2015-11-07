@@ -16,16 +16,19 @@ struct UIPage pEditD;
 static void kbCallBack()
 {
 	char str[20];
+	float val;
 	switch(pEditD.widgetSelected)
 	{
 		case 0:
-			geoparam[pSettings.widgetSelected].B = (int)(atof(kbInfo.kbBuff)*1000)/1000.0;
+			geoparam[pSettings.widgetSelected].B = (int)(atof(kbInfo.kbBuff)*1000+0.1)/1000.0;
 			break;
 		case 1:
-			geoparam[pSettings.widgetSelected].Bp = (int)(atof(kbInfo.kbBuff)*10)/1000.0;
+			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			geoparam[pSettings.widgetSelected].Bp = val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		case 2:
-			geoparam[pSettings.widgetSelected].Bn = (int)(atof(kbInfo.kbBuff)*10)/1000.0;
+			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			geoparam[pSettings.widgetSelected].Bn = val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		default:
 			break;
@@ -38,6 +41,7 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	kbInfo.strlength = widget->widgetIndex ? 5 : 6;
 	PageJump(&pKeyboard);
 }
 

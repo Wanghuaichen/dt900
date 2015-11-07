@@ -24,7 +24,7 @@ static void kbCallBack()
 			settings.parallel = val<1 ? 1 : val >99 ? 99 : val;
 			break;
 		case 2:
-			settings.lineR =val<0 ? 0 : val>99999 ? 99999 : val;
+			settings.lineR =val<0 ? 0 : val>9999 ? 9999 : val;
 			break;
 		case 3:
 			settings.leadin = val<0 ? 0 : val>9999 ? 9999 : val;
@@ -43,6 +43,7 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	kbInfo.strlength = 5;
 	PageJump(&pKeyboard);
 }
 

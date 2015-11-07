@@ -761,6 +761,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\ds18b20.c</FilePath>
             </File>
+            <File>
+              <FileName>ds3231m.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\ds3231m.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -835,6 +840,11 @@
               <FileName>ostask.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\ostask.c</FilePath>
+            </File>
+            <File>
+              <FileName>bitmap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\bitmap.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -930,6 +940,11 @@
               <FileName>pZVF.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pZVF.c</FilePath>
+            </File>
+            <File>
+              <FileName>pPasswd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pPasswd.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -16,16 +16,26 @@ struct UIPage pEditS;
 static void kbCallBack()
 {
 	char str[20];
+	float val;
 	switch(pEditS.widgetSelected)
 	{
 		case 0:
-			geoparam[pSettings.widgetSelected].S = (int)(atof(kbInfo.kbBuff)*10)/10.0;
+			if(settings.units)
+			{
+				val = (int)(atof(kbInfo.kbBuff)*1000+0.1)/1000.0;
+				val = (int)(val*39.37*10+0.1)/10.0;
+			}
+			else
+				val = (int)(atof(kbInfo.kbBuff)*10+0.1)/10.0;
+			geoparam[pSettings.widgetSelected].S = val<0 ? 0 : val >999 ? 999 : val;
 			break;
 		case 1:
-			geoparam[pSettings.widgetSelected].Sp = (int)(atof(kbInfo.kbBuff)*10)/1000.0;
+			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			geoparam[pSettings.widgetSelected].Sp = val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		case 2:
-			geoparam[pSettings.widgetSelected].Sn = (int)(atof(kbInfo.kbBuff)*10)/1000.0;
+			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			geoparam[pSettings.widgetSelected].Sn = val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		default:
 			break;
@@ -38,6 +48,7 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	kbInfo.strlength = widget->widgetIndex ? 5 : 6;
 	PageJump(&pKeyboard);
 }
 
@@ -46,7 +57,16 @@ static void widgetInit(struct UIWidget * widget)
 	switch(widget->widgetIndex)
 	{
 		case 0:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].S);
+			if(settings.units)
+			{
+				sprintf(widget->widgetTitle,"Sensitivity(V/""/s)");
+				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].S/39.37*1000+0.1)/1000.0);
+			}
+			else
+			{
+				sprintf(widget->widgetTitle,"Sensitivity(V/m/s)");
+				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].S);
+			}
 			break;
 		case 1:
 			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].Sp*100);

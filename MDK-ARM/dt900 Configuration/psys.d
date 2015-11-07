@@ -51,3 +51,4 @@ dt900 configuration\psys.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
 dt900 configuration\psys.o: ..\Inc\geotest.h
 dt900 configuration\psys.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 dt900 configuration\psys.o: ..\Drivers\BSP\lcd.h
+dt900 configuration\psys.o: ..\Inc\ostask.h

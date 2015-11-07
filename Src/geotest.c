@@ -15,6 +15,7 @@ extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 extern IWDG_HandleTypeDef IwdgHandle;
 extern struct UIInfo UIInfo;
+extern int WHOLE_FLASH_ERASE;
 
 uint32_t test0,test1;
 uint32_t ADCMID = 0x800000;
@@ -39,6 +40,21 @@ static void polarity();
 static void contidrive();
 
 float damp,sens;
+
+long encode()
+{
+	double passwd;
+	passwd = UIInfo.uid[0]+0xd0+UIInfo.uid[1]*UIInfo.uid[4]+UIInfo.uid[7]+UIInfo.uid[3]*3;
+	passwd = sqrt(passwd)+(double)UIInfo.uid[6]/2+(double)UIInfo.uid[5]/3;
+	passwd = (passwd*100-(int)(passwd*100))*1000000000;
+	return (long)passwd;
+}
+
+void verify()
+{
+	if(rand()%100<5 && encode()!=*((long *)0x081C0000))
+		settings.sensormode = 4;
+}
 
 void analog(int option)
 {
@@ -232,6 +248,7 @@ int geotest()
 		contidrive();
 	
 	analog(0);
+	
 	return geophone.fault;
 }
 
@@ -242,7 +259,9 @@ static int openshort()
 	unsigned short offset;
 	float volt;
 	
-	volt =0.05;
+	verify();
+	
+	volt =0.07;
 	offset =(unsigned short)(volt/5*0xffff);
 	DAC_SET(DACMID+offset);
 	HAL_Delay(100);
@@ -353,10 +372,10 @@ dbg("step2 1");
 	}
 	i=i1;
 dbg("step2 2");
-	while(Inbuff[i]>ADCMID && i<4096)
+	while(Inbuff[i]>=ADCMID && i<4096)
 		i++;
 dbg("step2 3");
-	T = i;
+	T = i-2;
 	t = log((float)abs(a1-ADCMID)/abs(ADCMID-a2));
 	geophone.damp = t/sqrt(PI*PI+t*t);
 	if(geophone.damp<0) geophone.damp = 0;
@@ -370,7 +389,7 @@ dbg("step2 3");
 static void step3()
 {
 	int i;
-	int fs = 4096;
+//	int fs = 4096;
 	int N = 4096;
 	float mag;
 	int NF = geo->DF;
@@ -402,15 +421,155 @@ dbg("step3 1");
 }
 	
 struct UIWidget next = {0,1,1,{260,700,459,760},"Next",0,NULL,NULL,drawButton,NULL};
+//static void polarity()
+//{
+//	int i;
+//	int temp;
+//	int vmin,vmax,imax,imin;
+//	float max,min;
+//	char str[20];
+//	
+//	float volt = 0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens*settings.series;
+//	
+//	UITouchClear();
+//	next.enable =1;
+//	drawButton(&next);
+//	
+//	geophone.polarity = 0;
+//	GUI_SetColor(WHITE);
+//	GUI_SetBkColor(0x002fbeff);
+//	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+//	GUI_DispStringAt("              ",300,580);
+//	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+//	GUI_DispStringAt("0",356,580);
+//	while(1)
+//	{
+//HAL_IWDG_Refresh(&IwdgHandle);
+//vmax=0;
+//for(i=0;i<2000;i++)
+//{
+//	temp = AD7190Read()-ADCMID;
+//	if(abs(temp)>abs(vmax))
+//		vmax = temp;
+//	
+//	tpScan();
+//	if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.tpX<=459 && UIInfo.tpX>=260 && UIInfo.tpY<=760 && UIInfo.tpY>=700)
+//	{
+//		next.enable = 0;
+//		drawButton(&next);
+//		return;
+//	}	
+//	if((GPIOA->IDR&0x7) == 0x4)
+//	{
+//		next.enable = 0;
+//		drawButton(&next);
+//		return;
+//	}
+//}
+//max = abs(vmax*AMPGAIN*5.0/0xffffff);
+//if(max>0.1 && max<8)
+//{
+//	if(vmax<0)
+//	{
+//		beep(50);HAL_Delay(50);beep(50);HAL_Delay(50);beep(50);
+//		geophone.polarity=-1;
+//	}
+//	else
+//	{
+//		beep(250);
+//		geophone.polarity=1;
+//	}
+//	sprintf(str,"%d",geophone.polarity);
+//	GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
+//	GUI_DispStringAt("              ",300,580);
+//	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+//	GUI_DispStringAt(str,356,580);
+//}
+//	}
+//}
+
+
+//static void polarity()
+//{
+//	int i;
+//	int temp;
+//	int vmin,vmax,imax,imin;
+//	float max,min;
+//	char str[20];
+//	
+//	UITouchClear();
+//	next.enable =1;
+//	drawButton(&next);
+//	
+//	geophone.polarity = 0;
+//	GUI_SetColor(WHITE);
+//	GUI_SetBkColor(0x002fbeff);
+//	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+//	GUI_DispStringAt("              ",300,580);
+//	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+//	GUI_DispStringAt("0",356,580);
+//	while(1)
+//	{
+//HAL_IWDG_Refresh(&IwdgHandle);
+//vmax=vmin=ADCMID;
+//imax=imin=0;
+//for(i=0;i<2000;i++)
+//{
+//	temp = AD7190Read();
+//	if(temp>vmax)
+//	{
+//		vmax = temp;
+//		imax = i;
+//	}
+//	else if(temp<vmin)
+//	{
+//		vmin = temp;
+//		imin = i;
+//	}
+//	
+//	tpScan();
+//	if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.tpX<=459 && UIInfo.tpX>=260 && UIInfo.tpY<=760 && UIInfo.tpY>=700)
+//	{
+//		next.enable = 0;
+//		drawButton(&next);
+//		return;
+//	}	
+//	if((GPIOA->IDR&0x7) == 0x4)
+//	{
+//		next.enable = 0;
+//		drawButton(&next);
+//		return;
+//	}
+//}
+//max = abs((vmax-ADCMID)*AMPGAIN*5.0/0xffffff);
+//min = abs((vmin-ADCMID)*AMPGAIN*5.0/0xffffff);
+//if(max>0.1 && min>0.1 && max<8 && min <8)
+//{
+//	if(imax>imin)
+//	{
+//		beep(50);HAL_Delay(50);beep(50);HAL_Delay(50);beep(50);
+//		geophone.polarity=-1;
+//	}
+//	else
+//	{
+//		beep(250);
+//		geophone.polarity=1;
+//	}
+//	sprintf(str,"%d",geophone.polarity);
+//	GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
+//	GUI_DispStringAt("              ",300,580);
+//	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+//	GUI_DispStringAt(str,356,580);
+//}
+//	}
+//}
+
 static void polarity()
 {
 	int i;
 	int temp;
-	int vmin,vmax,imax,imin;
-	float max,min;
+	int flag,pol,cnt;
 	char str[20];
-	
-	float volt = 0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens*settings.series;
 	
 	UITouchClear();
 	next.enable =1;
@@ -426,12 +585,28 @@ static void polarity()
 	while(1)
 	{
 HAL_IWDG_Refresh(&IwdgHandle);
-vmax=0;
+flag=pol=cnt=0;
 for(i=0;i<2000;i++)
 {
-	temp = AD7190Read()-ADCMID;
-	if(abs(temp)>abs(vmax))
-		vmax = temp;
+	temp = AD7190Read();
+	if(flag==1)
+	{
+		if(abs(temp-ADCMID)>67109)
+		{
+			if(temp<ADCMID)
+				pol=1;
+			else
+				pol=-1;
+			flag=-1;
+		}
+	}
+	else if(flag==0)
+	{
+		if(abs(temp-ADCMID)<67109)
+			cnt++;
+		if(cnt>10)
+			flag=1;
+	}
 	
 	tpScan();
 	if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.tpX<=459 && UIInfo.tpX>=260 && UIInfo.tpY<=760 && UIInfo.tpY>=700)
@@ -447,27 +622,98 @@ for(i=0;i<2000;i++)
 		return;
 	}
 }
-max = abs(vmax*AMPGAIN*5.0/0xffffff);
-if(max>0.1 && max<8)
-{
-	if(vmax<0)
+
+	if(pol)
 	{
-		beep(50);HAL_Delay(50);beep(50);HAL_Delay(50);beep(50);
-		geophone.polarity=-1;
+		if(pol==1)
+		{
+			beep(50);HAL_Delay(50);beep(50);HAL_Delay(50);beep(50);
+			geophone.polarity=-1;
+		}
+		else if(pol==-1)
+		{
+			beep(250);
+			geophone.polarity=1;
+		}
+		sprintf(str,"%d",geophone.polarity);
+		GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
+		GUI_DispStringAt("              ",300,580);
+		GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+		GUI_DispStringAt(str,356,580);
 	}
-	else
-	{
-		beep(250);
-		geophone.polarity=1;
-	}
-	sprintf(str,"%d",geophone.polarity);
-	GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
-	GUI_DispStringAt("              ",300,580);
-	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt(str,356,580);
 }
-	}
 }
+
+
+//static void polarity()
+//{
+//	int i;
+//	int temp;
+//	int cntp,cntn,pol;
+//	char str[20];
+//	
+//	UITouchClear();
+//	next.enable =1;
+//	drawButton(&next);
+//	
+//	geophone.polarity = 0;
+//	GUI_SetColor(WHITE);
+//	GUI_SetBkColor(0x002fbeff);
+//	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
+//	GUI_DispStringAt("              ",300,580);
+//	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+//	GUI_DispStringAt("0",356,580);
+//	while(1)
+//	{
+//HAL_IWDG_Refresh(&IwdgHandle);
+//cntp=cntn=pol=0;
+//for(i=0;i<2000;i++)
+//{
+//	temp = AD7190Read();
+//	if(abs(temp-ADCMID)>10000)
+//	{
+//		if(temp>ADCMID)
+//			cntp++;
+//		else
+//			cntn++;
+//	}
+//	
+//	tpScan();
+//	if(UIInfo.TouchEvent==TOUCH_DISPLACEMENT && UIInfo.tpX<=459 && UIInfo.tpX>=260 && UIInfo.tpY<=760 && UIInfo.tpY>=700)
+//	{
+//		next.enable = 0;
+//		drawButton(&next);
+//		return;
+//	}	
+//	if((GPIOA->IDR&0x7) == 0x4)
+//	{
+//		next.enable = 0;
+//		drawButton(&next);
+//		return;
+//	}
+//}
+//	if(cntp>10 && cntn>10)
+//	{
+//		if(cntp>cntn)
+//		{
+//			beep(50);HAL_Delay(50);beep(50);HAL_Delay(50);beep(50);
+//			geophone.polarity=-1;
+//		}
+//		else
+//		{
+//			beep(250);
+//			geophone.polarity=1;
+//		}
+//		GUI_DispStringAt("3",0,700);
+//	}
+//	sprintf(str,"%d",geophone.polarity);
+//	GUI_SetBkColor(geophone.polarity!=1 ? 0x005a62ff : 0x005bc15b);
+//	GUI_DispStringAt("              ",300,580);
+//	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+//	GUI_DispStringAt(str,356,580);
+//}
+//}
+
 
 static void contidrive()
 {

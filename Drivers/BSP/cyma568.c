@@ -36,7 +36,7 @@ static int getReport()
 	length = (length<<8)+regdata[0];
 	if(length>2)
 	{
-		if(HAL_I2C_Master_Receive (&hi2c3,I2C_ADDR,regdata,length,1000) != HAL_OK)
+		if(HAL_I2C_Master_Receive (&hi2c3,I2C_ADDR,regdata,length,200) != HAL_OK)
 			return -3;
 	}
 	return length;
@@ -97,45 +97,45 @@ static int getReport()
 //	}
 //}
 
-void analysis(int length)
-{
-	static int num=0;
-	int nReport;
-	int index;
-	int temp;
-	char str[20];
-	uint8_t* p;
-	nReport = (length-7)/10;
-	GUI_DispDecAt(num++,0,400,6);
-	for(index=0;index<nReport;index++)
-	{
-		p = &regdata[7+index*10];
-		sprintf(str,"Type:%d",p[0]&0x7);
-		GUI_DispStringAtCEOL(str,index*200,0);
-		sprintf(str,"Tip:%d",p[1]>>7);
-		GUI_DispStringAtCEOL(str,index*200,40);
-		sprintf(str,"Event ID:%d",(p[1]>>5)&0x3);
-		GUI_DispStringAtCEOL(str,index*200,80);
-		sprintf(str,"Touch ID:%d",p[1]&0x1F);
-		GUI_DispStringAtCEOL(str,index*200,120);
-		temp=p[3];
-		temp = (temp<<8)+p[2];
-		sprintf(str,"X:%d",temp);
-		GUI_DispStringAtCEOL(str,index*200,160);
-		temp=p[5];
-		temp = (temp<<8)+p[4];
-		sprintf(str,"Y:%d",temp);
-		GUI_DispStringAtCEOL(str,index*200,200);
-		sprintf(str,"Pressure:%d",p[6]);
-		GUI_DispStringAtCEOL(str,index*200,240);
-		sprintf(str,"Major:%d",p[7]);
-		GUI_DispStringAtCEOL(str,index*200,280);
-		sprintf(str,"Minor:%d",p[8]);
-		GUI_DispStringAtCEOL(str,index*200,320);
-		sprintf(str,"Oritation:%d",p[9]);
-		GUI_DispStringAtCEOL(str,index*200,360);
-	}
-}
+//void analysis(int length)
+//{
+//	static int num=0;
+//	int nReport;
+//	int index;
+//	int temp;
+//	char str[20];
+//	uint8_t* p;
+//	nReport = (length-7)/10;
+//	GUI_DispDecAt(num++,0,400,6);
+//	for(index=0;index<nReport;index++)
+//	{
+//		p = &regdata[7+index*10];
+//		sprintf(str,"Type:%d",p[0]&0x7);
+//		GUI_DispStringAtCEOL(str,index*200,0);
+//		sprintf(str,"Tip:%d",p[1]>>7);
+//		GUI_DispStringAtCEOL(str,index*200,40);
+//		sprintf(str,"Event ID:%d",(p[1]>>5)&0x3);
+//		GUI_DispStringAtCEOL(str,index*200,80);
+//		sprintf(str,"Touch ID:%d",p[1]&0x1F);
+//		GUI_DispStringAtCEOL(str,index*200,120);
+//		temp=p[3];
+//		temp = (temp<<8)+p[2];
+//		sprintf(str,"X:%d",temp);
+//		GUI_DispStringAtCEOL(str,index*200,160);
+//		temp=p[5];
+//		temp = (temp<<8)+p[4];
+//		sprintf(str,"Y:%d",temp);
+//		GUI_DispStringAtCEOL(str,index*200,200);
+//		sprintf(str,"Pressure:%d",p[6]);
+//		GUI_DispStringAtCEOL(str,index*200,240);
+//		sprintf(str,"Major:%d",p[7]);
+//		GUI_DispStringAtCEOL(str,index*200,280);
+//		sprintf(str,"Minor:%d",p[8]);
+//		GUI_DispStringAtCEOL(str,index*200,320);
+//		sprintf(str,"Oritation:%d",p[9]);
+//		GUI_DispStringAtCEOL(str,index*200,360);
+//	}
+//}
 
 void parseReport()
 {

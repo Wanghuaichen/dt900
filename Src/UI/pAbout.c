@@ -1,12 +1,21 @@
 #include "ui.h"
 #include "DTCC.c"
+#include "ostask.h"
+#include "geotest.h"
 extern struct UIPage pMain;
 extern struct UIInfo UIInfo;
+extern struct UIPage pPasswd;
+extern struct Settings settings;
 
 static void pageInit(struct UIPage * page)
 {
 	char str[20];
 
+	if((GPIOA->IDR&0x7) == 0x6 && settings.passwd==0)
+	{
+		PageJump(&pPasswd);
+		return;
+	}
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
 	GUI_Clear();
@@ -25,11 +34,15 @@ static void pageInit(struct UIPage * page)
 	GUI_JPEG_Draw(_acdtcc, sizeof(_acdtcc), 90, 280);
 	UIFont(0);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt("www.dynamictech.biz",240,400);
+	GUI_DispStringAt("www.dtcc.biz",240,400);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	sprintf(str,"PID:%s",UIInfo.uid);
 	GUI_DispStringAt(str,240,550);
 	
+	GUI_SetColor(0xe4);
+	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+	GUI_DispStringAt("FOR EVALUATION ONLY",240,750);
+
 	usbd_OpenMassStorage();
 }
 	
@@ -38,6 +51,7 @@ static void pageReturn(struct UIPage * page)
 	usbd_CloseMassStorage(); 
 	GUI_SetColor(TITLECOLOR);
 	GUI_FillRect(0,0,479,119);
+	usbflagchange();
 	PageJump(&pMain);
 }
 

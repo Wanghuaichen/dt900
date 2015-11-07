@@ -24,6 +24,7 @@ struct UIPage *kbParent;
 char kbTitle[20];
 char kbBuff[20];
 void (*kbCallBack)();
+char strlength;
 };
 
 struct UIInfo

@@ -5,4 +5,5 @@ void KeyTask(void const * argument);
 
 void dbg(char * str);
 void reTemp();
+void usbflagchange();
 #endif

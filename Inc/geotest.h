@@ -13,13 +13,14 @@
 void analog(int option);
 int geotest();
 int ztest(int freq);
+long encode();
 
 struct  Geophone         //parameters of target geonphone under test
 {
-	uint32_t sn;
-	char barcode[20];
+//	uint32_t sn;
+//	char barcode[20];
 	uint32_t polarity;
-	uint32_t tilt;
+//	uint32_t tilt;
 	float temp;
 	float nois;
 	uint32_t resi;
@@ -64,7 +65,10 @@ struct Settings		//test settings & system settings
 	uint32_t magic;
 	
 	uint8_t filename[20];
+	
+uint8_t text[20];
 	uint32_t serialno;
+uint32_t inputmode;//0 no. 1 text
 	
 	uint32_t totalparam;
 	uint32_t paramnum;
@@ -81,13 +85,17 @@ struct Settings		//test settings & system settings
 	
 	uint32_t ldrate;
 	uint32_t polarity;
-	uint32_t constant; //1 velocity 0 excurtion
+	uint32_t constant; //1 velocity 0 excursion
 	uint32_t iteration;
+uint32_t timeinterval;
 	
 	uint32_t buzzer;
 	uint32_t backlight;
 	uint32_t sleeptime;
 	uint32_t shuttime;
+uint32_t units;//0 metric 1 imperial
+	
+	long passwd;
 };
 
 

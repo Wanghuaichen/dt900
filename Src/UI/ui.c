@@ -5,6 +5,9 @@
 #include "geotest.h"
 #include "cyma568.h"
 
+//#define BITMAP
+//#define NONTOUCHCLEAR
+
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelveticaNeueLT48;
 
@@ -61,22 +64,24 @@ void UIKeyboard()
 
 void UITouchClear()
 {
-	while(tpScan())
-		HAL_Delay(1);
+#ifndef NONTOUCHCLEAR
+	while(tpScan());
+//		HAL_Delay(1);
+#endif
 	UIInfo.TouchEvent = TOUCH_NONE;
 }
 
-void UITouch()
-{
-	tpScan();
-	
-}
+//void UITouch()
+//{
+//	tpScan();
+//	
+//}
 	
 void UIEventManager()
 {
 	UIKeyboard();
 	if(UIInfo.KeyEvent==KEY_NONE)
-		UITouch();
+		tpScan();
 	
 	if(UIInfo.keyCombo>60000*settings.sleeptime && !UIInfo.insleep)
 	{
@@ -119,10 +124,15 @@ void touchEvent(struct UIPage *page)
 		if(page->widgetSelected>=0)
 		{
 			page->widgetList[page->widgetSelected].active=0;
-			page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+			if(page->widgetList[page->widgetSelected].widgetDraw)
+				page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 			page->widgetSelected = -1;
 		}
-		
+#ifdef BITMAP
+if(UIInfo.tpY<120 && UIInfo.tpX>400)
+	SaveBitmap();
+#endif
+
 		if(UIInfo.tpY<120 && UIInfo.tpX<120)
 		{
 			if(page->pageReturn)
@@ -142,7 +152,8 @@ void touchEvent(struct UIPage *page)
 					UIInfo.widgetactive = 1;
 					page->widgetSelected = index;
 					page->widgetList[page->widgetSelected].active=1;
-					page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+					if(page->widgetList[page->widgetSelected].widgetDraw)
+						page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 				}
 				break;
 			}
@@ -164,7 +175,8 @@ void touchEvent(struct UIPage *page)
 		else if(UIInfo.keyCombo>1500)
 		{
 			page->widgetList[page->widgetSelected].active=0;
-			page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+			if(page->widgetList[page->widgetSelected].widgetDraw)
+				page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 			page->widgetSelected = -1;
 			UIInfo.widgetactive = 0;
 		}
@@ -179,11 +191,12 @@ void touchEvent(struct UIPage *page)
 			if(page==&pKeyboard)
 			{
 				page->widgetList[page->widgetSelected].active=0;
-				page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+				if(page->widgetList[page->widgetSelected].widgetDraw)
+					page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 				page->widgetSelected = -1;
 			}
-			else
-				page->widgetList[page->widgetSelected].widgetAct(&page->widgetList[page->widgetSelected]);
+			else if(page->widgetList[page->widgetSelected].widgetAct)
+					page->widgetList[page->widgetSelected].widgetAct(&page->widgetList[page->widgetSelected]);
 		}
 	}
 }
@@ -196,7 +209,8 @@ void keyboardEvent(struct UIPage *page)
 		if(page->widgetSelected>=0)
 		{
 			page->widgetList[page->widgetSelected].active=0;
-			page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+			if(page->widgetList[page->widgetSelected].widgetDraw)
+				page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 			page->widgetSelected = -1;
 		}
 		if(page->pageReturn)
@@ -204,18 +218,20 @@ void keyboardEvent(struct UIPage *page)
 			page->pageReturn(page);
 		}
 	}
-	else if(UIInfo.KeyEvent==KEY_DOWN)
+	else if(UIInfo.KeyEvent==KEY_DOWN && page->widgetNum>0)
 	{
 		if(page->widgetSelected>=0 && page->widgetNum>1)
 		{
 			page->widgetList[page->widgetSelected].active=0;
-			page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+			if(page->widgetList[page->widgetSelected].widgetDraw)
+				page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 		}
 		do
 		page->widgetSelected = page->widgetSelected == page->widgetNum-1 ? 0 : page->widgetSelected+1;
 		while(!page->widgetList[page->widgetSelected].enable || page->widgetList[page->widgetSelected].active);
 		page->widgetList[page->widgetSelected].active=1;
-		page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
+		if(page->widgetList[page->widgetSelected].widgetDraw)
+			page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 	}
 	else if(UIInfo.KeyEvent==KEY_OK && UIInfo.keyCombo==0)
 	{

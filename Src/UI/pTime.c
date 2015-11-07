@@ -5,10 +5,9 @@
 
 extern struct UIPage pKeyboard;
 extern struct KBInfo kbInfo;
-extern struct GeoParam geoparam[10];
-extern struct Settings settings;
-extern struct UIInfo UIInfo;
 extern struct UIPage pSys;
+extern RTC_DateTypeDef rtcDate;
+extern RTC_TimeTypeDef rtcTime;
 static char StringArray[6][20];
 struct UIPage pTime;
 static struct UIWidget widgetList[7];
@@ -38,9 +37,11 @@ static void kbCallBack()
 		case 3:
 			val = val>23 ? 23 : val;
 			Time.Hours = val;
+			break;
 		case 4:
 			val = val>59 ? 59 : val;
 			Time.Minutes = val;
+			break;
 		case 5:
 			val = val>59 ? 59 : val;
 			Time.Seconds = val;
@@ -48,7 +49,6 @@ static void kbCallBack()
 		default:
 			break;
 	}
-	UIInfo.flagSettings = 1;
 }
 
 static void goSubSettings(struct UIWidget * widget)
@@ -57,6 +57,7 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	kbInfo.strlength = 3;
 	PageJump(&pKeyboard);
 }
 

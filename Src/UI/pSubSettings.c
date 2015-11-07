@@ -50,32 +50,29 @@ static void kbCallBack()
 		case 0:
 			strcpy(geoparam[pSettings.widgetSelected].type,kbInfo.kbBuff);
 			break;
-//		case 1:
-//			geoparam[pSettings.widgetSelected].R = atoi(kbInfo.kbBuff);
-//			break;
-//		case 2:
-//			geoparam[pSettings.widgetSelected].F = (int)(atof(kbInfo.kbBuff)*10)/10.0;
-//			break;
-//		case 3:
-//			geoparam[pSettings.widgetSelected].B = (int)(atof(kbInfo.kbBuff)*1000)/1000.0;
-//			break;
-//		case 4:
-//			geoparam[pSettings.widgetSelected].S = (int)(atof(kbInfo.kbBuff)*10)/10.0;
-//			break;
 		case 5:
-			geoparam[pSettings.widgetSelected].D = (int)(atof(kbInfo.kbBuff)*1000)/1000.0;
+			geoparam[pSettings.widgetSelected].D = (int)(atof(kbInfo.kbBuff)*1000+0.1)/1000.0;
 			break;
 		case 6:
 			geoparam[pSettings.widgetSelected].DF = atoi(kbInfo.kbBuff);
 			break;
 		case 7:
-			geoparam[pSettings.widgetSelected].X = (int)(atof(kbInfo.kbBuff)*100)/100000.0;
+			if(settings.units)
+				geoparam[pSettings.widgetSelected].X = (int)(atof(kbInfo.kbBuff)*25.4*100+0.1)/100000.0;
+			else
+				geoparam[pSettings.widgetSelected].X = (int)(atof(kbInfo.kbBuff)*100+0.1)/100000.0;
 			break;
 		case 8:
-			geoparam[pSettings.widgetSelected].M = (int)(atof(kbInfo.kbBuff)*100)/100000.0;
+			if(settings.units)
+				geoparam[pSettings.widgetSelected].M = (int)(atof(kbInfo.kbBuff)*28.349523*100+0.1)/100000.0;
+			else
+				geoparam[pSettings.widgetSelected].M = (int)(atof(kbInfo.kbBuff)*100+0.1)/100000.0;
 			break;
 		case 9:
-			geoparam[pSettings.widgetSelected].T = (int)(atof(kbInfo.kbBuff)*10)/10.0;
+			if(settings.units)
+				geoparam[pSettings.widgetSelected].T = (int)((atof(kbInfo.kbBuff)-32)/1.8*10+0.1)/10.0;
+			else
+				geoparam[pSettings.widgetSelected].T = (int)(atof(kbInfo.kbBuff)*10+0.1)/10.0;
 			break;
 		default:
 			break;
@@ -88,6 +85,27 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	switch(widget->widgetIndex)
+	{
+		case 0:
+			kbInfo.strlength = 16;
+			break;
+		case 5:
+			kbInfo.strlength = 6;
+			break;
+		case 6:
+			kbInfo.strlength = 4;
+			break;
+		case 8:
+			kbInfo.strlength = 6;
+			break;
+		case 9:
+			kbInfo.strlength = 6;
+			break;
+		default:
+			kbInfo.strlength = 5;
+			break;
+	}
 	PageJump(&pKeyboard);
 }
 
@@ -130,7 +148,16 @@ static void widgetInit(struct UIWidget * widget)
 			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].B);
 			break;
 		case 4:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].S);
+			if(settings.units)
+			{
+				sprintf(widget->widgetTitle,"Sensitivity(V/""/s)");
+				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].S/39.37*1000+0.1)/1000.0);
+			}
+			else
+			{
+				sprintf(widget->widgetTitle,"Sensitivity(V/m/s)");
+				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].S);
+			}
 			break;
 		case 5:
 			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].D);
@@ -139,13 +166,40 @@ static void widgetInit(struct UIWidget * widget)
 			sprintf(widget->widgetPtr,"%d",(int)geoparam[pSettings.widgetSelected].DF);
 			break;
 		case 7:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].X*1000);
+			if(settings.units)
+			{
+				sprintf(widget->widgetTitle,"Excursion("")");
+				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].X*1000/39.37+0.1)/1000.0);
+			}
+			else
+			{
+				sprintf(widget->widgetTitle,"Excursion(mm)");
+				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].X*1000);
+			}
 			break;
 		case 8:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].M*1000);
+			if(settings.units)
+			{
+				sprintf(widget->widgetTitle,"Mass(oz)");
+				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].M*1000*0.03527*1000+0.1)/1000.0);
+			}
+			else
+			{
+				sprintf(widget->widgetTitle,"Mass(g)");
+				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].M*1000);
+			}
 			break;
 		case 9:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].T);
+			if(settings.units)
+			{
+				sprintf(widget->widgetTitle,"Spec. temp(~F)");
+				sprintf(widget->widgetPtr,"%g",(int)((geoparam[pSettings.widgetSelected].T*1.8+32)*10+0.1)/10.0);
+			}
+			else
+			{
+				sprintf(widget->widgetTitle,"Spec. temp(~C)");
+				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].T);
+			}
 			impedence();
 			break;
 		default:
@@ -184,7 +238,7 @@ static struct UIWidget widgetList[11] =
 	{4,1,0,{0,360,479,419},"Sensitivity(V/m/s)",0,StringArray[4],widgetInit,drawSLabel,goSubPage},
 	{5,1,0,{0,420,479,479},"Distortion(%)",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
 	{6,1,0,{0,480,479,539},"F distortion(Hz)",0,StringArray[6],widgetInit,drawSLabel,goSubSettings},
-	{7,1,0,{0,540,479,599},"Excurtion(mm)",0,StringArray[7],widgetInit,drawSLabel,goSubSettings},
+	{7,1,0,{0,540,479,599},"Excursion(mm)",0,StringArray[7],widgetInit,drawSLabel,goSubSettings},
 	{8,1,0,{0,600,479,659},"Mass(g)",0,StringArray[8],widgetInit,drawSLabel,goSubSettings},
 	{9,1,0,{0,660,479,719},"Spec. temp(~C)",0,StringArray[9],widgetInit,drawSLabel,goSubSettings},
 	{10,1,0,{280,740,439,779},"Delete",0,NULL,NULL,drawButton,del},

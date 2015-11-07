@@ -16,16 +16,19 @@ struct UIPage pEditR;
 static void kbCallBack()
 {
 	char str[20];
+	float val;
 	switch(pEditR.widgetSelected)
 	{
 		case 0:
 			geoparam[pSettings.widgetSelected].R = atoi(kbInfo.kbBuff);
 			break;
 		case 1:
-			geoparam[pSettings.widgetSelected].Rp = (int)(atof(kbInfo.kbBuff)*10)/1000.0;
+			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			geoparam[pSettings.widgetSelected].Rp =  val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		case 2:
-			geoparam[pSettings.widgetSelected].Rn = (int)(atof(kbInfo.kbBuff)*10)/1000.0;
+			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			geoparam[pSettings.widgetSelected].Rn =  val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		default:
 			break;
@@ -38,6 +41,7 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	kbInfo.strlength = 5;
 	PageJump(&pKeyboard);
 }
 

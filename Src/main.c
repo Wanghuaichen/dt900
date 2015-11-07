@@ -65,7 +65,7 @@ I2C_HandleTypeDef hi2c3;
 
 LTDC_HandleTypeDef hltdc;
 
-RTC_HandleTypeDef hrtc;
+//RTC_HandleTypeDef hrtc;
 
 SPI_HandleTypeDef hspi3;
 SPI_HandleTypeDef hspi5;
@@ -97,19 +97,11 @@ static void MX_SPI5_Init(void);
 static void MX_SPI6_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM3_Init(void);
-static void RTC_Init(void);
+//static void RTC_Init(void);
 static void IWDG_Init(void);
 
 int main(void)
 {
-//	uint8_t Tx=0x33;
-//	uint8_t Rx=0x0;
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration----------------------------------------------------------*/
-
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
@@ -129,10 +121,10 @@ int main(void)
   MX_SPI6_Init();
   MX_TIM5_Init();
   MX_TIM3_Init();
-	RTC_Init();
 	IWDG_Init();
 	Board_Init();
-
+	RTC_Init();
+	//beepon();
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 2048);
@@ -237,17 +229,17 @@ void MX_DMA2D_Init(void)
 
 }
 
-void RTC_Init(void)
-{
-	hrtc.Instance = RTC;
-  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-  hrtc.Init.AsynchPrediv = 0x7F;
-  hrtc.Init.SynchPrediv = 0xFF;
-  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
-  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
-  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
-  HAL_RTC_Init(&hrtc);
-}
+//void RTC_Init(void)
+//{
+//	hrtc.Instance = RTC;
+//  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+//  hrtc.Init.AsynchPrediv = 0x7F;
+//  hrtc.Init.SynchPrediv = 0xFF;
+//  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+//  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+//  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+//  HAL_RTC_Init(&hrtc);
+//}
 
 
 /* I2C3 init function */
@@ -255,7 +247,7 @@ void MX_I2C3_Init(void)
 {
 
   hi2c3.Instance = I2C3;
-  hi2c3.Init.ClockSpeed = 100000;
+  hi2c3.Init.ClockSpeed = 400000;
   hi2c3.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c3.Init.OwnAddress1 = 0x0;
   hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
@@ -357,8 +349,7 @@ void MX_TIM5_Init(void)//84MHz
   TIM_OC_InitTypeDef sConfigOC;
 
   htim5.Instance = TIM5;
-  //htim5.Init.Prescaler = 4199;
-	htim5.Init.Prescaler = 20;
+  htim5.Init.Prescaler = 4199;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 99;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

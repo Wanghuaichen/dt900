@@ -22,8 +22,10 @@ static void keyPress(struct UIWidget * widget)
 	if(UIInfo.keyCombo%1000!=0)
 		return;
 	len = strlen(kbInfo.kbBuff);
-	if(UIInfo.keyCombo==0 && len<16)
+	if(UIInfo.keyCombo==0 && len<kbInfo.strlength)
 		len++;
+	if(kbInfo.strlength==len)
+		return;
 	index = UIInfo.keyCombo/1000%widget->widgetValue;
 	if(index==0)
 		kbInfo.kbBuff[len-1] = *widget->widgetTitle;

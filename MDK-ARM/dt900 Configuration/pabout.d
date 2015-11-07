@@ -49,3 +49,5 @@ dt900 configuration\pabout.o: ..\Middlewares\ST\STemWin\inc\LCD.h
 dt900 configuration\pabout.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\pabout.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
 dt900 configuration\pabout.o: ..\Src\UI\DTCC.c
+dt900 configuration\pabout.o: ..\Inc\ostask.h
+dt900 configuration\pabout.o: ..\Inc\geotest.h

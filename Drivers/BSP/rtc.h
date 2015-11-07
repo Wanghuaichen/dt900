@@ -3,11 +3,10 @@
 
 #include "stm32f4xx_hal.h"
 
-extern RTC_DateTypeDef rtcDate;
-extern RTC_TimeTypeDef rtcTime;
+void RTC_Init();
 
-void RTC_Set();
 void RTC_Get();
+
 void RTC_SetDateTime(RTC_DateTypeDef *sdatestructure, RTC_TimeTypeDef *stimestructure);
 #endif
 

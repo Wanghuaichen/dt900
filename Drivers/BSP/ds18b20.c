@@ -14,7 +14,7 @@ void DS18B20_IO_IN()
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 	
-	GPIO_InitStruct.Pin = settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
+	GPIO_InitStruct.Pin = GPIO_PIN_14;//settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
@@ -25,7 +25,7 @@ void DS18B20_IO_OUT()
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 
-	GPIO_InitStruct.Pin = settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
+	GPIO_InitStruct.Pin = GPIO_PIN_14;//settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
@@ -34,13 +34,13 @@ void DS18B20_IO_OUT()
 
 void DS18B20_DQ_OUT(int code)
 {
-	uint16_t pin = settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
+	uint16_t pin = GPIO_PIN_14;//settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
 	HAL_GPIO_WritePin (GPIOA,pin,code);
 }
 
 unsigned char DS18B20_DQ_IN()
 {
-	uint16_t pin = settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
+	uint16_t pin = GPIO_PIN_14;//settings.sensormode==1 ? GPIO_PIN_5 : GPIO_PIN_14;
 	return HAL_GPIO_ReadPin(GPIOA,pin);
 }
 

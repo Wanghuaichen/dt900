@@ -21,6 +21,7 @@ static void kbCallBack()
 {
 	char str[20];
 	int val;
+	float val2;
 	switch(pSetup.widgetSelected)
 	{
 		case 0:
@@ -33,13 +34,15 @@ static void kbCallBack()
 			settings.serialno = val<1 ? 1 : val>99999 ? 99999 : val;
 			break;
 		case 4:
-			val = (int)(atof(kbInfo.kbBuff)*10)/10.0;
-			settings.temperature = val>99 ? 99 : val<-99 ? -99 : val;
+			val2 = (int)(atof(kbInfo.kbBuff)*10+0.1)/10.0;
+			if(settings.units)
+				val2 = (val2-32)/1.8;
+			settings.temperature = val2>99 ? 99 : val2<-99 ? -99 : val2;
 			reTemp();
 			break;
 		case 5:
 			val = atoi(kbInfo.kbBuff);
-			settings.shunt = val>9999 ? 9999 : val<0 ? 0 : val;
+			settings.shunt = val>999999 ? 999999 : val<0 ? 0 : val;
 			break;
 		case 9:
 			val = atoi(kbInfo.kbBuff);
@@ -60,6 +63,18 @@ static void goSubSettings(struct UIWidget * widget)
 		strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	switch(widget->widgetIndex)
+	{
+		case 0:
+			kbInfo.strlength = 16;
+			break;
+		case 5:
+			kbInfo.strlength = 8;
+			break;
+		default:
+			kbInfo.strlength = 6;
+			break;
+	}
 	PageJump(&pKeyboard);
 }
 
@@ -94,7 +109,7 @@ static void widgetInit(struct UIWidget * widget)
 			strcpy(widget->widgetPtr,settings.filename);
 			break;
 		case 1:
-			sprintf(widget->widgetPtr,"%04d",settings.serialno);
+			sprintf(widget->widgetPtr,"%05d",settings.serialno);
 			break;
 		case 2:
 			strcpy(widget->widgetPtr,geoparam[settings.paramnum].type);
@@ -111,7 +126,16 @@ static void widgetInit(struct UIWidget * widget)
 			break;
 		case 4:
 			widget->enable = settings.sensormode != 3 ? 0 : 1;
-			sprintf(widget->widgetPtr,"%g",settings.temperature);
+			if(settings.units)
+			{
+				sprintf(widget->widgetTitle,"Temperature(~F)");
+				sprintf(widget->widgetPtr,"%g",(int)((settings.temperature*1.8+32)*10+0.1)/10.0);
+			}
+			else
+			{
+				sprintf(widget->widgetTitle,"Temperature(~C)");
+				sprintf(widget->widgetPtr,"%g",(int)(settings.temperature*10+0.1)/10.0);
+			}
 			break;
 		case 5:
 			sprintf(widget->widgetPtr,"%d",settings.shunt);
@@ -128,7 +152,7 @@ static void widgetInit(struct UIWidget * widget)
 				sprintf(widget->widgetPtr,"%s/pol",widget->widgetPtr);
 			break;
 		case 8:
-			sprintf(widget->widgetPtr,settings.constant ? "Velocity" : "Excurtion");
+			sprintf(widget->widgetPtr,settings.constant ? "Velocity" : "Excursion");
 			break;
 		case 9:
 			sprintf(widget->widgetPtr,"%d",settings.iteration);
@@ -150,6 +174,7 @@ static void sensormode(struct UIWidget * widget)
 	reTemp();
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
+	UITouchClear();
 	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
 	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
 	UIInfo.flagSettings |= 0x1;
