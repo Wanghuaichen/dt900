@@ -17,7 +17,6 @@ extern struct Settings settings;
 static void kbCallBack()
 {
 	settings.passwd = atol(kbInfo.kbBuff);
-	UIInfo.flagSettings |= 0x1;
 }
 
 static void goSubSettings(struct UIWidget * widget)
@@ -26,6 +25,7 @@ static void goSubSettings(struct UIWidget * widget)
 	strcpy(kbInfo.kbTitle,widget->widgetTitle);
 	strcpy(kbInfo.kbBuff,widget->widgetPtr);
 	kbInfo.kbCallBack = kbCallBack;
+	kbInfo.strlength = 16;
 	PageJump(&pKeyboard);
 }
 

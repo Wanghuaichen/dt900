@@ -37,7 +37,6 @@ static void kbCallBack()
 		default:
 			break;
 	}
-	UIInfo.flagSettings |= 0x1;
 }
 
 static void goSubSettings(struct UIWidget * widget)
@@ -96,7 +95,6 @@ static void unit(struct UIWidget * widget)
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
 	reTemp();
-	UIInfo.flagSettings |= 0x1;
 }
 
 

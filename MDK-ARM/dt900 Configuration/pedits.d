@@ -50,3 +50,4 @@ dt900 configuration\pedits.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\pedits.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
 dt900 configuration\pedits.o: ..\Inc\geotest.h
 dt900 configuration\pedits.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+dt900 configuration\pedits.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

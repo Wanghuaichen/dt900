@@ -1,6 +1,7 @@
 #include "ui.h"
 #include "geotest.h"
 #include <stdlib.h>
+#include <math.h>
 
 extern struct UIPage pSettings;
 extern struct UIPage pSubSettings;
@@ -22,19 +23,19 @@ static void kbCallBack()
 		case 0:
 			if(settings.units)
 			{
-				val = (int)(atof(kbInfo.kbBuff)*1000+0.1)/1000.0;
-				val = (int)(val*39.37*10+0.1)/10.0;
+				val = round(atof(kbInfo.kbBuff)*1000)/1000.0;
+				val = round(val*39.37*10)/10.0;
 			}
 			else
-				val = (int)(atof(kbInfo.kbBuff)*10+0.1)/10.0;
+				val = round(atof(kbInfo.kbBuff)*10)/10.0;
 			geoparam[pSettings.widgetSelected].S = val<0 ? 0 : val >999 ? 999 : val;
 			break;
 		case 1:
-			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			val = round(atof(kbInfo.kbBuff)*10)/1000.0;
 			geoparam[pSettings.widgetSelected].Sp = val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		case 2:
-			val = (int)(atof(kbInfo.kbBuff)*10+0.1)/1000.0;
+			val = round(atof(kbInfo.kbBuff)*10)/1000.0;
 			geoparam[pSettings.widgetSelected].Sn = val<0 ? 0 : val >1 ? 1 : val;
 			break;
 		default:
@@ -59,8 +60,8 @@ static void widgetInit(struct UIWidget * widget)
 		case 0:
 			if(settings.units)
 			{
-				sprintf(widget->widgetTitle,"Sensitivity(V/""/s)");
-				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].S/39.37*1000+0.1)/1000.0);
+				sprintf(widget->widgetTitle,"Sensitivity(V/\"/s)");
+				sprintf(widget->widgetPtr,"%g",round(geoparam[pSettings.widgetSelected].S/39.37*1000)/1000.0);
 			}
 			else
 			{
@@ -86,7 +87,7 @@ static void pageReturn(struct UIPage * page)
 
 static struct UIWidget widgetList[3] =
 {
-	{0,1,0,{0,120,479,179},"Sensitivity(V/m/s)",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
+	{0,1,0,{0,120,479,179},"",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
 	{1,1,0,{0,180,479,239},"S Max(+%)",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
 	{2,1,0,{0,240,479,299},"S Min(-%)",0,StringArray[2],widgetInit,drawSLabel,goSubSettings},
 };

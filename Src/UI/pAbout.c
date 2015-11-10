@@ -39,9 +39,9 @@ static void pageInit(struct UIPage * page)
 	sprintf(str,"PID:%s",UIInfo.uid);
 	GUI_DispStringAt(str,240,550);
 	
-	GUI_SetColor(0xe4);
-	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-	GUI_DispStringAt("FOR EVALUATION ONLY",240,750);
+//	GUI_SetColor(0xe4);
+//	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+//	GUI_DispStringAt("FOR EVALUATION ONLY",240,750);
 
 	usbd_OpenMassStorage();
 }

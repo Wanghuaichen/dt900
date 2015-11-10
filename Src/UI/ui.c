@@ -249,7 +249,6 @@ void keyboardEvent(struct UIPage *page)
 void UI_Init()
 {
 	memset(&UIInfo,0,sizeof(UIInfo));
-	//UIInfo.flagSettings = 2;
 	GUI_SetBkColor(WHITE);
 	GUI_Clear();
 	GUI_SetColor(TITLECOLOR);
@@ -344,17 +343,41 @@ void drawSLabel(struct UIWidget* widget)
 	
 	GUI_SetFont(&GUI_FontHelvetica32);
 	
-	GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00f0f0f0);
+	GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00b0b0b0);
 	GUI_SetBkColor(WHITE);
 	GUI_SetTextAlign(GUI_TA_RIGHT | GUI_TA_VCENTER);	
 	GUI_DispStringAt((char *)widget->widgetPtr,439,(widget->rect.y1+widget->rect.y0)/2);
 	
-	GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00f0f0f0);
+	GUI_SetColor(widget->enable ? (widget->active ? 0x002fbeff : BLACK) : 0x00b0b0b0);
 	GUI_SetBkColor(WHITE);
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_VCENTER);	
 	GUI_DispStringAt(widget->widgetTitle,40,(widget->rect.y1+widget->rect.y0)/2);
 	
 	GUI_SetColor(DARKGRAY);
 	GUI_DrawHLine(widget->rect.y1,widget->rect.x0+20,widget->rect.x1-20);
+}
+
+void drawBox(struct UIWidget * widget)
+{
+	char str[20];
+	GUI_SetColor(WHITE);
+	GUI_FillRect(widget->rect.x0,widget->rect.y0,widget->rect.x1,widget->rect.y1);	
+	GUI_SetPenSize(2);
+	GUI_SetColor(widget->active ? 0x003fceff : 0x002f2f2f);
+//	GUI_AA_DrawRoundedRect(widget->rect.x0+1,widget->rect.y0+1,widget->rect.x1-1,widget->rect.y1-1,
+//	(widget->rect.y1-widget->rect.y0-2)/4);
+	//GUI_DrawHLine(widget->rect.y1,widget->rect.x0,widget->rect.x1);
+	
+	GUI_SetColor(widget->active ? 0x002fbeff : BLACK);
+	GUI_SetBkColor(WHITE);
+	
+	sprintf(str,"%s:%s",widget->widgetTitle,widget->widgetPtr);
+	GUI_SetFont(&GUI_FontHelvetica32);	
+	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_VCENTER);
+	GUI_DispStringAt(str,widget->rect.x0,(widget->rect.y1+widget->rect.y0)/2);
+//	
+//	GUI_DispStringAt(widget->widgetTitle,widget->rect.x0,(widget->rect.y1+widget->rect.y0)/2);
+//	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_VCENTER);
+//	GUI_DispStringAt(widget->widgetPtr,widget->rect.x0+100,(widget->rect.y1+widget->rect.y0)/2);
 }
 	

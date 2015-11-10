@@ -5,7 +5,7 @@ extern struct UIInfo UIInfo;
 
 void DP_EN(int val)
 {
-	if(!val && UIInfo.flagSettings)
+	if(!val)
 	{
 		FlashProgram();
 	}

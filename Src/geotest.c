@@ -22,14 +22,9 @@ uint32_t ADCMID = 0x800000;
 static float Inbuff[4096];
 struct Geophone geophone;
 struct GeoParam geoparam[10];
-struct Settings settings;
+volatile struct Settings settings;
 static struct GeoParam *geo;
 float curTemperature;
-
-float shuntResist;
-float stringResist;
-float lineResist;
-float totalResist;
 
 static int openshort();
 static void step0();
@@ -38,8 +33,6 @@ static void step2();
 static void step3();
 static void polarity();
 static void contidrive();
-
-float damp,sens;
 
 long encode()
 {
@@ -81,10 +74,12 @@ void analog(int option)
 int geotest()
 {
 	char str[20];
+	char blank[10];
 	float portion;
 	int COLOR;
 	int openshorttest;
 	
+	sprintf(blank,"              ");
 	memset(&geophone,0,sizeof(geophone));
 	geo = &geoparam[settings.paramnum];
 	if(settings.sensormode == 3)
@@ -94,13 +89,24 @@ int geotest()
 	else
 		geophone.temp = curTemperature;
 	
-	sens = settings.shunt>0 ? geo->S*settings.shunt/(settings.shunt+geo->R) : geo->S;
-	damp = settings.shunt>0 ? geo->S*geo->S/4/3.1415926/geo->M/geo->F/(geo->R+settings.shunt)+geo->B : geo->B;
-	
-	shuntResist = settings.shunt>0 ? (float)settings.shunt*geo->R/(settings.shunt+geo->R) : geo->R;
-	stringResist = shuntResist*settings.series/settings.parallel;
-	lineResist = settings.lineR*0.001*2*((settings.series-1)*settings.interval/settings.parallel+settings.leadin);
-	totalResist = stringResist+lineResist;
+	geophone.rnom = (uint32_t)((settings.shunt>0 ? (float)settings.shunt*geo->R/(settings.shunt+geo->R) : geo->R)*settings.series/settings.parallel);
+	geophone.rmax = (uint32_t)(geophone.rnom*(1+geo->Rp));
+	geophone.rmin = (uint32_t)(geophone.rnom*(1-geo->Rn));
+	geophone.fnom = geo->F;
+	geophone.fmax = geophone.fnom*(1+geo->Fp);
+	geophone.fmin = geophone.fnom*(1-geo->Fn);
+	geophone.bnom = settings.shunt>0 ? geo->S*geo->S/4/3.1415926/geo->M/geo->F/(geo->R+settings.shunt)+geo->B : geo->B;
+	geophone.bmax = geophone.bnom*(1+geo->Bp);
+	geophone.bmin = geophone.bnom*(1-geo->Bn);
+	geophone.snom = (settings.shunt>0 ? geo->S*settings.shunt/(settings.shunt+geo->R) : geo->S)*settings.series;
+	geophone.smax = geophone.snom*(1+geo->Sp);
+	geophone.smin = geophone.snom*(1-geo->Sn);
+	geophone.znom = (uint32_t)((settings.shunt>0 ? (float)geo->Z*settings.shunt/(geo->Z+settings.shunt) : geo->Z)*settings.series/settings.parallel);
+	geophone.zmax = (uint32_t)(geophone.znom*(1+geo->Zp));
+	geophone.zmin = (uint32_t)(geophone.znom*(1-geo->Zn));
+	geophone.rline = settings.lineR*0.001*2*((settings.series-1)*settings.interval/settings.parallel+settings.leadin);
+	geophone.rtotal = geophone.rnom+geophone.rline;
+	geophone.ztotal = geophone.znom+geophone.rline;
 	
 	GUI_SetColor(BLACK);
 	GUI_SetBkColor(WHITE);
@@ -111,7 +117,10 @@ int geotest()
 	GUI_DispStringAt("Resistance(})",60,340);
 	GUI_DispStringAt("Frequency(Hz)",60,380);
 	GUI_DispStringAt("Damping",60,420);
-	GUI_DispStringAt("Sensitivity(V/m/s)",60,460);
+	if(settings.units)
+		GUI_DispStringAt("Sensitivity(V/\"/s)",60,460);
+	else
+		GUI_DispStringAt("Sensitivity(V/m/s)",60,460);
 	GUI_DispStringAt("Distortion(%)",60,500);
 	GUI_DispStringAt("Impedance(})",60,540);
 	GUI_DispStringAt("Polarity",60,580);
@@ -119,16 +128,16 @@ int geotest()
 	
 	analog(1);
 	GUI_SetColor(WHITE);
-	
 	openshorttest = openshort();
 	if(openshorttest!=0)
 	{
 		analog(0);
 		sprintf(str,openshorttest==1 ? "OPEN" : "SHORT");
 		GUI_SetBkColor(0x005a62ff);
-		GUI_DispStringAt("              ",300,220);
-		GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
-		GUI_DispStringAt(str,356,220);
+		GUI_SetTextAlign(GUI_TA_HCENTER);
+		GUI_DispStringAt("              ",356,260);
+		GUI_SetTextAlign(GUI_TA_HCENTER);
+		GUI_DispStringAt(str,356,260);
 		geophone.fault = openshorttest==1 ? -1 : -2;
 		return geophone.fault;
 	}
@@ -136,8 +145,9 @@ int geotest()
 	step0();
 	sprintf(str,"%.1f",geophone.nois);
 	GUI_SetBkColor(geophone.nois>10 ? 0x005a62ff : 0x005bc15b);
-	GUI_DispStringAt("              ",300,260);
-	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
+	GUI_SetTextAlign(GUI_TA_HCENTER);
+	GUI_DispStringAt("              ",356,260);
+	GUI_SetTextAlign(GUI_TA_HCENTER);
 	GUI_DispStringAt(str,356,260);
 	
 	step1();
@@ -158,8 +168,7 @@ int geotest()
 	GUI_DispStringAt(str,356,300);
 	
 	sprintf(str,"%d",(int)geophone.resi);
-	portion = (float)(geophone.resi*settings.parallel/settings.series-shuntResist)/shuntResist;
-	if(portion>geo->Rp||portion<-geo->Rn)
+	if(geophone.resi>geophone.rmax||geophone.resi<geophone.rmin)
 	{
 		geophone.fault=1;
 		COLOR = 0x005a62ff;
@@ -173,8 +182,7 @@ int geotest()
 	
 	step2();
 	sprintf(str,"%.2f",geophone.freq);
-	portion = (float)(geophone.freq-geo->F)/geo->F;
-	if(portion>geo->Fp||portion<-geo->Fn)
+	if(geophone.fnom>geophone.fmax||geophone.fnom<geophone.fmin)
 	{
 		geophone.fault=1;
 		COLOR = 0x005a62ff;
@@ -186,8 +194,7 @@ int geotest()
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,356,380);
 	sprintf(str,"%.3f",geophone.damp);
-	portion = (float)(geophone.damp-damp)/damp;
-	if(portion>geo->Bp||portion<-geo->Bn)
+	if(geophone.damp>geophone.bmax||geophone.damp<geophone.bmin)
 	{
 		geophone.fault=1;
 		COLOR = 0x005a62ff;
@@ -198,9 +205,11 @@ int geotest()
 	GUI_DispStringAt("              ",300,420);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,356,420);
-	sprintf(str,"%.1f",geophone.sens);
-	portion = (float)(geophone.sens/settings.series-sens)/sens;
-	if(portion>geo->Sp||portion<-geo->Sn)
+	if(settings.units)
+		sprintf(str,"%.3f",(int)(geophone.sens/39.37*1000+0.1)/1000.0);
+	else
+		sprintf(str,"%.1f",geophone.sens);
+	if(geophone.sens>geophone.smax||geophone.sens<geophone.smin)
 	{
 		geophone.fault=1;
 		COLOR = 0x005a62ff;
@@ -226,15 +235,13 @@ int geotest()
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,356,500);
 	sprintf(str,"%d",(int)geophone.impe);
-//	portion = (float)(geophone.impe-geo->Z)/geo->Z;
-//	if(portion>geo->Zp||portion<-geo->Zn)
-//	{
-//		geophone.fault=1;
-//		COLOR = 0x005a62ff;
-//	}
-//	else
-//		COLOR = 0x005bc15b;
-	COLOR = 0x002fbeff;
+	if(geophone.impe>geophone.zmax||geophone.impe<geophone.zmin)
+	{
+		geophone.fault=1;
+		COLOR = 0x005a62ff;
+	}
+	else
+		COLOR = 0x005bc15b;
 	GUI_SetBkColor(COLOR);
 	GUI_DispStringAt("              ",300,540);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
@@ -242,15 +249,20 @@ int geotest()
 	
 	if(settings.polarity)
 		polarity();
-	if(geophone.polarity==-1) geophone.fault=1;
+	if(geophone.polarity==-1)
+		geophone.fault = 1;
 	
 	if(settings.ldrate)
 		contidrive();
+	if(geophone.minZ<geophone.zmin || geophone.maxZ>geophone.zmax)
+		geophone.fault = 1;
 	
 	analog(0);
 	
 	return geophone.fault;
 }
+
+
 
 static int openshort()
 {
@@ -304,10 +316,10 @@ static void step1()
 	double val2=0;
 	int i;
 	unsigned short offset;
-	float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens;
-	volt = volt*settings.series*totalResist/stringResist;
+	float volt = 0.7*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S;
+	volt = volt*settings.series*geophone.rtotal/geophone.rnom;
 	if(volt>9) volt=9;
-	volt = volt*R_ref/totalResist;
+	volt = volt*R_ref/geophone.rtotal;
 	if(volt>2.45) volt=2.45;
 	
 	offset =(unsigned short)(volt/5*0xffff);
@@ -321,7 +333,7 @@ dbg("step1 0");
 dbg("step1 1");
 	val /= 64;
 	geophone.resi = (uint32_t)round(R_ref*AMPGAIN*abs(val-ADCMID)/(volt/5*0xffffff)-0.25);
-	geophone.resi = geophone.resi-lineResist;
+	geophone.resi = geophone.resi-geophone.rline;
 	geophone.resi /= 1+0.004*(geophone.temp-geo->T);
 	
 	
@@ -342,10 +354,10 @@ static void step2()
 	unsigned int offset;
 	unsigned int a1,a2,T,i1;
 	float t;
-	float volt = 0.35*0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/sens;
-	volt = volt*settings.series*totalResist/stringResist;
+	float volt = 0.35*0.5*geo->R*geo->X*geo->M*4*PI*PI*geo->F*geo->F/geo->S;
+	volt = volt*settings.series*geophone.rtotal/geophone.rnom;
 	if(volt>9) volt=9;
-	volt = volt*R_ref/totalResist;
+	volt = volt*R_ref/geophone.rtotal;
 	if(volt>2.45) volt=2.45;
 	offset= volt/5*0xffff;
 	i1=0;
@@ -393,15 +405,11 @@ static void step3()
 	int N = 4096;
 	float mag;
 	int NF = geo->DF;
-	float shuntZ = settings.shunt>0 ? (float)(settings.shunt*geo->Z)/(settings.shunt+geo->Z) : geo->Z;
-	float stringZ = shuntZ*settings.series/settings.parallel;
-	float totalZ = stringZ+lineResist;
-	mag = 0.8*0.01778*sens;
+	mag = geo->speed*0.0254*geophone.snom;
 	if(!settings.constant)
 		mag = mag*geo->DF/12;
-	mag = mag*settings.series;
 	if(mag>9) mag=9;
-	mag = mag*R_ref/totalZ;
+	mag = mag*R_ref/geophone.ztotal;
 	if(mag>2.45) mag=2.45;
 	
 	DAC_SWEEP(NF,-mag,0);
@@ -416,7 +424,7 @@ dbg("step3 1");
 	Inbuff[2] = sqrt(Inbuff[4*NF]*Inbuff[4*NF]+Inbuff[4*NF+1]*Inbuff[4*NF+1]);
 	Inbuff[3] = sqrt(Inbuff[6*NF]*Inbuff[6*NF]+Inbuff[6*NF+1]*Inbuff[6*NF+1]);
 	geophone.impe = round(R_ref*AMPGAIN*Inbuff[1]/(N/2)/(mag/5*0xffffff));
-	geophone.impe -= lineResist;
+	geophone.impe -= geophone.rline;
 	geophone.dist = 100.0*(Inbuff[2]+Inbuff[3])/Inbuff[1];
 }
 	
@@ -569,6 +577,7 @@ static void polarity()
 	int i;
 	int temp;
 	int flag,pol,cnt;
+	int max,min,th;
 	char str[20];
 	
 	UITouchClear();
@@ -582,16 +591,25 @@ static void polarity()
 	GUI_DispStringAt("              ",300,580);
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt("0",356,580);
+	th = 4000*geo->S;
 	while(1)
 	{
 HAL_IWDG_Refresh(&IwdgHandle);
 flag=pol=cnt=0;
+max=0;
+min=0xffffff;
 for(i=0;i<2000;i++)
 {
 	temp = AD7190Read();
-	if(flag==1)
+	if(flag==-1)
 	{
-		if(abs(temp-ADCMID)>67109)
+		if(temp>max) max = temp;
+		if(temp<min) min = temp;
+	}
+	else if(flag==1)
+	{
+//		if(abs(temp-ADCMID)>67109)
+		if(abs(temp-ADCMID)>th)
 		{
 			if(temp<ADCMID)
 				pol=1;
@@ -602,7 +620,7 @@ for(i=0;i<2000;i++)
 	}
 	else if(flag==0)
 	{
-		if(abs(temp-ADCMID)<67109)
+		if(abs(temp-ADCMID)<th)
 			cnt++;
 		if(cnt>10)
 			flag=1;
@@ -623,7 +641,7 @@ for(i=0;i<2000;i++)
 	}
 }
 
-	if(pol)
+	if(pol && (max-ADCMID)>th && (ADCMID-min)>th)
 	{
 		if(pol==1)
 		{
@@ -722,9 +740,6 @@ static void contidrive()
 	int N = 4096;
 	float mag;
 	int NF = geo->DF;
-	float shuntZ = settings.shunt>0 ? (float)(settings.shunt*geo->Z)/(settings.shunt+geo->Z) : geo->Z;
-	float stringZ = shuntZ*settings.series/settings.parallel;
-	float totalZ = stringZ+lineResist;
 	float impedance;
 	int flag = 1;
 	char str[20];
@@ -743,13 +758,12 @@ static void contidrive()
 	geophone.maxZ = 0;
 	geophone.minZ = 0xffffffff;
 	
-	mag = 0.7*0.01778*sens;
+	mag = geo->speed*0.0254*geophone.snom;
 	if(!settings.constant)
 		mag = mag*geo->DF/12;
-	mag = mag*settings.series;
-	if(mag>9) mag=9;
-	mag = mag*R_ref/totalZ;
 	mag = mag*settings.ldrate/100;
+	if(mag>9) mag=9;
+	mag = mag*R_ref/geophone.ztotal;
 	if(mag>2.45) mag=2.45;
 	
 	DAC_SWEEP(NF,-mag,0);
@@ -781,15 +795,21 @@ static void contidrive()
 			rdft(N,1,Inbuff);
 			Inbuff[1] = sqrt(Inbuff[2*NF]*Inbuff[2*NF]+Inbuff[2*NF+1]*Inbuff[2*NF+1]);
 			impedance = round(R_ref*AMPGAIN*Inbuff[1]/(N/2)/(mag/5*0xffffff));
-			impedance -= lineResist;
+			impedance -= geophone.rline;
 			if(geophone.maxZ < impedance)
 				geophone.maxZ = impedance;
 			if(geophone.minZ > impedance)
 				geophone.minZ = impedance;
 			
 			sprintf(str,"%d-%d",geophone.minZ,geophone.maxZ);
+			if(geophone.minZ<geophone.zmin || geophone.maxZ>geophone.zmax)
+			{
+				geophone.fault=1;
+				GUI_SetBkColor(0x005a62ff);
+			}
+			else
+				GUI_SetBkColor(0x005bc15b);
 			GUI_SetColor(WHITE);
-			GUI_SetBkColor(0x002fbeff);
 			GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
 			GUI_DispStringAt(str,300,620);
 			GUI_SetBkColor(WHITE);

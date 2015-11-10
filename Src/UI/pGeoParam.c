@@ -9,7 +9,6 @@ extern struct UIPage pSetup;
 
 static void selected(struct UIWidget * widget)
 {
-	UIInfo.flagSettings = 1;
 	settings.paramnum = widget->widgetIndex;
 	PageJump(&pSetup);
 }

@@ -86,6 +86,7 @@ void Board_Init()
 		settings.temperature = 25;
 		sprintf(settings.filename,"DTCCSOLO");
 		settings.totalparam = 2;
+		settings.timeinterval = 1;
 		memcpy(geoparam,param,200);
 		FlashProgram();
 	}

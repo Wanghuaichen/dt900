@@ -21,7 +21,7 @@ extern RTC_DateTypeDef rtcDate;
 extern RTC_TimeTypeDef rtcTime;
 extern IWDG_HandleTypeDef IwdgHandle;
 
-static int chargeSwap;
+volatile static int chargeSwap;
 static int usbflag = 0;
 static void batVolt();
 

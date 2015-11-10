@@ -53,7 +53,6 @@ static void pageInit(struct UIPage * page)
 static void pageReturn(struct UIPage * page)
 {
 	PageJump(&pMain);
-	UIInfo.flagSettings = 1;
 }
 
 struct UIPage pSettings = 

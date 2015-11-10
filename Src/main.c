@@ -133,9 +133,7 @@ int main(void)
   keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
  
   osKernelStart();
-  while (1)
-  {
-  }
+  while (1){}
 }
 
 /** System Clock Configuration

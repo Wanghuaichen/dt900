@@ -29,7 +29,6 @@ char strlength;
 
 struct UIInfo
 {
-	uint8_t flagSettings;
 	uint32_t chargeflag;
 	uint8_t insleep;
 	
@@ -88,6 +87,7 @@ void UIDraw(struct UIPage *page);
 void drawButton(struct UIWidget* widget);
 void drawLabel(struct UIWidget* widget);
 void drawSLabel(struct UIWidget* widget);
+void drawBox(struct UIWidget* widget);
 struct UIInfo * getUIInfo();
 void UIFont(int mode);
 void getuid();

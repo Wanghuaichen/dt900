@@ -9,6 +9,7 @@ extern struct UIPage pGeoParam;
 extern struct UIPage pTest;
 extern struct UIPage pString;
 extern struct UIPage pFlow;
+extern struct UIPage pIteration;
 extern struct KBInfo kbInfo;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
@@ -51,7 +52,6 @@ static void kbCallBack()
 		default:
 			break;
 	}
-	UIInfo.flagSettings |= 0x1;
 }
 
 static void goSubSettings(struct UIWidget * widget)
@@ -84,15 +84,15 @@ static void goSubPage(struct UIWidget * widget)
 	{
 		case 2:
 			PageJump(&pGeoParam);
-			UIInfo.flagSettings |= 0x1;
 			break;
 		case 6:
 			PageJump(&pString);
-			UIInfo.flagSettings |= 0x1;
 			break;
 		case 7:
 			PageJump(&pFlow);
-			UIInfo.flagSettings |= 0x1;
+			break;
+		case 9:
+			PageJump(&pIteration);
 			break;
 		default:
 			PageJump(&pTest);
@@ -155,7 +155,10 @@ static void widgetInit(struct UIWidget * widget)
 			sprintf(widget->widgetPtr,settings.constant ? "Velocity" : "Excursion");
 			break;
 		case 9:
-			sprintf(widget->widgetPtr,"%d",settings.iteration);
+			if(settings.iteration>1)			
+				sprintf(widget->widgetPtr,"%d/%d",settings.iteration,settings.timeinterval);
+			else
+				sprintf(widget->widgetPtr,"%d",settings.iteration);
 			break;
 		default:
 			break;
@@ -177,7 +180,6 @@ static void sensormode(struct UIWidget * widget)
 	UITouchClear();
 	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
 	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
-	UIInfo.flagSettings |= 0x1;
 }
 
 static void constant(struct UIWidget * widget)
@@ -185,7 +187,6 @@ static void constant(struct UIWidget * widget)
 	settings.constant = settings.constant ? 0 : 1;
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
-	UIInfo.flagSettings |= 0x1;
 }
 
 static struct UIWidget widgetList[11] =
@@ -199,7 +200,7 @@ static struct UIWidget widgetList[11] =
 	{6,1,0,{0,480,479,539},"String",0,StringArray[6],widgetInit,drawSLabel,goSubPage},
 	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,goSubPage},
 	{8,1,0,{0,600,479,659},"@Constant",0,StringArray[8],widgetInit,drawSLabel,constant},
-	{9,1,0,{0,660,479,719},"Iteration",0,StringArray[9],widgetInit,drawSLabel,goSubSettings},
+	{9,1,0,{0,660,479,719},"Multiple Tests",0,StringArray[9],widgetInit,drawSLabel,goSubPage},
 	{10,1,0,{120,740,359,779},"Continue",0,NULL,NULL,drawButton,goSubPage},
 };
 

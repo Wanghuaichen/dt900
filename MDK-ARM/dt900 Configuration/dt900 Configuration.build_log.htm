@@ -22,130 +22,64 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 Z:\GitHub\dt900\MDK-ARM\dt900.uvproj
-Project File Date:  10/21/2015
+Project File Date:  11/10/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling ostask.c...
-..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
-  void reTemp();
-..\Inc\ostask.h(8): warning:  #1295-D: Deprecated declaration usbflagchange - give arg types
-  void usbflagchange();
-..\Inc\ostask.h(9): warning:  #1-D: last line of file ends without a newline
+compiling ui.c...
+..\Src\UI\ui.h(77): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
+  void UI_Init();
+..\Src\UI\ui.h(79): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
+  void UIKeyboard();
+..\Src\UI\ui.h(80): warning:  #1295-D: Deprecated declaration UITouch - give arg types
+  void UITouch();
+..\Src\UI\ui.h(81): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
+  void UIEventManager();
+..\Src\UI\ui.h(92): warning:  #1295-D: Deprecated declaration getUIInfo - give arg types
+  struct UIInfo * getUIInfo();
+..\Src\UI\ui.h(94): warning:  #1295-D: Deprecated declaration getuid - give arg types
+  void getuid();
+..\Src\UI\ui.h(95): warning:  #1295-D: Deprecated declaration UITouchClear - give arg types
+  void UITouchClear();
+..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
+  int geotest();
+..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration encode - give arg types
+  long encode();
+..\Drivers\BSP\cyma568.h(4): warning:  #1295-D: Deprecated declaration tpTest - give arg types
+  void tpTest();
+..\Drivers\BSP\cyma568.h(5): warning:  #1295-D: Deprecated declaration ping - give arg types
+  void ping();
+..\Drivers\BSP\cyma568.h(6): warning:  #1295-D: Deprecated declaration touchreport - give arg types
+  void touchreport();
+..\Drivers\BSP\cyma568.h(7): warning:  #1295-D: Deprecated declaration HidDes - give arg types
+  void HidDes();
+..\Drivers\BSP\cyma568.h(8): warning:  #1295-D: Deprecated declaration sysinfo - give arg types
+  void sysinfo();
+..\Drivers\BSP\cyma568.h(9): warning:  #1295-D: Deprecated declaration CalibrateIDAC - give arg types
+  int CalibrateIDAC();
+..\Drivers\BSP\cyma568.h(10): warning:  #1295-D: Deprecated declaration SuspendScan - give arg types
+  int SuspendScan();
+..\Drivers\BSP\cyma568.h(11): warning:  #1295-D: Deprecated declaration ResumeScan - give arg types
+  int ResumeScan();
+..\Drivers\BSP\cyma568.h(12): warning:  #1295-D: Deprecated declaration ShortTest - give arg types
+  int ShortTest();
+..\Drivers\BSP\cyma568.h(13): warning:  #1295-D: Deprecated declaration OpenTest - give arg types
+  int OpenTest();
+..\Drivers\BSP\cyma568.h(14): warning:  #1295-D: Deprecated declaration tpScan - give arg types
+  int tpScan();
+..\Drivers\BSP\cyma568.h(15): warning:  #1-D: last line of file ends without a newline
   #endif
-..\Drivers\BSP\rtc.h(6): warning:  #1295-D: Deprecated declaration RTC_Init - give arg types
-  void RTC_Init();
-..\Drivers\BSP\rtc.h(8): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
-  void RTC_Get();
-..\Src\UI\ui.h(77): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
-  void UI_Init();
-..\Src\UI\ui.h(79): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
-  void UIKeyboard();
-..\Src\UI\ui.h(80): warning:  #1295-D: Deprecated declaration UITouch - give arg types
-  void UITouch();
-..\Src\UI\ui.h(81): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
-  void UIEventManager();
-..\Src\UI\ui.h(91): warning:  #1295-D: Deprecated declaration getUIInfo - give arg types
-  struct UIInfo * getUIInfo();
-..\Src\UI\ui.h(93): warning:  #1295-D: Deprecated declaration getuid - give arg types
-  void getuid();
-..\Src\UI\ui.h(94): warning:  #1295-D: Deprecated declaration UITouchClear - give arg types
-  void UITouchClear();
-..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
-  int geotest();
-..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration encode - give arg types
-  long encode();
-..\Drivers\BSP\beep.h(6): warning:  #1295-D: Deprecated declaration beepon - give arg types
-  void beepon();
-..\Drivers\BSP\beep.h(7): warning:  #1295-D: Deprecated declaration beepoff - give arg types
-  void beepoff();
-..\Drivers\BSP\flash.h(10): warning:  #1295-D: Deprecated declaration FlashProgram - give arg types
-  void FlashProgram();
-..\Drivers\BSP\flash.h(11): warning:  #1295-D: Deprecated declaration FlashEraseTotal24 - give arg types
-  void FlashEraseTotal24();
-..\Drivers\BSP\ds3231m.h(4): warning:  #1295-D: Deprecated declaration DS3231M_OsciCheck - give arg types
-  void DS3231M_OsciCheck();
-..\Drivers\BSP\ds3231m.h(5): warning:  #1295-D: Deprecated declaration DS3231M_Init - give arg types
-  void DS3231M_Init();
-..\Drivers\BSP\ds3231m.h(8): warning:  #1295-D: Deprecated declaration DS3231M_GetTemp - give arg types
-  float DS3231M_GetTemp();
-..\Drivers\BSP\ds3231m.h(9): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\Src\ostask.c(26): warning:  #1295-D: Deprecated declaration batVolt - give arg types
-  static void batVolt();
-..\Src\ostask.c(119): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                sprintf(str,"  ] %.1f~F  ",(int)((curTemperature*1.8+32)*10+0.1)/10.0);
-..\Src\ostask.c(121): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                sprintf(str,"  ] %.1f~C  ",(int)(curTemperature*10+0.1)/10.0);
-..\Src\ostask.c(132): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                sprintf(str,"  ] %.1f~F  ",(int)((curTemperature*1.8+32)*10+0.1)/10.0);
-..\Src\ostask.c(134): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                sprintf(str,"  ] %.1f~C  ",(int)(curTemperature*10+0.1)/10.0);
-..\Src\ostask.c(138): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                sprintf(str,"  ] %.1f~F  ",(int)((settings.temperature*1.8+32)*10+0.1)/10.0);
-..\Src\ostask.c(140): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                sprintf(str,"  ] %.1f~C  ",(int)(settings.temperature*10+0.1)/10.0);
-..\Src\ostask.c(166): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        curLevel = (volt-3.3)/0.08;
-..\Src\ostask.c(175): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        if(volt<3.3)
-..\Src\ostask.c(182): warning:  #223-D: function "LCD_PWR" declared implicitly
-                LCD_PWR(0);
-..\Src\ostask.c(190): warning:  #1-D: last line of file ends without a newline
-  }
-..\Src\ostask.c: 33 warnings, 0 errors
-compiling pEditD.c...
-..\Src\UI\ui.h(77): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
-  void UI_Init();
-..\Src\UI\ui.h(79): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
-  void UIKeyboard();
-..\Src\UI\ui.h(80): warning:  #1295-D: Deprecated declaration UITouch - give arg types
-  void UITouch();
-..\Src\UI\ui.h(81): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
-  void UIEventManager();
-..\Src\UI\ui.h(91): warning:  #1295-D: Deprecated declaration getUIInfo - give arg types
-  struct UIInfo * getUIInfo();
-..\Src\UI\ui.h(93): warning:  #1295-D: Deprecated declaration getuid - give arg types
-  void getuid();
-..\Src\UI\ui.h(94): warning:  #1295-D: Deprecated declaration UITouchClear - give arg types
-  void UITouchClear();
-..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
-  int geotest();
-..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration encode - give arg types
-  long encode();
-..\Src\UI\pEditD.c(18): warning:  #177-D: variable "str" was declared but never referenced
-        char str[20];
-..\Src\UI\pEditD.c(41): warning:  #223-D: function "strcpy" declared implicitly
-        strcpy(kbInfo.kbTitle,widget->widgetTitle);
-..\Src\UI\pEditD.c: 11 warnings, 0 errors
-compiling pEditF.c...
-..\Src\UI\ui.h(77): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
-  void UI_Init();
-..\Src\UI\ui.h(79): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
-  void UIKeyboard();
-..\Src\UI\ui.h(80): warning:  #1295-D: Deprecated declaration UITouch - give arg types
-  void UITouch();
-..\Src\UI\ui.h(81): warning:  #1295-D: Deprecated declaration UIEventManager - give arg types
-  void UIEventManager();
-..\Src\UI\ui.h(91): warning:  #1295-D: Deprecated declaration getUIInfo - give arg types
-  struct UIInfo * getUIInfo();
-..\Src\UI\ui.h(93): warning:  #1295-D: Deprecated declaration getuid - give arg types
-  void getuid();
-..\Src\UI\ui.h(94): warning:  #1295-D: Deprecated declaration UITouchClear - give arg types
-  void UITouchClear();
-..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
-  int geotest();
-..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration encode - give arg types
-  long encode();
-..\Src\UI\pEditF.c(18): warning:  #177-D: variable "str" was declared but never referenced
-        char str[20];
-..\Src\UI\pEditF.c(41): warning:  #223-D: function "strcpy" declared implicitly
-        strcpy(kbInfo.kbTitle,widget->widgetTitle);
-..\Src\UI\pEditF.c: 11 warnings, 0 errors
+..\Src\UI\ui.c(251): warning:  #223-D: function "memset" declared implicitly
+        memset(&UIInfo,0,sizeof(UIInfo));
+..\Src\UI\ui.c(375): warning:  #181-D: argument is incompatible with corresponding format string conversion
+        sprintf(str,"%s:%s",widget->widgetTitle,widget->widgetPtr);
+..\Src\UI\ui.c(384): warning:  #1-D: last line of file ends without a newline
+        
+..\Src\UI\ui.c: 24 warnings, 0 errors
 linking...
-Program Size: Code=150710 RO-data=128770 RW-data=7276 ZI-data=166756  
+Program Size: Code=156814 RO-data=128858 RW-data=7960 ZI-data=167080  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 55 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 24 Warning(s).
 </pre>
 </body>
 </html>

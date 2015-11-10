@@ -9,38 +9,15 @@ extern struct UIPage pEditR;
 extern struct UIPage pEditF;
 extern struct UIPage pEditD;
 extern struct UIPage pEditS;
+extern struct UIPage pEditZ;
+extern struct UIPage pEditDrive;
 extern struct KBInfo kbInfo;
 extern struct GeoParam geoparam[10];
 extern struct Settings settings;
 
-static char StringArray[10][20];
+static char StringArray[11][20];
 struct UIPage pSubSettings;
-static struct UIWidget widgetList[11];
-
-static void impedence()
-{
-	float a,b,c,d,re,im;
-	float w,w0,s,m,bt,r;
-	char str[30];
-	
-	w = geoparam[pSettings.widgetSelected].DF*2*PI;
-	w0 = geoparam[pSettings.widgetSelected].F*2*PI;
-	s = geoparam[pSettings.widgetSelected].S;
-	m = geoparam[pSettings.widgetSelected].M;
-	bt = geoparam[pSettings.widgetSelected].B;
-	r = geoparam[pSettings.widgetSelected].R;
-	
-	a = w*s*s/m;
-	b = w0*w0-w*w;
-	c = 2*bt*w*w0;
-	d = b*b+c*c;
-	re = r+a*c/d;
-	im = a*b/d;
-	geoparam[pSettings.widgetSelected].Z = round(sqrt(re*re+im*im));
-	
-	sprintf(str,"Impedance:%d   ",(int)geoparam[pSettings.widgetSelected].Z);
-	GUI_DispStringAt(str,40,760);
-}
+static struct UIWidget widgetList[12];
 
 static void kbCallBack()
 {
@@ -51,28 +28,25 @@ static void kbCallBack()
 			strcpy(geoparam[pSettings.widgetSelected].type,kbInfo.kbBuff);
 			break;
 		case 5:
-			geoparam[pSettings.widgetSelected].D = (int)(atof(kbInfo.kbBuff)*1000+0.1)/1000.0;
-			break;
-		case 6:
-			geoparam[pSettings.widgetSelected].DF = atoi(kbInfo.kbBuff);
-			break;
-		case 7:
-			if(settings.units)
-				geoparam[pSettings.widgetSelected].X = (int)(atof(kbInfo.kbBuff)*25.4*100+0.1)/100000.0;
-			else
-				geoparam[pSettings.widgetSelected].X = (int)(atof(kbInfo.kbBuff)*100+0.1)/100000.0;
+			geoparam[pSettings.widgetSelected].D = round(atof(kbInfo.kbBuff)*1000)/1000.0;
 			break;
 		case 8:
 			if(settings.units)
-				geoparam[pSettings.widgetSelected].M = (int)(atof(kbInfo.kbBuff)*28.349523*100+0.1)/100000.0;
+				geoparam[pSettings.widgetSelected].X = round(atof(kbInfo.kbBuff)*25.4*1000)/1000000.0;
 			else
-				geoparam[pSettings.widgetSelected].M = (int)(atof(kbInfo.kbBuff)*100+0.1)/100000.0;
+				geoparam[pSettings.widgetSelected].X = round(atof(kbInfo.kbBuff)*100)/100000.0;
 			break;
 		case 9:
 			if(settings.units)
-				geoparam[pSettings.widgetSelected].T = (int)((atof(kbInfo.kbBuff)-32)/1.8*10+0.1)/10.0;
+				geoparam[pSettings.widgetSelected].M = round(atof(kbInfo.kbBuff)*28.349523*100)/100000.0;
 			else
-				geoparam[pSettings.widgetSelected].T = (int)(atof(kbInfo.kbBuff)*10+0.1)/10.0;
+				geoparam[pSettings.widgetSelected].M = round(atof(kbInfo.kbBuff)*100)/100000.0;
+			break;
+		case 10:
+			if(settings.units)
+				geoparam[pSettings.widgetSelected].T = round((atof(kbInfo.kbBuff)-32)/1.8*10)/10.0;
+			else
+				geoparam[pSettings.widgetSelected].T = round(atof(kbInfo.kbBuff)*10)/10.0;
 			break;
 		default:
 			break;
@@ -93,13 +67,13 @@ static void goSubSettings(struct UIWidget * widget)
 		case 5:
 			kbInfo.strlength = 6;
 			break;
-		case 6:
-			kbInfo.strlength = 4;
-			break;
 		case 8:
 			kbInfo.strlength = 6;
 			break;
 		case 9:
+			kbInfo.strlength = 6;
+			break;
+		case 10:
 			kbInfo.strlength = 6;
 			break;
 		default:
@@ -124,6 +98,12 @@ static void goSubPage(struct UIWidget * widget)
 			break;
 		case 4:
 			PageJump(&pEditS);
+			break;
+		case 6:
+			PageJump(&pEditZ);
+			break;
+		case 7:
+			PageJump(&pEditDrive);
 			break;
 		default:
 			break;
@@ -150,8 +130,8 @@ static void widgetInit(struct UIWidget * widget)
 		case 4:
 			if(settings.units)
 			{
-				sprintf(widget->widgetTitle,"Sensitivity(V/""/s)");
-				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].S/39.37*1000+0.1)/1000.0);
+				sprintf(widget->widgetTitle,"Sensitivity(V/\"/s)");
+				sprintf(widget->widgetPtr,"%g",round(geoparam[pSettings.widgetSelected].S/1000*25.4*1000)/1000.0);
 			}
 			else
 			{
@@ -163,13 +143,16 @@ static void widgetInit(struct UIWidget * widget)
 			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].D);
 			break;
 		case 6:
-			sprintf(widget->widgetPtr,"%d",(int)geoparam[pSettings.widgetSelected].DF);
+			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].Z);
 			break;
 		case 7:
+			sprintf(widget->widgetPtr,"%d/%g",(int)geoparam[pSettings.widgetSelected].DF,geoparam[pSettings.widgetSelected].speed);
+			break;
+		case 8:
 			if(settings.units)
 			{
-				sprintf(widget->widgetTitle,"Excursion("")");
-				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].X*1000/39.37+0.1)/1000.0);
+				sprintf(widget->widgetTitle,"Excursion(\")");
+				sprintf(widget->widgetPtr,"%g",round(geoparam[pSettings.widgetSelected].X*1000/25.4*1000)/1000.0);
 			}
 			else
 			{
@@ -177,11 +160,11 @@ static void widgetInit(struct UIWidget * widget)
 				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].X*1000);
 			}
 			break;
-		case 8:
+		case 9:
 			if(settings.units)
 			{
 				sprintf(widget->widgetTitle,"Mass(oz)");
-				sprintf(widget->widgetPtr,"%g",(int)(geoparam[pSettings.widgetSelected].M*1000*0.03527*1000+0.1)/1000.0);
+				sprintf(widget->widgetPtr,"%g",round(geoparam[pSettings.widgetSelected].M*1000*0.03527*1000)/1000.0);
 			}
 			else
 			{
@@ -189,18 +172,17 @@ static void widgetInit(struct UIWidget * widget)
 				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].M*1000);
 			}
 			break;
-		case 9:
+		case 10:
 			if(settings.units)
 			{
 				sprintf(widget->widgetTitle,"Spec. temp(~F)");
-				sprintf(widget->widgetPtr,"%g",(int)((geoparam[pSettings.widgetSelected].T*1.8+32)*10+0.1)/10.0);
+				sprintf(widget->widgetPtr,"%g",round((geoparam[pSettings.widgetSelected].T*1.8+32)*10)/10.0);
 			}
 			else
 			{
 				sprintf(widget->widgetTitle,"Spec. temp(~C)");
 				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].T);
 			}
-			impedence();
 			break;
 		default:
 			break;
@@ -221,7 +203,6 @@ static void del(struct UIWidget * widget)
 
 static void pageReturn(struct UIPage * page)
 {
-	impedence();
 	if(geoparam[pSettings.widgetSelected].type[0] == 0)
 				strcpy(geoparam[pSettings.widgetSelected].type,"Empty");
 	if(pSettings.widgetSelected==settings.totalparam)
@@ -229,25 +210,26 @@ static void pageReturn(struct UIPage * page)
 	PageJump(&pSettings);
 }
 
-static struct UIWidget widgetList[11] =
+static struct UIWidget widgetList[12] =
 {
-	{0,1,0,{0,120,479,179},"Type",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
-	{1,1,0,{0,180,479,239},"Resistence(})",0,StringArray[1],widgetInit,drawSLabel,goSubPage},
-	{2,1,0,{0,240,479,299},"Frequency(Hz)",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
-	{3,1,0,{0,300,479,359},"Damping",0,StringArray[3],widgetInit,drawSLabel,goSubPage},
-	{4,1,0,{0,360,479,419},"Sensitivity(V/m/s)",0,StringArray[4],widgetInit,drawSLabel,goSubPage},
-	{5,1,0,{0,420,479,479},"Distortion(%)",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
-	{6,1,0,{0,480,479,539},"F distortion(Hz)",0,StringArray[6],widgetInit,drawSLabel,goSubSettings},
-	{7,1,0,{0,540,479,599},"Excursion(mm)",0,StringArray[7],widgetInit,drawSLabel,goSubSettings},
-	{8,1,0,{0,600,479,659},"Mass(g)",0,StringArray[8],widgetInit,drawSLabel,goSubSettings},
-	{9,1,0,{0,660,479,719},"Spec. temp(~C)",0,StringArray[9],widgetInit,drawSLabel,goSubSettings},
-	{10,1,0,{280,740,439,779},"Delete",0,NULL,NULL,drawButton,del},
+	{0,1,0,{0,120,479,175},"Type",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
+	{1,1,0,{0,176,479,232},"Resistence(})",0,StringArray[1],widgetInit,drawSLabel,goSubPage},
+	{2,1,0,{0,233,479,287},"Frequency(Hz)",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
+	{3,1,0,{0,288,479,343},"Damping",0,StringArray[3],widgetInit,drawSLabel,goSubPage},
+	{4,1,0,{0,344,479,399},"Sensitivity(V/m/s)",0,StringArray[4],widgetInit,drawSLabel,goSubPage},
+	{5,1,0,{0,400,479,455},"Distortion(%)",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
+	{6,1,0,{0,456,479,511},"Impedance(})",0,StringArray[6],widgetInit,drawSLabel,goSubPage},
+	{7,1,0,{0,512,479,567},"Drive",0,StringArray[7],widgetInit,drawSLabel,goSubPage},
+	{8,1,0,{0,568,479,623},"Excursion(mm)",0,StringArray[8],widgetInit,drawSLabel,goSubSettings},
+	{9,1,0,{0,624,479,679},"Mass(g)",0,StringArray[9],widgetInit,drawSLabel,goSubSettings},
+	{10,1,0,{0,680,479,735},"Spec. temp(~C)",0,StringArray[10],widgetInit,drawSLabel,goSubSettings},
+	{11,1,0,{160,745,319,790},"Delete",0,NULL,NULL,drawButton,del},
 };
 
 struct UIPage pSubSettings = 
 {
 	"Geophone",
-	11,//char widgetNum;
+	12,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
 	NULL,

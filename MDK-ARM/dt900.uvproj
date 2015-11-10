@@ -897,6 +897,16 @@
               <FilePath>..\Src\UI\pEditS.c</FilePath>
             </File>
             <File>
+              <FileName>pEditZ.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pEditZ.c</FilePath>
+            </File>
+            <File>
+              <FileName>pEditDrive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pEditDrive.c</FilePath>
+            </File>
+            <File>
               <FileName>pGeoParam.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pGeoParam.c</FilePath>
@@ -945,6 +955,11 @@
               <FileName>pPasswd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\UI\pPasswd.c</FilePath>
+            </File>
+            <File>
+              <FileName>pIteration.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\UI\pIteration.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -17,22 +17,38 @@ long encode();
 
 struct  Geophone         //parameters of target geonphone under test
 {
-//	uint32_t sn;
-//	char barcode[20];
-	uint32_t polarity;
-//	uint32_t tilt;
 	float temp;
 	float nois;
+	float leakage;
 	uint32_t resi;
 	float freq;
 	float damp;
 	float sens;
 	float dist;
 	uint32_t impe;
+	uint32_t polarity;
 	uint32_t minZ;
 	uint32_t maxZ;
-	float leakage;
 	int32_t fault;
+	
+	uint32_t rmax;
+	uint32_t rmin;
+	uint32_t rnom;
+	float fmax;
+	float fmin;
+	float fnom;
+	float bmax;
+	float bmin;
+	float bnom;
+	float smax;
+	float smin;
+	float snom;
+	uint32_t zmax;
+	uint32_t zmin;
+	uint32_t znom;
+	float rline;
+	float rtotal;
+	float ztotal;
 };
 
 struct GeoParam			//geophone parameters in the list
@@ -58,17 +74,17 @@ struct GeoParam			//geophone parameters in the list
 	float X;
 	float T;
 	float DF;
+	float speed;
 };
 
 struct Settings		//test settings & system settings
 {
 	uint32_t magic;
 	
-	uint8_t filename[20];
+	uint8_t filename[16];
 	
-uint8_t text[20];
+uint8_t code[16];
 	uint32_t serialno;
-uint32_t inputmode;//0 no. 1 text
 	
 	uint32_t totalparam;
 	uint32_t paramnum;
@@ -87,13 +103,13 @@ uint32_t inputmode;//0 no. 1 text
 	uint32_t polarity;
 	uint32_t constant; //1 velocity 0 excursion
 	uint32_t iteration;
-uint32_t timeinterval;
+	uint32_t timeinterval;
 	
 	uint32_t buzzer;
 	uint32_t backlight;
 	uint32_t sleeptime;
 	uint32_t shuttime;
-uint32_t units;//0 metric 1 imperial
+	uint32_t units;//0 metric 1 imperial
 	
 	long passwd;
 };
