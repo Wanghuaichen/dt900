@@ -11,7 +11,7 @@
 #include "flash.h"
 #include "ostask.h"
 
-extern struct GeoParam geoparam[10];//(struct GeoParam *)PARAMADDR;
+extern struct GeoParam geoparam[20];//(struct GeoParam *)PARAMADDR;
 extern struct Settings settings;//(struct Settings *)SETADDR;
 extern IWDG_HandleTypeDef IwdgHandle;
 
@@ -46,7 +46,6 @@ void Board_Init()
 		0x3d99999a,0x3d99999a,0x459ed000,0x00000000,0x00000000,0x3dcccccd,0x3cb9f55a,0x3b449ba6,
 		0x41b00000,0x41400000
 	};
-	DP_EN(0);
 	if(ADC_GetValue()<3.4)
 	{
 		beep(100);
@@ -68,11 +67,11 @@ void Board_Init()
 	GUI_Init();
 	UI_Init();
 	memcpy(&settings,(struct Settings *)SETADDR,sizeof(struct Settings));
-	memcpy(geoparam,(struct GeoParam *)PARAMADDR,10*sizeof(struct GeoParam));
+	memcpy(geoparam,(struct GeoParam *)PARAMADDR,20*sizeof(struct GeoParam));
 	if(settings.magic!=5566)
 	{
 		memset(&settings,0,sizeof(struct Settings));
-		memset(geoparam,0,10*sizeof(struct GeoParam));
+		memset(geoparam,0,20*sizeof(struct GeoParam));
 		settings.magic = 5566;
 		settings.backlight = 20;
 		settings.buzzer = 1;

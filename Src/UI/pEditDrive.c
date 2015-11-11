@@ -1,12 +1,13 @@
 #include "ui.h"
 #include "geotest.h"
 #include <stdlib.h>
+#include <math.h>
 
 extern struct UIPage pSettings;
 extern struct UIPage pSubSettings;
 extern struct UIPage pKeyboard;
 extern struct KBInfo kbInfo;
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[20];
 extern struct Settings settings;
 
 static char StringArray[2][20];
@@ -25,7 +26,7 @@ static void kbCallBack()
 		geoparam[pSettings.widgetSelected].DF = val2<0 ? 0 : val2;
 			break;
 		case 1:
-			val = (int)(atof(kbInfo.kbBuff)*100+0.1)/100.0;
+			val = round(atof(kbInfo.kbBuff)*100)/100.0;
 			geoparam[pSettings.widgetSelected].speed =  val<0 ? 0 : val >10 ? 10 : val;
 			break;
 		default:
@@ -66,7 +67,7 @@ static void pageReturn(struct UIPage * page)
 static struct UIWidget widgetList[2] =
 {
 	{0,1,0,{0,120,479,179},"Frequency(Hz)",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
-	{1,1,0,{0,180,479,239},"Speed(inch/s)",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
+	{1,1,0,{0,180,479,239},"Velocity(\"/s)",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
 };
 
 struct UIPage pEditDrive = 

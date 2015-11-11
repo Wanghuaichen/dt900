@@ -1,6 +1,6 @@
 #include "flash.h"
 #include "geotest.h"
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[20];
 extern struct Settings settings;
 
 void FlashProgram()
@@ -19,7 +19,7 @@ void FlashProgram()
 	ret = HAL_FLASHEx_Erase(&erase,&error);
 	
 	
-	for(index=0;index<10*sizeof(struct GeoParam);index+=4)
+	for(index=0;index<20*sizeof(struct GeoParam);index+=4)
 		HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,PARAMADDR+index,*((int*)((int)geoparam+index)));	
 	for(index=0;index<sizeof(struct Settings);index+=4)
 		HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,SETADDR+index,*((int*)((int)&settings+index)));

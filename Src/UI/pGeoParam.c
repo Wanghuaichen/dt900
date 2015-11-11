@@ -2,7 +2,7 @@
 #include "geotest.h"
 #include "flash.h"
 
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[20];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
 extern struct UIPage pSetup;

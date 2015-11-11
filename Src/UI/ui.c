@@ -323,8 +323,8 @@ void drawButton(struct UIWidget* widget)
 
 void drawLabel(struct UIWidget* widget)
 {
-//	if(!widget->enable)
-//			return;
+	if(!widget->enable)
+			return;
 	GUI_SetColor(WHITE);
 	GUI_FillRect(widget->rect.x0,widget->rect.y0,widget->rect.x1,widget->rect.y1);
 	GUI_SetColor(widget->active ? 0x002fbeff : BLACK);
@@ -359,7 +359,7 @@ void drawSLabel(struct UIWidget* widget)
 
 void drawBox(struct UIWidget * widget)
 {
-	char str[20];
+	char str[40];
 	GUI_SetColor(WHITE);
 	GUI_FillRect(widget->rect.x0,widget->rect.y0,widget->rect.x1,widget->rect.y1);	
 	GUI_SetPenSize(2);

@@ -8,7 +8,7 @@ extern struct UIPage pMain;
 extern struct UIPage pKeyboard;
 extern struct UIPage pTime;
 extern struct KBInfo kbInfo;
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[20];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
 static char StringArray[6][20];

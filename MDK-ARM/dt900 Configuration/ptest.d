@@ -73,3 +73,4 @@ dt900 configuration\ptest.o: ..\Drivers\BSP\rtc.h
 dt900 configuration\ptest.o: ..\Inc\ostask.h
 dt900 configuration\ptest.o: ..\Drivers\BSP\cyma568.h
 dt900 configuration\ptest.o: ..\Drivers\BSP\beep.h
+dt900 configuration\ptest.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

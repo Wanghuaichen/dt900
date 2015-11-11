@@ -12,8 +12,9 @@ extern struct UIPage pEditS;
 extern struct UIPage pEditZ;
 extern struct UIPage pEditDrive;
 extern struct KBInfo kbInfo;
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[20];
 extern struct Settings settings;
+extern int pageindex;
 
 static char StringArray[11][20];
 struct UIPage pSubSettings;
@@ -22,31 +23,32 @@ static struct UIWidget widgetList[12];
 static void kbCallBack()
 {
 	char str[20];
+	int index =pSettings.widgetSelected+10*pageindex;
 	switch(pSubSettings.widgetSelected)
 	{
 		case 0:
-			strcpy(geoparam[pSettings.widgetSelected].type,kbInfo.kbBuff);
+			strcpy(geoparam[index].type,kbInfo.kbBuff);
 			break;
 		case 5:
-			geoparam[pSettings.widgetSelected].D = round(atof(kbInfo.kbBuff)*1000)/1000.0;
+			geoparam[index].D = round(atof(kbInfo.kbBuff)*1000)/1000.0;
 			break;
 		case 8:
 			if(settings.units)
-				geoparam[pSettings.widgetSelected].X = round(atof(kbInfo.kbBuff)*25.4*1000)/1000000.0;
+				geoparam[index].X = round(atof(kbInfo.kbBuff)*25.4*1000)/1000000.0;
 			else
-				geoparam[pSettings.widgetSelected].X = round(atof(kbInfo.kbBuff)*100)/100000.0;
+				geoparam[index].X = round(atof(kbInfo.kbBuff)*100)/100000.0;
 			break;
 		case 9:
 			if(settings.units)
-				geoparam[pSettings.widgetSelected].M = round(atof(kbInfo.kbBuff)*28.349523*100)/100000.0;
+				geoparam[index].M = round(atof(kbInfo.kbBuff)*28.349523*100)/100000.0;
 			else
-				geoparam[pSettings.widgetSelected].M = round(atof(kbInfo.kbBuff)*100)/100000.0;
+				geoparam[index].M = round(atof(kbInfo.kbBuff)*100)/100000.0;
 			break;
 		case 10:
 			if(settings.units)
-				geoparam[pSettings.widgetSelected].T = round((atof(kbInfo.kbBuff)-32)/1.8*10)/10.0;
+				geoparam[index].T = round((atof(kbInfo.kbBuff)-32)/1.8*10)/10.0;
 			else
-				geoparam[pSettings.widgetSelected].T = round(atof(kbInfo.kbBuff)*10)/10.0;
+				geoparam[index].T = round(atof(kbInfo.kbBuff)*10)/10.0;
 			break;
 		default:
 			break;
@@ -113,75 +115,76 @@ static void goSubPage(struct UIWidget * widget)
 
 static void widgetInit(struct UIWidget * widget)
 {
+	int index =pSettings.widgetSelected+10*pageindex;
 	switch(widget->widgetIndex)
 	{
 		case 0:
-			strcpy(widget->widgetPtr,geoparam[pSettings.widgetSelected].type);
+			strcpy(widget->widgetPtr,geoparam[index].type);
 			break;
 		case 1:
-			sprintf(widget->widgetPtr,"%d",(int)geoparam[pSettings.widgetSelected].R);
+			sprintf(widget->widgetPtr,"%d",(int)geoparam[index].R);
 			break;
 		case 2:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].F);
+			sprintf(widget->widgetPtr,"%g",geoparam[index].F);
 			break;
 		case 3:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].B);
+			sprintf(widget->widgetPtr,"%g",geoparam[index].B);
 			break;
 		case 4:
 			if(settings.units)
 			{
 				sprintf(widget->widgetTitle,"Sensitivity(V/\"/s)");
-				sprintf(widget->widgetPtr,"%g",round(geoparam[pSettings.widgetSelected].S/1000*25.4*1000)/1000.0);
+				sprintf(widget->widgetPtr,"%g",round(geoparam[index].S/1000*25.4*1000)/1000.0);
 			}
 			else
 			{
 				sprintf(widget->widgetTitle,"Sensitivity(V/m/s)");
-				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].S);
+				sprintf(widget->widgetPtr,"%g",geoparam[index].S);
 			}
 			break;
 		case 5:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].D);
+			sprintf(widget->widgetPtr,"%g",geoparam[index].D);
 			break;
 		case 6:
-			sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].Z);
+			sprintf(widget->widgetPtr,"%g",geoparam[index].Z);
 			break;
 		case 7:
-			sprintf(widget->widgetPtr,"%d/%g",(int)geoparam[pSettings.widgetSelected].DF,geoparam[pSettings.widgetSelected].speed);
+			sprintf(widget->widgetPtr,"%d/%g",(int)geoparam[index].DF,geoparam[index].speed);
 			break;
 		case 8:
 			if(settings.units)
 			{
 				sprintf(widget->widgetTitle,"Excursion(\")");
-				sprintf(widget->widgetPtr,"%g",round(geoparam[pSettings.widgetSelected].X*1000/25.4*1000)/1000.0);
+				sprintf(widget->widgetPtr,"%g",round(geoparam[index].X*1000/25.4*1000)/1000.0);
 			}
 			else
 			{
 				sprintf(widget->widgetTitle,"Excursion(mm)");
-				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].X*1000);
+				sprintf(widget->widgetPtr,"%g",geoparam[index].X*1000);
 			}
 			break;
 		case 9:
 			if(settings.units)
 			{
 				sprintf(widget->widgetTitle,"Mass(oz)");
-				sprintf(widget->widgetPtr,"%g",round(geoparam[pSettings.widgetSelected].M*1000*0.03527*1000)/1000.0);
+				sprintf(widget->widgetPtr,"%g",round(geoparam[index].M*1000*0.03527*1000)/1000.0);
 			}
 			else
 			{
 				sprintf(widget->widgetTitle,"Mass(g)");
-				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].M*1000);
+				sprintf(widget->widgetPtr,"%g",geoparam[index].M*1000);
 			}
 			break;
 		case 10:
 			if(settings.units)
 			{
 				sprintf(widget->widgetTitle,"Spec. temp(~F)");
-				sprintf(widget->widgetPtr,"%g",round((geoparam[pSettings.widgetSelected].T*1.8+32)*10)/10.0);
+				sprintf(widget->widgetPtr,"%g",round((geoparam[index].T*1.8+32)*10)/10.0);
 			}
 			else
 			{
 				sprintf(widget->widgetTitle,"Spec. temp(~C)");
-				sprintf(widget->widgetPtr,"%g",geoparam[pSettings.widgetSelected].T);
+				sprintf(widget->widgetPtr,"%g",geoparam[index].T);
 			}
 			break;
 		default:
@@ -191,10 +194,11 @@ static void widgetInit(struct UIWidget * widget)
 
 static void del(struct UIWidget * widget)
 {
-	memcpy(&geoparam[pSettings.widgetSelected],&geoparam[pSettings.widgetSelected+1],sizeof(struct GeoParam)*(10-1-pSettings.widgetSelected));
-	if(settings.paramnum>0 && settings.paramnum>=pSettings.widgetSelected)
+	int index =pSettings.widgetSelected+10*pageindex;
+	memcpy(&geoparam[index],&geoparam[index+1],sizeof(struct GeoParam)*(20-1-index));
+	if(settings.paramnum>0 && settings.paramnum>=index)
 		settings.paramnum--;
-	if(pSettings.widgetSelected<settings.totalparam)
+	if(index<settings.totalparam)
 		settings.totalparam--;
 	widget->active=0;
 	pSubSettings.widgetSelected = -1;
@@ -203,9 +207,10 @@ static void del(struct UIWidget * widget)
 
 static void pageReturn(struct UIPage * page)
 {
-	if(geoparam[pSettings.widgetSelected].type[0] == 0)
-				strcpy(geoparam[pSettings.widgetSelected].type,"Empty");
-	if(pSettings.widgetSelected==settings.totalparam)
+	int index =pSettings.widgetSelected+10*pageindex;
+	if(geoparam[index].type[0] == 0)
+				strcpy(geoparam[index].type,"Empty");
+	if(index==settings.totalparam)
 		settings.totalparam++;
 	PageJump(&pSettings);
 }

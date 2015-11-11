@@ -22,7 +22,7 @@ struct KBInfo
 {
 struct UIPage *kbParent;
 char kbTitle[20];
-char kbBuff[20];
+char kbBuff[40];
 void (*kbCallBack)();
 char strlength;
 };

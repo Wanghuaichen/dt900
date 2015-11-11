@@ -4,9 +4,18 @@
 
 extern struct UIPage pMain;
 extern struct UIPage pSubSettings;
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[11];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
+
+struct UIPage pSettings;
+int pageindex=0;
+
+static void turnpage()
+{
+	pageindex = (pageindex+1)&0x1;
+	PageJump(&pSettings);
+}
 
 static void goSubSettings(struct UIWidget * widget)
 {
@@ -17,21 +26,31 @@ static void goSubSettings(struct UIWidget * widget)
 
 static void widgetInit(struct UIWidget * widget)
 {
-	if(widget->widgetIndex < settings.totalparam)
+	if(widget->widgetIndex==10)
 	{
-		strcpy(widget->widgetTitle,geoparam[widget->widgetIndex].type);
-		widget->enable = 1;
-	}
-	else if(widget->widgetIndex == settings.totalparam)
-	{
-		sprintf(widget->widgetTitle,"<NEW>");
-		widget->enable = 1;
+		if(settings.totalparam>=10)
+			widget->enable = 1;
+		else
+			widget->enable = 0;
 	}
 	else
+	{
+		if(widget->widgetIndex+10*pageindex < settings.totalparam)
+		{
+			strcpy(widget->widgetTitle,geoparam[widget->widgetIndex+10*pageindex].type);
+			widget->enable = 1;
+		}
+		else if(widget->widgetIndex+10*pageindex == settings.totalparam)
+		{
+			sprintf(widget->widgetTitle,"<NEW>");
+			widget->enable = 1;
+		}
+		else
 		widget->enable = 0;
+	}
 }
 
-static struct UIWidget widgetList[10] =
+static struct UIWidget widgetList[11] =
 {
 	{0,0,0,{0,120,479,179},"",0,NULL,widgetInit,drawLabel,goSubSettings},
 	{1,0,0,{0,180,479,239},"",0,NULL,widgetInit,drawLabel,goSubSettings},
@@ -43,11 +62,12 @@ static struct UIWidget widgetList[10] =
 	{7,0,0,{0,540,479,599},"",0,NULL,widgetInit,drawLabel,goSubSettings},
 	{8,0,0,{0,600,479,659},"",0,NULL,widgetInit,drawLabel,goSubSettings},
 	{9,0,0,{0,660,479,719},"",0,NULL,widgetInit,drawLabel,goSubSettings},
+	{10,0,0,{120,734,359,785},"Next Page",0,NULL,widgetInit,drawButton,turnpage},
 };
 
 static void pageInit(struct UIPage * page)
 {
-	page->widgetNum = settings.totalparam<10 ? settings.totalparam+1 : 10;
+	//page->widgetNum = settings.totalparam<10 ? settings.totalparam+1 : 10;
 }
 	
 static void pageReturn(struct UIPage * page)
@@ -58,7 +78,7 @@ static void pageReturn(struct UIPage * page)
 struct UIPage pSettings = 
 {
 	"Geophone Settings",
-	1,//char widgetNum;
+	11,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
 	pageInit,

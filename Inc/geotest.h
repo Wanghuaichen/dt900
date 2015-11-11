@@ -81,9 +81,9 @@ struct Settings		//test settings & system settings
 {
 	uint32_t magic;
 	
-	uint8_t filename[16];
+	uint8_t filename[20];
 	
-uint8_t code[16];
+	uint8_t code[20];
 	uint32_t serialno;
 	
 	uint32_t totalparam;

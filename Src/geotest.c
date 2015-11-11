@@ -21,7 +21,7 @@ uint32_t test0,test1;
 uint32_t ADCMID = 0x800000;
 static float Inbuff[4096];
 struct Geophone geophone;
-struct GeoParam geoparam[10];
+struct GeoParam geoparam[20];
 volatile struct Settings settings;
 static struct GeoParam *geo;
 float curTemperature;
@@ -74,12 +74,10 @@ void analog(int option)
 int geotest()
 {
 	char str[20];
-	char blank[10];
 	float portion;
 	int COLOR;
 	int openshorttest;
 	
-	sprintf(blank,"              ");
 	memset(&geophone,0,sizeof(geophone));
 	geo = &geoparam[settings.paramnum];
 	if(settings.sensormode == 3)
@@ -206,7 +204,7 @@ int geotest()
 	GUI_SetTextAlign(GUI_TA_HCENTER | GUI_TA_TOP);
 	GUI_DispStringAt(str,356,420);
 	if(settings.units)
-		sprintf(str,"%.3f",(int)(geophone.sens/39.37*1000+0.1)/1000.0);
+		sprintf(str,"%.3f",round(geophone.sens/39.37*1000)/1000.0);
 	else
 		sprintf(str,"%.1f",geophone.sens);
 	if(geophone.sens>geophone.smax||geophone.sens<geophone.smin)
@@ -248,14 +246,18 @@ int geotest()
 	GUI_DispStringAt(str,356,540);
 	
 	if(settings.polarity)
+	{
 		polarity();
-	if(geophone.polarity==-1)
-		geophone.fault = 1;
+		if(geophone.polarity==-1)
+			geophone.fault = 1;
+	}
 	
 	if(settings.ldrate)
+	{
 		contidrive();
-	if(geophone.minZ<geophone.zmin || geophone.maxZ>geophone.zmax)
-		geophone.fault = 1;
+		if(geophone.minZ<geophone.zmin || geophone.maxZ>geophone.zmax)
+			geophone.fault = 1;
+	}
 	
 	analog(0);
 	

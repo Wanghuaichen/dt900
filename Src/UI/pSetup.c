@@ -11,12 +11,12 @@ extern struct UIPage pString;
 extern struct UIPage pFlow;
 extern struct UIPage pIteration;
 extern struct KBInfo kbInfo;
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[20];
 extern struct Settings settings;
 extern struct UIInfo UIInfo;
 static char StringArray[10][30];
 struct UIPage pSetup;
-static struct UIWidget widgetList[11];
+static struct UIWidget widgetList[10];
 
 static void kbCallBack()
 {
@@ -30,22 +30,18 @@ static void kbCallBack()
 			if(settings.filename[0] == '\0')
 				sprintf(settings.filename,"Test");
 			break;
-		case 1:
-			val = atoi(kbInfo.kbBuff);
-			settings.serialno = val<1 ? 1 : val>99999 ? 99999 : val;
-			break;
-		case 4:
+		case 3:
 			val2 = (int)(atof(kbInfo.kbBuff)*10+0.1)/10.0;
 			if(settings.units)
 				val2 = (val2-32)/1.8;
 			settings.temperature = val2>99 ? 99 : val2<-99 ? -99 : val2;
 			reTemp();
 			break;
-		case 5:
+		case 4:
 			val = atoi(kbInfo.kbBuff);
 			settings.shunt = val>999999 ? 999999 : val<0 ? 0 : val;
 			break;
-		case 9:
+		case 8:
 			val = atoi(kbInfo.kbBuff);
 			settings.iteration = val>99999 ? 99999 : val<1 ? 1 : val;
 			break;
@@ -57,7 +53,7 @@ static void kbCallBack()
 static void goSubSettings(struct UIWidget * widget)
 {
 	kbInfo.kbParent = &pSetup;
-	if(widget->widgetIndex==5)
+	if(widget->widgetIndex==4)
 		sprintf(kbInfo.kbTitle,"Shunt");
 	else
 		strcpy(kbInfo.kbTitle,widget->widgetTitle);
@@ -68,7 +64,7 @@ static void goSubSettings(struct UIWidget * widget)
 		case 0:
 			kbInfo.strlength = 16;
 			break;
-		case 5:
+		case 4:
 			kbInfo.strlength = 8;
 			break;
 		default:
@@ -82,16 +78,16 @@ static void goSubPage(struct UIWidget * widget)
 {
 	switch(widget->widgetIndex)
 	{
-		case 2:
+		case 1:
 			PageJump(&pGeoParam);
 			break;
-		case 6:
+		case 5:
 			PageJump(&pString);
 			break;
-		case 7:
+		case 6:
 			PageJump(&pFlow);
 			break;
-		case 9:
+		case 8:
 			PageJump(&pIteration);
 			break;
 		default:
@@ -109,12 +105,9 @@ static void widgetInit(struct UIWidget * widget)
 			strcpy(widget->widgetPtr,settings.filename);
 			break;
 		case 1:
-			sprintf(widget->widgetPtr,"%05d",settings.serialno);
-			break;
-		case 2:
 			strcpy(widget->widgetPtr,geoparam[settings.paramnum].type);
 			break;
-		case 3:
+		case 2:
 			if(settings.sensormode == 0)
 				sprintf(widget->widgetPtr,"OFF");
 			else if(settings.sensormode == 1)
@@ -124,7 +117,7 @@ static void widgetInit(struct UIWidget * widget)
 			else if(settings.sensormode == 3)
 				sprintf(widget->widgetPtr,"MANUAL");
 			break;
-		case 4:
+		case 3:
 			widget->enable = settings.sensormode != 3 ? 0 : 1;
 			if(settings.units)
 			{
@@ -137,24 +130,24 @@ static void widgetInit(struct UIWidget * widget)
 				sprintf(widget->widgetPtr,"%g",(int)(settings.temperature*10+0.1)/10.0);
 			}
 			break;
-		case 5:
+		case 4:
 			sprintf(widget->widgetPtr,"%d",settings.shunt);
 			break;
-		case 6:
+		case 5:
 			sprintf(widget->widgetPtr,"%d{%d %d/%d/%d",
 			settings.series,settings.parallel,settings.lineR,settings.leadin,settings.interval);
 			break;
-		case 7:
+		case 6:
 			sprintf(widget->widgetPtr,"std");
 			if(settings.ldrate)
 				sprintf(widget->widgetPtr,"%s/ld:%d",widget->widgetPtr,settings.ldrate);
 			if(settings.polarity)
 				sprintf(widget->widgetPtr,"%s/pol",widget->widgetPtr);
 			break;
-		case 8:
+		case 7:
 			sprintf(widget->widgetPtr,settings.constant ? "Velocity" : "Excursion");
 			break;
-		case 9:
+		case 8:
 			if(settings.iteration>1)			
 				sprintf(widget->widgetPtr,"%d/%d",settings.iteration,settings.timeinterval);
 			else
@@ -178,8 +171,8 @@ static void sensormode(struct UIWidget * widget)
 	widget->widgetInit(widget);
 	widget->widgetDraw(widget);
 	UITouchClear();
-	pSetup.widgetList[4].widgetInit(&pSetup.widgetList[4]);
-	pSetup.widgetList[4].widgetDraw(&pSetup.widgetList[4]);
+	pSetup.widgetList[3].widgetInit(&pSetup.widgetList[3]);
+	pSetup.widgetList[3].widgetDraw(&pSetup.widgetList[3]);
 }
 
 static void constant(struct UIWidget * widget)
@@ -189,25 +182,24 @@ static void constant(struct UIWidget * widget)
 	widget->widgetDraw(widget);
 }
 
-static struct UIWidget widgetList[11] =
+static struct UIWidget widgetList[10] =
 {
 	{0,1,0,{0,120,479,179},"File Name",0,StringArray[0],widgetInit,drawSLabel,goSubSettings},
-	{1,1,0,{0,180,479,239},"Serial No.",0,StringArray[1],widgetInit,drawSLabel,goSubSettings},
-	{2,1,0,{0,240,479,299},"Geo Spec.",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
-	{3,1,0,{0,300,479,359},"Sensor Mode",0,StringArray[3],widgetInit,drawSLabel,sensormode},
-	{4,0,0,{0,360,479,419},"Temperature",0,StringArray[4],widgetInit,drawSLabel,goSubSettings},
-	{5,1,0,{0,420,479,479},"Shunt(})  0=none",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
-	{6,1,0,{0,480,479,539},"String",0,StringArray[6],widgetInit,drawSLabel,goSubPage},
-	{7,1,0,{0,540,479,599},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,goSubPage},
-	{8,1,0,{0,600,479,659},"@Constant",0,StringArray[8],widgetInit,drawSLabel,constant},
-	{9,1,0,{0,660,479,719},"Multiple Tests",0,StringArray[9],widgetInit,drawSLabel,goSubPage},
-	{10,1,0,{120,740,359,779},"Continue",0,NULL,NULL,drawButton,goSubPage},
+	{1,1,0,{0,180,479,239},"Geo Spec.",0,StringArray[2],widgetInit,drawSLabel,goSubPage},
+	{2,1,0,{0,240,479,299},"Sensor Mode",0,StringArray[3],widgetInit,drawSLabel,sensormode},
+	{3,0,0,{0,300,479,359},"Temperature",0,StringArray[4],widgetInit,drawSLabel,goSubSettings},
+	{4,1,0,{0,360,479,419},"Shunt(})  0=none",0,StringArray[5],widgetInit,drawSLabel,goSubSettings},
+	{5,1,0,{0,420,479,479},"String",0,StringArray[6],widgetInit,drawSLabel,goSubPage},
+	{6,1,0,{0,480,479,539},"Test Flow",0,StringArray[7],widgetInit,drawSLabel,goSubPage},
+	{7,1,0,{0,540,479,599},"@Constant",0,StringArray[8],widgetInit,drawSLabel,constant},
+	{8,1,0,{0,600,479,659},"Multiple Tests",0,StringArray[9],widgetInit,drawSLabel,goSubPage},
+	{9,1,0,{120,700,359,759},"Continue",0,NULL,NULL,drawButton,goSubPage},
 };
 
 struct UIPage pSetup = 
 {
 	"Test Setup",
-	11,//char widgetNum;
+	10,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
 	NULL,

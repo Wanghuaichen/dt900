@@ -4,7 +4,7 @@
 
 extern struct UIPage pKeyboard;
 extern struct KBInfo kbInfo;
-extern struct GeoParam geoparam[10];
+extern struct GeoParam geoparam[20];
 extern struct Settings settings;
 static char StringArray[5][20];
 extern struct UIPage pSetup;
