@@ -7,24 +7,44 @@ extern struct Settings settings;
 extern struct UIInfo UIInfo;
 extern struct UIPage pSetup;
 
+struct UIPage pGeoParam;
+static int curpage=-1;
+
 static void selected(struct UIWidget * widget)
 {
-	settings.paramnum = widget->widgetIndex;
+	settings.paramnum = widget->widgetIndex+10*curpage;
+	curpage=-1;
 	PageJump(&pSetup);
 }
 	
 static void widgetInit(struct UIWidget * widget)
 {
-	if(widget->widgetIndex < settings.totalparam)
+	if(widget->widgetIndex==10)
 	{
-		strcpy(widget->widgetTitle,geoparam[widget->widgetIndex].type);
-		widget->enable = 1;
+		if(settings.totalparam>=10)
+			widget->enable = 1;
+		else
+			widget->enable = 0;
 	}
 	else
-		widget->enable = 0;
+	{
+		if(widget->widgetIndex+10*curpage < settings.totalparam)
+		{
+			strcpy(widget->widgetTitle,geoparam[widget->widgetIndex+10*curpage].type);
+			widget->enable = 1;
+		}
+		else
+			widget->enable = 0;	
+	}
 }
 
-static struct UIWidget widgetList[10] =
+static void turnpage()
+{
+	curpage = (curpage+1)&0x1;
+	PageJump(&pGeoParam);
+}
+
+static struct UIWidget widgetList[11] =
 {
 	{0,0,0,{0,120,479,179},"",0,NULL,widgetInit,drawLabel,selected},
 	{1,0,0,{0,180,479,239},"",0,NULL,widgetInit,drawLabel,selected},
@@ -36,24 +56,30 @@ static struct UIWidget widgetList[10] =
 	{7,0,0,{0,540,479,599},"",0,NULL,widgetInit,drawLabel,selected},
 	{8,0,0,{0,600,479,659},"",0,NULL,widgetInit,drawLabel,selected},
 	{9,0,0,{0,660,479,719},"",0,NULL,widgetInit,drawLabel,selected},
+	{10,0,0,{120,734,359,785},"Next Page",0,NULL,widgetInit,drawButton,turnpage},
 };
 
 static void pageInit(struct UIPage * page)
 {
-	page->widgetNum = settings.totalparam;
-	page->widgetSelected = settings.paramnum;
-	page->widgetList[page->widgetSelected].active = 1;
+	if(curpage == -1)
+		curpage = settings.paramnum/10;
+	if(curpage == settings.paramnum/10)
+	{
+		page->widgetSelected = settings.paramnum%10;
+		page->widgetList[page->widgetSelected].active = 1;
+	}
 }
 	
 static void pageReturn(struct UIPage * page)
 {
+	curpage=-1;
 	PageJump(&pSetup);
 }
 
 struct UIPage pGeoParam = 
 {
 	"Geo Spec.",
-	1,//char widgetNum;
+	11,//char widgetNum;
 	-1,
 	widgetList,//struct UIWidget * widgetList;
 	pageInit,

@@ -46,6 +46,8 @@ void Board_Init()
 		0x3d99999a,0x3d99999a,0x459ed000,0x00000000,0x00000000,0x3dcccccd,0x3cb9f55a,0x3b449ba6,
 		0x41b00000,0x41400000
 	};
+	DP_EN(0);
+	HAL_Delay(500);
 	if(ADC_GetValue()<3.4)
 	{
 		beep(100);
@@ -55,8 +57,6 @@ void Board_Init()
 		beep(100);
 		while(1);
 	}
-	
-	HAL_Delay(500);
 	DP_EN(1);
 	AP_EN(1);
 	beepon();

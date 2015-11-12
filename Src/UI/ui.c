@@ -4,6 +4,7 @@
 #include "lcd.h"
 #include "geotest.h"
 #include "cyma568.h"
+#include "flash.h"
 
 //#define BITMAP
 //#define NONTOUCHCLEAR
@@ -92,6 +93,7 @@ void UIEventManager()
 	if(UIInfo.keyCombo>60000*settings.shuttime || (UIInfo.keyCombo==2500 && UIInfo.KeyEvent==KEY_CANCEL))
 	{
 		LCD_PWR(0);
+		FlashProgram();
 		DP_EN(0);
 	}
 	

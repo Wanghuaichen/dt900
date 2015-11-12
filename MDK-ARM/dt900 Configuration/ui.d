@@ -52,3 +52,4 @@ dt900 configuration\ui.o: ..\Drivers\BSP\pwr.h
 dt900 configuration\ui.o: ..\Drivers\BSP\lcd.h
 dt900 configuration\ui.o: ..\Inc\geotest.h
 dt900 configuration\ui.o: ..\Drivers\BSP\cyma568.h
+dt900 configuration\ui.o: ..\Drivers\BSP\flash.h

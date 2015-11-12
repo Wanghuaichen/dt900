@@ -162,25 +162,45 @@ static void batVolt()
 	int curLevel;
 	float volt;
 	volt = ADC_GetValue();
-GUI_DispDecAt(volt*1000,0,750,4);
+	GUI_DispDecAt(volt*1000,0,750,4);
 	curLevel = (volt-3.3)/0.08;
-	if(curLevel>10)
-		curLevel = 10;
+	curLevel = curLevel>10? 10 : curLevel<0 ? 0 : curLevel;
 	GUI_SetColor(TITLECOLOR);
 	GUI_FillRect(413,0,459,30);
-	GUI_SetColor(WHITE);
-	GUI_AA_DrawRoundedRect(413,6,459,25,3);
-	if(curLevel>0)
-		GUI_FillRect(416,9,416+4*curLevel,22);
-	if(volt<3.3)
+	if(curLevel>2)
 	{
-		beep(100);
-		HAL_Delay(100);
-		beep(100);
-		HAL_Delay(100);
-		beep(100);
-		LCD_PWR(0);
-		DP_EN(0);
+		GUI_SetColor(WHITE);
+		GUI_AA_DrawRoundedRect(413,6,459,25,3);
+		GUI_FillRect(416,9,416+4*curLevel,22);
+	}
+	else
+	{		
+			GUI_SetColor(0xe4);
+			GUI_AA_DrawRoundedRect(413,6,459,25,3);
+			GUI_FillRect(416,9,416+4*curLevel,22);
+			beep(300);
+			GUI_SetColor(WHITE);
+			GUI_AA_DrawRoundedRect(413,6,459,25,3);
+			GUI_FillRect(416,9,416+4*curLevel,22);
+			HAL_Delay(100);
+			GUI_SetColor(0xe4);
+			GUI_AA_DrawRoundedRect(413,6,459,25,3);
+			GUI_FillRect(416,9,416+4*curLevel,22);
+			beep(300);
+			GUI_SetColor(WHITE);
+			GUI_AA_DrawRoundedRect(413,6,459,25,3);
+			GUI_FillRect(416,9,416+4*curLevel,22);
+			HAL_Delay(100);
+			GUI_SetColor(0xe4);
+			GUI_AA_DrawRoundedRect(413,6,459,25,3);
+			GUI_FillRect(416,9,416+4*curLevel,22);
+
+		if(curLevel==0)
+		{
+			LCD_PWR(0);
+			FlashProgram();
+			DP_EN(0);
+		}
 	}
 }
 

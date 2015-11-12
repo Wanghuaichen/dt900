@@ -53,7 +53,7 @@ static void goSubSettings(struct UIWidget * widget)
 	switch(widget->widgetIndex)
 	{
 		case 2:
-			kbInfo.strlength = 6;
+			kbInfo.strlength = 10;
 			break;
 		case 3:
 			kbInfo.strlength = 19;
@@ -277,7 +277,7 @@ static void save()
 	GUI_SetBkColor(WHITE);
 	GUI_SetFont(&GUI_FontHelvetica32);	
 	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_BOTTOM);
-	if(++settings.serialno>99999)
+	if(++settings.serialno>999999999)
 		settings.serialno = 1;
 	widgetList[2].widgetInit(&widgetList[2]);
 	widgetList[2].widgetDraw(&widgetList[2]);

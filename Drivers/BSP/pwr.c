@@ -5,10 +5,6 @@ extern struct UIInfo UIInfo;
 
 void DP_EN(int val)
 {
-	if(!val)
-	{
-		FlashProgram();
-	}
 	HAL_GPIO_WritePin (GPIOE,GPIO_PIN_2,(GPIO_PinState)val);
 }
 
