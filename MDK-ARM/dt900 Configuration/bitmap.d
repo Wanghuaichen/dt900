@@ -69,3 +69,4 @@ dt900 configuration\bitmap.o: ..\Middlewares\ST\STemWin\inc\LCD.h
 dt900 configuration\bitmap.o: ..\Middlewares\ST\STemWin\inc\Global.h
 dt900 configuration\bitmap.o: ..\Middlewares\ST\STemWin\inc\GUI_Version.h
 dt900 configuration\bitmap.o: ..\Drivers\BSP\rtc.h
+dt900 configuration\bitmap.o: ..\Inc\geotest.h

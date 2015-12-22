@@ -10,7 +10,6 @@
 #include "ds18b20.h"
 #include "flash.h"
 #include "ds3231m.h"
-//#define _DEBUG
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontHelvetica32;
 extern struct Settings settings;
@@ -28,7 +27,7 @@ static void batVolt();
 void StartDefaultTask(void const * argument)
 {
 	char str[20];
-	static unsigned int i=0;
+	static volatile unsigned int i=0;
 	
 	for(;;)
   {
@@ -43,7 +42,6 @@ void StartDefaultTask(void const * argument)
 			usbflag=0;
 			i=0;
 		}
-#ifndef _DEBUG	
 		GUI_SetColor(WHITE);
 		GUI_SetBkColor(TITLECOLOR);
 		GUI_SetFont(&GUI_FontHelvetica32);	
@@ -70,22 +68,11 @@ void StartDefaultTask(void const * argument)
 		
 		HAL_IWDG_Refresh(&IwdgHandle);
 		osDelay(1000);
-#endif
   }
 }
 
 void KeyTask(void const * argument)
 {
-#ifdef _DEBUG	
-	int ret;
-	GUI_SetColor(WHITE);
-	GUI_FillRect(0,0,479,799);
-	
-	GUI_SetColor(BLACK);
-	GUI_SetBkColor(WHITE);
-	GUI_SetFont(&GUI_FontHelvetica32);	
-	GUI_SetTextAlign(GUI_TA_LEFT | GUI_TA_TOP);
-#endif
   for(;;)
   {
 		UIEventManager();
@@ -157,45 +144,62 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	chargeSwap = 1;
 }
 
+int getbatvolt()
+{
+	float volt;
+	int level;
+	volt = ADC_GetValue();
+	level = (volt-3.3)/0.16;
+	return level>5? 5 : level<0 ? 0 : level;
+}
+
 static void batVolt()
 {
+	static int batLevel=0;
+	int temp;
 	int curLevel;
-	float volt;
-	volt = ADC_GetValue();
-	GUI_DispDecAt(volt*1000,0,750,4);
-	curLevel = (volt-3.3)/0.08;
-	curLevel = curLevel>10? 10 : curLevel<0 ? 0 : curLevel;
+	
+	curLevel = getbatvolt();
+//	GUI_DispDecAt(volt*1000,0,750,4);	
+	while(curLevel!=batLevel)
+	{
+		temp = curLevel;
+		curLevel = getbatvolt();
+		if(curLevel==temp)
+			batLevel = curLevel;
+	}
+	
 	GUI_SetColor(TITLECOLOR);
 	GUI_FillRect(413,0,459,30);
-	if(curLevel>2)
+	if(batLevel>1)
 	{
 		GUI_SetColor(WHITE);
 		GUI_AA_DrawRoundedRect(413,6,459,25,3);
-		GUI_FillRect(416,9,416+4*curLevel,22);
+		GUI_FillRect(416,9,416+8*curLevel,22);
 	}
 	else
 	{		
-			GUI_SetColor(0xe4);
-			GUI_AA_DrawRoundedRect(413,6,459,25,3);
-			GUI_FillRect(416,9,416+4*curLevel,22);
-			beep(300);
-			GUI_SetColor(WHITE);
-			GUI_AA_DrawRoundedRect(413,6,459,25,3);
-			GUI_FillRect(416,9,416+4*curLevel,22);
-			HAL_Delay(100);
-			GUI_SetColor(0xe4);
-			GUI_AA_DrawRoundedRect(413,6,459,25,3);
-			GUI_FillRect(416,9,416+4*curLevel,22);
-			beep(300);
-			GUI_SetColor(WHITE);
-			GUI_AA_DrawRoundedRect(413,6,459,25,3);
-			GUI_FillRect(416,9,416+4*curLevel,22);
-			HAL_Delay(100);
-			GUI_SetColor(0xe4);
-			GUI_AA_DrawRoundedRect(413,6,459,25,3);
-			GUI_FillRect(416,9,416+4*curLevel,22);
+		GUI_SetColor(0xe4);
+		GUI_AA_DrawRoundedRect(413,6,459,25,3);
+		GUI_FillRect(416,9,416+8*curLevel,22);
+		beep(300);
+		GUI_SetColor(WHITE);
+		GUI_AA_DrawRoundedRect(413,6,459,25,3);
+		GUI_FillRect(416,9,416+8*curLevel,22);
+		HAL_Delay(100);
+		GUI_SetColor(0xe4);
+		GUI_AA_DrawRoundedRect(413,6,459,25,3);
+		GUI_FillRect(416,9,416+8*curLevel,22);
+		beep(300);
+		GUI_SetColor(WHITE);
+		GUI_AA_DrawRoundedRect(413,6,459,25,3);
+		GUI_FillRect(416,9,416+8*curLevel,22);
+		HAL_Delay(100);
+		GUI_SetColor(0xe4);
+		GUI_AA_DrawRoundedRect(413,6,459,25,3);
+		GUI_FillRect(416,9,416+8*curLevel,22);
 
-		if(curLevel==0)
+		if(batLevel==0)
 		{
 			LCD_PWR(0);
 			FlashProgram();

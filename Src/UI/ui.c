@@ -122,6 +122,10 @@ void touchEvent(struct UIPage *page)
 	
 	if(UIInfo.TouchEvent==TOUCH_TOUCHDOWN)
 	{
+#ifdef BITMAP
+if(UIInfo.tpY<120 && UIInfo.tpX>400)
+	SaveBitmap();
+#endif
 		UIInfo.keyCombo = 0;
 		if(page->widgetSelected>=0)
 		{
@@ -130,10 +134,6 @@ void touchEvent(struct UIPage *page)
 				page->widgetList[page->widgetSelected].widgetDraw(&page->widgetList[page->widgetSelected]);
 			page->widgetSelected = -1;
 		}
-#ifdef BITMAP
-if(UIInfo.tpY<120 && UIInfo.tpX>400)
-	SaveBitmap();
-#endif
 
 		if(UIInfo.tpY<120 && UIInfo.tpX<120)
 		{
