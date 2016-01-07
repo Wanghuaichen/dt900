@@ -1,5 +1,4 @@
 #include "ui.h"
-#include "cyma568.h"
 extern struct UIPage pSettings;
 extern struct UIPage pSetup;
 extern struct UIPage pSys;

@@ -42,6 +42,8 @@ void StartDefaultTask(void const * argument)
 			usbflag=0;
 			i=0;
 		}
+		
+		
 		GUI_SetColor(WHITE);
 		GUI_SetBkColor(TITLECOLOR);
 		GUI_SetFont(&GUI_FontHelvetica32);	

@@ -3,7 +3,7 @@
 #include "pwr.h"
 #include "lcd.h"
 #include "geotest.h"
-#include "cyma568.h"
+#include "s3203.h"
 #include "flash.h"
 
 //#define BITMAP

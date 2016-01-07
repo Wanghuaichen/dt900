@@ -22,15 +22,19 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 Z:\GitHub\dt900\MDK-ARM\dt900.uvproj
-Project File Date:  11/10/2015
+Project File Date:  12/22/2015
 
 <h2>Output:</h2>
 Build target 'dt900 Configuration'
-compiling init.c...
-..\Drivers\BSP\beep.h(6): warning:  #1295-D: Deprecated declaration beepon - give arg types
-  void beepon();
-..\Drivers\BSP\beep.h(7): warning:  #1295-D: Deprecated declaration beepoff - give arg types
-  void beepoff();
+compiling main.c...
+..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
+  int geotest();
+..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration encode - give arg types
+  long encode();
+..\Drivers\BSP\rtc.h(6): warning:  #1295-D: Deprecated declaration RTC_Init - give arg types
+  void RTC_Init();
+..\Drivers\BSP\rtc.h(8): warning:  #1295-D: Deprecated declaration RTC_Get - give arg types
+  void RTC_Get();
 ..\Src\UI\ui.h(76): warning:  #1295-D: Deprecated declaration UI_Init - give arg types
   void UI_Init();
 ..\Src\UI\ui.h(78): warning:  #1295-D: Deprecated declaration UIKeyboard - give arg types
@@ -45,35 +49,21 @@ compiling init.c...
   void getuid();
 ..\Src\UI\ui.h(94): warning:  #1295-D: Deprecated declaration UITouchClear - give arg types
   void UITouchClear();
-..\Inc\geotest.h(14): warning:  #1295-D: Deprecated declaration geotest - give arg types
-  int geotest();
-..\Inc\geotest.h(16): warning:  #1295-D: Deprecated declaration encode - give arg types
-  long encode();
-..\Drivers\BSP\flash.h(10): warning:  #1295-D: Deprecated declaration FlashProgram - give arg types
-  void FlashProgram();
-..\Drivers\BSP\flash.h(11): warning:  #1295-D: Deprecated declaration FlashEraseTotal24 - give arg types
-  void FlashEraseTotal24();
+..\Src\usbd_mass_storage\usb_conf.h(233): warning:  #47-D: incompatible redefinition of macro "__ALIGN_BEGIN" (declared at line 151 of "..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h")
+    #define __ALIGN_BEGIN
 ..\Inc\ostask.h(7): warning:  #1295-D: Deprecated declaration reTemp - give arg types
   void reTemp();
 ..\Inc\ostask.h(8): warning:  #1295-D: Deprecated declaration usbflagchange - give arg types
   void usbflagchange();
 ..\Inc\ostask.h(9): warning:  #1-D: last line of file ends without a newline
   #endif
-..\Drivers\BSP\init.c(69): warning:  #223-D: function "memcpy" declared implicitly
-        memcpy(&settings,(struct Settings *)SETADDR,sizeof(struct Settings));
-..\Drivers\BSP\init.c(73): warning:  #223-D: function "memset" declared implicitly
-                memset(&settings,0,sizeof(struct Settings));
-..\Drivers\BSP\init.c(86): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
-                sprintf(settings.filename,"DTCCSOLO");
-..\Drivers\BSP\init.c(93): warning:  #223-D: function "MX_FATFS_Init" declared implicitly
-    MX_FATFS_Init();
-..\Drivers\BSP\init.c(18): warning:  #177-D: function "FlashReadProtection" was declared but never referenced
-  static void FlashReadProtection()
-..\Drivers\BSP\init.c: 21 warnings, 0 errors
+..\Src\main.c(131): warning:  #188-D: enumerated type mixed with another type
+        osThreadDef(keyTask, KeyTask, osPriorityNormal+1, 0, 2048);
+..\Src\main.c: 16 warnings, 0 errors
 linking...
-Program Size: Code=160914 RO-data=128378 RW-data=8028 ZI-data=168140  
+Program Size: Code=160878 RO-data=128382 RW-data=8028 ZI-data=167132  
 FromELF: creating hex file...
-"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 21 Warning(s).
+"dt900 Configuration\dt900 Configuration.axf" - 0 Error(s), 16 Warning(s).
 </pre>
 </body>
 </html>

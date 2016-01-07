@@ -933,7 +933,7 @@
 
   <Group>
     <GroupName>Drivers/BSP</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1088,8 +1088,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Drivers\BSP\cyma568.c</PathWithFileName>
-      <FilenameWithoutPath>cyma568.c</FilenameWithoutPath>
+      <PathWithFileName>..\Drivers\BSP\ds18b20.c</PathWithFileName>
+      <FilenameWithoutPath>ds18b20.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1101,8 +1101,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Drivers\BSP\ds18b20.c</PathWithFileName>
-      <FilenameWithoutPath>ds18b20.c</FilenameWithoutPath>
+      <PathWithFileName>..\Drivers\BSP\ds3231m.c</PathWithFileName>
+      <FilenameWithoutPath>ds3231m.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1114,8 +1114,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Drivers\BSP\ds3231m.c</PathWithFileName>
-      <FilenameWithoutPath>ds3231m.c</FilenameWithoutPath>
+      <PathWithFileName>..\Drivers\BSP\s3203.c</PathWithFileName>
+      <FilenameWithoutPath>s3203.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1123,7 +1123,7 @@
 
   <Group>
     <GroupName>Application/User</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

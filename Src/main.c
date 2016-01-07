@@ -52,7 +52,7 @@
 #include "ostask.h"
 
 extern USB_OTG_CORE_HANDLE     USB_OTG_dev;
-
+extern struct Settings settings;
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
@@ -347,7 +347,8 @@ void MX_TIM5_Init(void)//84MHz
   TIM_OC_InitTypeDef sConfigOC;
 
   htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 4199;
+  htim5.Init.Prescaler = 50;
+	//htim5.Init.Prescaler = settings.iteration;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 99;
   htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -372,7 +373,7 @@ void MX_TIM3_Init(void)
   TIM_OC_InitTypeDef sConfigOC;
 
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 3110;
+  htim3.Init.Prescaler = 2800;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 9;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
